@@ -1,0 +1,174 @@
+import type { AdjEdge, Graph } from "./graph";
+import { HUB, stateKey, computeAvailableModes } from "./graph";
+import type { BaseEdge, CostsConfig, GeoNode, Mode, RouteLeg, RouteOption, RouteOptionKey, RouteRequest } from "./types";
+import { buildGraph } from "./graph";
+import { buildTruckEdges } from "./truckEdges";
+import { economicIndex, securityIndex, transitIndex } from "./indices";
+
+type Weight = (edge: AdjEdge) => number;
+
+function dijkstra(graph: Graph, source: string, target: string, weight: Weight): string[] | null {
+  const dist = new Map<string, number>();
+  const prev = new Map<string, string>();
+  const visited = new Set<string>();
+  dist.set(source, 0);
+
+  while (true) {
+    let current: string | null = null;
+    let currentDist = Infinity;
+    for (const [node, d] of dist) {
+      if (!visited.has(node) && d < currentDist) {
+        current = node;
+        currentDist = d;
+      }
+    }
+    if (current === null) break;
+    if (current === target) break;
+    visited.add(current);
+
+    const edges = graph.adjacency.get(current) ?? [];
+    for (const edge of edges) {
+      if (visited.has(edge.to)) continue;
+      const next = currentDist + weight(edge);
+      if (next < (dist.get(edge.to) ?? Infinity)) {
+        dist.set(edge.to, next);
+        prev.set(edge.to, current);
+      }
+    }
+  }
+
+  if (!dist.has(target)) return null;
+
+  const path: string[] = [target];
+  let node = target;
+  while (node !== source) {
+    const p = prev.get(node);
+    if (!p) return null;
+    path.unshift(p);
+    node = p;
+  }
+  return path;
+}
+
+/** Walks a Dijkstra path back into the physical legs it represents, folding each hub's load overhead into the leg that follows it. */
+function reconstructLegs(graph: Graph, path: string[]): RouteLeg[] {
+  const legs: RouteLeg[] = [];
+  let pendingUsd = 0;
+  let pendingHours = 0;
+
+  for (let i = 0; i < path.length - 1; i++) {
+    const from = path[i];
+    const to = path[i + 1];
+    const edge = (graph.adjacency.get(from) ?? []).find((e) => e.to === to);
+    if (!edge) continue;
+
+    if (edge.isLoad) {
+      pendingUsd += edge.usd;
+      pendingHours += edge.hours;
+      continue;
+    }
+    if (edge.leg) {
+      legs.push({
+        from: edge.leg.from,
+        to: edge.leg.to,
+        mode: edge.leg.mode,
+        distanceKm: edge.leg.distanceKm,
+        usd: edge.usd + pendingUsd,
+        hours: edge.hours + pendingHours,
+      });
+      pendingUsd = 0;
+      pendingHours = 0;
+    }
+    // unload edges (mode -> HUB) carry no cost and are skipped
+  }
+
+  return legs;
+}
+
+function combineLegs(legs: RouteLeg[], key: RouteOptionKey, label: string): RouteOption {
+  const totalUsd = legs.reduce((sum, l) => sum + l.usd, 0);
+  const totalHours = legs.reduce((sum, l) => sum + l.hours, 0);
+  const transferCount = legs.slice(1).filter((l, i) => l.mode !== legs[i].mode).length;
+
+  return { key, label, legs, totalUsd, totalHours, transferCount };
+}
+
+function routesEqual(a: RouteOption, b: RouteOption): boolean {
+  if (a.legs.length !== b.legs.length) return false;
+  return a.legs.every((leg, i) => leg.from === b.legs[i].from && leg.to === b.legs[i].to && leg.mode === b.legs[i].mode);
+}
+
+export interface NodeInfo {
+  modes: Mode[];
+  economicIndex: number;
+  securityIndex: number;
+  transitIndex: number;
+}
+
+export interface RouteEngine {
+  computeRoutes(request: RouteRequest): RouteOption[];
+  getNodeInfo(nodeId: string): NodeInfo;
+}
+
+export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], costs: CostsConfig): RouteEngine {
+  const truckEdges = buildTruckEdges(nodes, costs);
+  const allEdges = [...curatedEdges, ...truckEdges];
+  const availableModes = computeAvailableModes(nodes, allEdges);
+  const nodeById = new Map(nodes.map((n) => [n.id, n]));
+
+  return {
+    getNodeInfo(nodeId: string): NodeInfo {
+      const modes = [...(availableModes.get(nodeId) ?? [])];
+      const node = nodeById.get(nodeId);
+      return {
+        modes,
+        economicIndex: node ? economicIndex(nodeId, node.country) : 0,
+        securityIndex: node ? securityIndex(node.country) : 0,
+        transitIndex: transitIndex(modes),
+      };
+    },
+
+    computeRoutes(request: RouteRequest): RouteOption[] {
+      const cargoRule = request.cargoType ? costs.cargoTypes[request.cargoType] : undefined;
+      const excluded = new Set(cargoRule?.excludeModes ?? []);
+      const allowedModes = new Set<Mode>(request.allowedModes.filter((m) => !excluded.has(m)));
+      if (allowedModes.size === 0) return [];
+
+      const stops = [request.originId, ...(request.waypointIds ?? []), request.destinationId];
+      if (stops.some((id, i) => stops.indexOf(id) !== i)) return []; // repeated stop (e.g. waypoint == origin)
+      if (stops.length < 2) return [];
+
+      const graph = buildGraph(nodes, allEdges, costs, allowedModes);
+
+      const runs: { key: RouteOptionKey; label: string; weight: Weight }[] = [
+        { key: "cheapest", label: "Cheapest", weight: (e) => e.usd },
+        { key: "fastest", label: "Fastest", weight: (e) => e.hours },
+        { key: "most-direct", label: "Most Direct", weight: (e) => e.leg?.distanceKm ?? 0 },
+      ];
+
+      const options: RouteOption[] = [];
+      for (const run of runs) {
+        const legs: RouteLeg[] = [];
+        let ok = true;
+        for (let i = 0; i < stops.length - 1; i++) {
+          const source = stateKey(stops[i], HUB);
+          const target = stateKey(stops[i + 1], HUB);
+          const path = dijkstra(graph, source, target, run.weight);
+          if (!path) {
+            ok = false;
+            break;
+          }
+          legs.push(...reconstructLegs(graph, path));
+        }
+        if (!ok || legs.length === 0) continue;
+
+        const option = combineLegs(legs, run.key, run.label);
+        if (!options.some((o) => routesEqual(o, option))) {
+          options.push(option);
+        }
+      }
+
+      return options;
+    },
+  };
+}
