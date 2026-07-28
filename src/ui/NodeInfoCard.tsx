@@ -8,6 +8,7 @@ export const KIND_LABELS: Record<string, string> = {
   seaport: "Seaport",
   airport: "Airport",
   railhub: "Rail Hub",
+  military: "Military Installation",
 };
 
 function indexColor(value: number): string {

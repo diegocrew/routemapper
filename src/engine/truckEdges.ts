@@ -11,8 +11,12 @@ export function buildTruckEdges(nodes: GeoNode[], costs: CostsConfig): BaseEdge[
   const edges: BaseEdge[] = [];
   const seenPairs = new Set<string>();
 
-  for (const node of nodes) {
-    const candidates = nodes
+  // Military installations aren't part of the ordinary civilian road network —
+  // they only connect via explicitly curated edges to other military nodes.
+  const civilianNodes = nodes.filter((n) => n.kind !== "military");
+
+  for (const node of civilianNodes) {
+    const candidates = civilianNodes
       .filter((other) => other.id !== node.id)
       .map((other) => ({ other, distanceKm: nodeDistanceKm(node, other) }))
       .filter((c) => c.distanceKm <= maxLegKm)

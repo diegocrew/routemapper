@@ -138,7 +138,15 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
       if (stops.some((id, i) => stops.indexOf(id) !== i)) return []; // repeated stop (e.g. waypoint == origin)
       if (stops.length < 2) return [];
 
-      const graph = buildGraph(nodes, allEdges, costs, allowedModes);
+      // Military cargo can only move between military-kind nodes (a closed, separate
+      // network); every other cargo type is implicitly barred from military nodes.
+      const requiredKind = cargoRule?.requiresKind;
+      const eligibleNodes = requiredKind
+        ? nodes.filter((n) => n.kind === requiredKind)
+        : nodes.filter((n) => n.kind !== "military");
+      if (stops.some((id) => !eligibleNodes.some((n) => n.id === id))) return [];
+
+      const graph = buildGraph(eligibleNodes, allEdges, costs, allowedModes);
 
       const runs: { key: RouteOptionKey; label: string; weight: Weight }[] = [
         { key: "cheapest", label: "Cheapest", weight: (e) => e.usd },

@@ -157,6 +157,8 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, on
             KIND_COLORS.airport,
             "railhub",
             KIND_COLORS.railhub,
+            "military",
+            KIND_COLORS.military,
             "#e2e8f0",
           ],
           "circle-stroke-color": "#0f172a",

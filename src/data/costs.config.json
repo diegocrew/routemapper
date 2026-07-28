@@ -13,6 +13,7 @@
     "general": { "label": "General Cargo", "excludeModes": [] },
     "hazmat": { "label": "Hazardous / Dangerous Goods", "excludeModes": ["air"] },
     "oversized": { "label": "Oversized / Heavy Machinery", "excludeModes": ["air"] },
-    "perishable": { "label": "Perishable / Refrigerated", "excludeModes": ["sea"] }
+    "perishable": { "label": "Perishable / Refrigerated", "excludeModes": ["sea"] },
+    "military": { "label": "Military / Defense Cargo", "excludeModes": [], "requiresKind": "military" }
   }
 }

@@ -1,6 +1,6 @@
 export type Mode = "sea" | "air" | "rail" | "truck";
 
-export type NodeKind = "capital" | "city" | "seaport" | "airport" | "railhub";
+export type NodeKind = "capital" | "city" | "seaport" | "airport" | "railhub" | "military";
 
 export interface GeoNode {
   id: string;
@@ -29,6 +29,8 @@ export interface CostModeConfig {
 export interface CargoTypeConfig {
   label: string;
   excludeModes: Mode[];
+  /** If set, only nodes of this kind are usable (origin/destination/waypoints/transfers) — e.g. military cargo can only move between military-kind nodes. Cargo types without this implicitly may never use military-kind nodes. */
+  requiresKind?: NodeKind;
 }
 
 export interface CostsConfig {

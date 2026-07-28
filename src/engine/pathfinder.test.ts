@@ -143,4 +143,42 @@ describe("routing engine (real dataset smoke test)", () => {
     });
     expect(options).toHaveLength(0);
   });
+
+  it("routes military cargo between two military-only nodes", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const options = engine.computeRoutes({
+      originId: "area_51",
+      destinationId: "ramstein",
+      allowedModes: ["sea", "air", "rail", "truck"],
+      cargoType: "military",
+    });
+    expect(options.length).toBeGreaterThan(0);
+    for (const opt of options) {
+      for (const leg of opt.legs) {
+        expect(nodes.find((n) => n.id === leg.from)?.kind).toBe("military");
+        expect(nodes.find((n) => n.id === leg.to)?.kind).toBe("military");
+      }
+    }
+  });
+
+  it("refuses military cargo when either endpoint is a civilian node", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const options = engine.computeRoutes({
+      originId: "area_51",
+      destinationId: "rotterdam",
+      allowedModes: ["sea", "air", "rail", "truck"],
+      cargoType: "military",
+    });
+    expect(options).toHaveLength(0);
+  });
+
+  it("refuses civilian cargo when either endpoint is a military node", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const options = engine.computeRoutes({
+      originId: "area_51",
+      destinationId: "ramstein",
+      allowedModes: ["sea", "air", "rail", "truck"],
+    });
+    expect(options).toHaveLength(0);
+  });
 });

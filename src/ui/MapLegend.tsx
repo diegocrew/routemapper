@@ -7,9 +7,10 @@ const KIND_LABELS: Record<NodeKind, string> = {
   seaport: "Seaport",
   airport: "Airport",
   railhub: "Rail Hub",
+  military: "Military (restricted)",
 };
 
-const ORDER: NodeKind[] = ["capital", "city", "seaport", "airport", "railhub"];
+const ORDER: NodeKind[] = ["capital", "city", "seaport", "airport", "railhub", "military"];
 
 const ROLE_ROWS: { label: string; color: string }[] = [
   { label: "Origin", color: "#4ade80" },

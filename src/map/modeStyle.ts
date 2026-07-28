@@ -27,4 +27,5 @@ export const KIND_COLORS: Record<string, string> = {
   seaport: "#38bdf8",
   airport: "#f472b6",
   railhub: "#fb923c",
+  military: "#ef4444",
 };
