@@ -2,9 +2,18 @@ import { useEffect, useRef } from "react";
 import * as maplibregl from "maplibre-gl";
 import type { Map as MLMap, MapLayerMouseEvent } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+// MapLibre resolves its worker script relative to its own module's runtime
+// `import.meta.url`, which Rollup can't statically follow — so in a
+// production build the worker file never gets emitted, and the map silently
+// never renders (no error, just a black canvas). Importing it with `?url`
+// makes Vite treat it as a real asset: it gets copied into the build output
+// and we get back a correctly base-path-resolved URL in both dev and prod.
+import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import type { GeoNode } from "../engine/types";
 import type { RouteOption } from "../engine/types";
 import { KIND_COLORS, MODE_COLORS } from "./modeStyle";
+
+maplibregl.setWorkerUrl(maplibreWorkerUrl);
 
 const BASEMAP_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
