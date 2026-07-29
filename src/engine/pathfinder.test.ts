@@ -85,6 +85,22 @@ describe("routing engine (real dataset smoke test)", () => {
     expect(options.some((o) => o.key === "cheapest")).toBe(true);
   });
 
+  it("uses a single direct flight for 'fastest' between two distant airports with no curated air route between them", () => {
+    // N'Djamena and Yekaterinburg aren't on any hand-curated air trunk line —
+    // air must be a fully-connected mode (any airport to any airport), or the
+    // router is forced through unrealistic multi-hop layovers just to fly.
+    const engine = createRouteEngine(nodes, edges, costs);
+    const options = engine.computeRoutes({
+      originId: "ndjamena",
+      destinationId: "yekaterinburg",
+      allowedModes: ["sea", "air", "rail", "truck"],
+    });
+    const fastest = options.find((o) => o.key === "fastest");
+    expect(fastest).toBeDefined();
+    expect(fastest!.legs).toHaveLength(1);
+    expect(fastest!.legs[0].mode).toBe("air");
+  });
+
   it("finds an inland route using rail/truck when sea and air are excluded", () => {
     const engine = createRouteEngine(nodes, edges, costs);
     const options = engine.computeRoutes({
@@ -142,6 +158,18 @@ describe("routing engine (real dataset smoke test)", () => {
       allowedModes: ["sea", "air", "rail", "truck"],
     });
     expect(options).toHaveLength(0);
+  });
+
+  it("offers a ship option between two naval/coastal military bases", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const options = engine.computeRoutes({
+      originId: "norfolk_naval",
+      destinationId: "guantanamo",
+      allowedModes: ["sea"],
+      cargoType: "military",
+    });
+    expect(options.length).toBeGreaterThan(0);
+    expect(options.some((o) => o.legs.some((l) => l.mode === "sea"))).toBe(true);
   });
 
   it("routes military cargo between two military-only nodes", () => {

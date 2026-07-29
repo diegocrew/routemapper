@@ -3,6 +3,7 @@ import { HUB, stateKey, computeAvailableModes } from "./graph";
 import type { BaseEdge, CostsConfig, GeoNode, Mode, RouteLeg, RouteOption, RouteOptionKey, RouteRequest } from "./types";
 import { buildGraph } from "./graph";
 import { buildTruckEdges } from "./truckEdges";
+import { buildAirEdges } from "./airEdges";
 import { economicIndex, securityIndex, transitIndex } from "./indices";
 
 type Weight = (edge: AdjEdge) => number;
@@ -112,7 +113,8 @@ export interface RouteEngine {
 
 export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], costs: CostsConfig): RouteEngine {
   const truckEdges = buildTruckEdges(nodes, costs);
-  const allEdges = [...curatedEdges, ...truckEdges];
+  const airEdges = buildAirEdges(nodes);
+  const allEdges = [...curatedEdges, ...truckEdges, ...airEdges];
   const availableModes = computeAvailableModes(nodes, allEdges);
   const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
