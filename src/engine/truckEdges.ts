@@ -11,12 +11,12 @@ export function buildTruckEdges(nodes: GeoNode[], costs: CostsConfig): BaseEdge[
   const edges: BaseEdge[] = [];
   const seenPairs = new Set<string>();
 
-  // Military installations aren't part of the ordinary civilian road network —
-  // they only connect via explicitly curated edges to other military nodes.
-  const civilianNodes = nodes.filter((n) => n.kind !== "military");
-
-  for (const node of civilianNodes) {
-    const candidates = civilianNodes
+  // Proximity-based truck edges are generated for every node, military bases
+  // included — a base near a city can truck cargo to/from it. Whether a given
+  // cargo type is actually allowed to use a military node is decided later,
+  // at route-compute time (see pathfinder.ts), not here.
+  for (const node of nodes) {
+    const candidates = nodes
       .filter((other) => other.id !== node.id)
       .map((other) => ({ other, distanceKm: nodeDistanceKm(node, other) }))
       .filter((c) => c.distanceKm <= maxLegKm)

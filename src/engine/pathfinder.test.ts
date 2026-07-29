@@ -153,15 +153,9 @@ describe("routing engine (real dataset smoke test)", () => {
       cargoType: "military",
     });
     expect(options.length).toBeGreaterThan(0);
-    for (const opt of options) {
-      for (const leg of opt.legs) {
-        expect(nodes.find((n) => n.id === leg.from)?.kind).toBe("military");
-        expect(nodes.find((n) => n.id === leg.to)?.kind).toBe("military");
-      }
-    }
   });
 
-  it("refuses military cargo when either endpoint is a civilian node", () => {
+  it("allows military cargo to use a civilian node as origin or destination", () => {
     const engine = createRouteEngine(nodes, edges, costs);
     const options = engine.computeRoutes({
       originId: "area_51",
@@ -169,7 +163,22 @@ describe("routing engine (real dataset smoke test)", () => {
       allowedModes: ["sea", "air", "rail", "truck"],
       cargoType: "military",
     });
-    expect(options).toHaveLength(0);
+    expect(options.length).toBeGreaterThan(0);
+  });
+
+  it("lets military cargo truck between a base and a nearby civilian city", () => {
+    // Faslane (military) sits ~40km from Glasgow (civilian) — too close for
+    // anything but a direct truck hop, which only exists because military
+    // nodes now get proximity truck edges to civilian ones too.
+    const engine = createRouteEngine(nodes, edges, costs);
+    const options = engine.computeRoutes({
+      originId: "faslane",
+      destinationId: "glasgow",
+      allowedModes: ["truck"],
+      cargoType: "military",
+    });
+    expect(options.length).toBeGreaterThan(0);
+    expect(options[0].legs.every((l) => l.mode === "truck")).toBe(true);
   });
 
   it("refuses civilian cargo when either endpoint is a military node", () => {

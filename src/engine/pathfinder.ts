@@ -138,12 +138,10 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
       if (stops.some((id, i) => stops.indexOf(id) !== i)) return []; // repeated stop (e.g. waypoint == origin)
       if (stops.length < 2) return [];
 
-      // Military cargo can only move between military-kind nodes (a closed, separate
-      // network); every other cargo type is implicitly barred from military nodes.
-      const requiredKind = cargoRule?.requiresKind;
-      const eligibleNodes = requiredKind
-        ? nodes.filter((n) => n.kind === requiredKind)
-        : nodes.filter((n) => n.kind !== "military");
+      // Military-kind nodes are off-limits to every cargo type except one flagged
+      // allowMilitaryNodes — and that cargo type can still freely use civilian
+      // nodes too, it just isn't restricted the way everyone else is.
+      const eligibleNodes = cargoRule?.allowMilitaryNodes ? nodes : nodes.filter((n) => n.kind !== "military");
       if (stops.some((id) => !eligibleNodes.some((n) => n.id === id))) return [];
 
       const graph = buildGraph(eligibleNodes, allEdges, costs, allowedModes);

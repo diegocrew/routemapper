@@ -29,8 +29,8 @@ export interface CostModeConfig {
 export interface CargoTypeConfig {
   label: string;
   excludeModes: Mode[];
-  /** If set, only nodes of this kind are usable (origin/destination/waypoints/transfers) — e.g. military cargo can only move between military-kind nodes. Cargo types without this implicitly may never use military-kind nodes. */
-  requiresKind?: NodeKind;
+  /** Military-kind nodes are off-limits to every cargo type except the one(s) with this set — that cargo type may use military nodes *and* ordinary civilian nodes. */
+  allowMilitaryNodes?: boolean;
 }
 
 export interface CostsConfig {
