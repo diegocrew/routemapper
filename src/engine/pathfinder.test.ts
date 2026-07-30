@@ -63,6 +63,17 @@ describe("routing engine (synthetic graph)", () => {
     expect(direct.transferCount).toBe(0);
   });
 
+  it("preserves curated route waypoints in both travel directions", () => {
+    const via: [number, number][] = [[0.25, 0.75], [0.75, 0.75]];
+    const engine = createRouteEngine([A, B], [{ from: "a", to: "b", mode: "sea", via }], costs);
+
+    const [forward] = engine.computeRoutes({ originId: "a", destinationId: "b", allowedModes: ["sea"] });
+    const [reverse] = engine.computeRoutes({ originId: "b", destinationId: "a", allowedModes: ["sea"] });
+
+    expect(forward.legs[0].via).toEqual(via);
+    expect(reverse.legs[0].via).toEqual(via.toReversed());
+  });
+
   it("returns an empty array for identical origin and destination", () => {
     const engine = createRouteEngine(syntheticNodes, syntheticEdges, costs);
     const options = engine.computeRoutes({ originId: "a", destinationId: "a", allowedModes: ["sea", "air", "rail", "truck"] });
@@ -73,6 +84,11 @@ describe("routing engine (synthetic graph)", () => {
 describe("routing engine (real dataset smoke test)", () => {
   const nodes = nodesData as GeoNode[];
   const edges = edgesData as BaseEdge[];
+
+  it("has routed geometry for every sea edge", () => {
+    const missingGeometry = edges.filter((edge) => edge.mode === "sea" && (!edge.via || edge.via.length === 0));
+    expect(missingGeometry).toEqual([]);
+  });
 
   it("finds a route between two well-connected real ports", () => {
     const engine = createRouteEngine(nodes, edges, costs);
@@ -147,6 +163,58 @@ describe("routing engine (real dataset smoke test)", () => {
       expect(dubaiIdx).toBeGreaterThan(shanghaiIdx);
       expect(rotterdamIdx).toBeGreaterThan(dubaiIdx);
     }
+  });
+
+  it("keeps the Vienna-to-Malé shipping route on curated water corridors", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [route] = engine.computeRoutes({
+      originId: "vienna",
+      destinationId: "male",
+      allowedModes: ["sea"],
+    });
+
+    expect(route).toBeDefined();
+    expect(route.legs.every((leg) => leg.mode === "sea")).toBe(true);
+    for (const segment of [
+      ["vienna", "budapest"],
+      ["budapest", "belgrade"],
+      ["belgrade", "constanta"],
+      ["constanta", "piraeus"],
+      ["mumbai", "colombo"],
+    ]) {
+      const leg = route.legs.find(({ from, to }) => from === segment[0] && to === segment[1]);
+      expect(leg?.via?.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("routes ships from Oman to Jeddah around the Arabian Peninsula", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [route] = engine.computeRoutes({
+      originId: "muscat",
+      destinationId: "jeddah",
+      allowedModes: ["sea"],
+    });
+
+    expect(route.legs.map(({ from, to }) => [from, to])).toEqual([
+      ["muscat", "salalah"],
+      ["salalah", "jeddah"],
+    ]);
+    expect(route.legs.every((leg) => (leg.via?.length ?? 0) > 0)).toBe(true);
+  });
+
+  it("routes ships from Jeddah to Dubai around Arabia instead of across land", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [route] = engine.computeRoutes({
+      originId: "jeddah",
+      destinationId: "dubai",
+      allowedModes: ["sea"],
+    });
+
+    expect(route.legs.map(({ from, to }) => [from, to])).toEqual([
+      ["jeddah", "salalah"],
+      ["salalah", "dubai"],
+    ]);
+    expect(route.legs.every((leg) => (leg.via?.length ?? 0) > 0)).toBe(true);
   });
 
   it("returns no routes when a waypoint duplicates the origin", () => {

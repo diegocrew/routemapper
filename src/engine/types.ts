@@ -15,6 +15,8 @@ export interface BaseEdge {
   from: string;
   to: string;
   mode: Mode;
+  /** Intermediate [longitude, latitude] points for a curated route corridor. */
+  via?: [number, number][];
 }
 
 export interface CostModeConfig {
@@ -46,6 +48,7 @@ export interface RouteLeg {
   distanceKm: number;
   usd: number;
   hours: number;
+  via?: [number, number][];
 }
 
 export type RouteOptionKey = "cheapest" | "fastest" | "most-direct";

@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run check:sea-routes && tsc -b && vite build",
+    "generate:sea-routes": "uv run --with searoute==1.6.0 python tools/generate_sea_routes.py",
+    "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run"

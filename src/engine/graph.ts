@@ -1,5 +1,5 @@
 import type { BaseEdge, CostsConfig, GeoNode, Mode } from "./types";
-import { nodeDistanceKm } from "./geo";
+import { haversineKm } from "./geo";
 
 export const HUB = "HUB";
 
@@ -8,6 +8,7 @@ export interface LegInfo {
   to: string;
   mode: Mode;
   distanceKm: number;
+  via?: [number, number][];
 }
 
 export interface AdjEdge {
@@ -55,7 +56,12 @@ export function buildGraph(nodes: GeoNode[], edges: BaseEdge[], costs: CostsConf
     if (!a || !b) continue;
 
     const modeCfg = costs.modes[e.mode];
-    const distanceKm = nodeDistanceKm(a, b) * modeCfg.detourFactor;
+    const routePoints = [a, ...(e.via ?? []).map(([lon, lat]) => ({ lon, lat })), b];
+    const routeDistanceKm = routePoints.slice(1).reduce(
+      (sum, point, index) => sum + haversineKm(routePoints[index], point),
+      0,
+    );
+    const distanceKm = routeDistanceKm * modeCfg.detourFactor;
     const usd = distanceKm * modeCfg.usdPerKm;
     const hours = distanceKm / modeCfg.kmPerHour;
 
@@ -67,14 +73,14 @@ export function buildGraph(nodes: GeoNode[], edges: BaseEdge[], costs: CostsConf
       usd,
       hours,
       isLoad: false,
-      leg: { from: a.id, to: b.id, mode: e.mode, distanceKm },
+      leg: { from: a.id, to: b.id, mode: e.mode, distanceKm, via: e.via },
     });
     addEdge(stateKey(b.id, e.mode), {
       to: stateKey(a.id, e.mode),
       usd,
       hours,
       isLoad: false,
-      leg: { from: b.id, to: a.id, mode: e.mode, distanceKm },
+      leg: { from: b.id, to: a.id, mode: e.mode, distanceKm, via: e.via?.toReversed() },
     });
   }
 

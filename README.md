@@ -35,6 +35,18 @@ npm test          # run the routing-engine test suite
 npm run build     # type-check + production build to dist/
 ```
 
+Sea edges include committed water-following polylines. After adding or changing
+a sea edge, install [uv](https://docs.astral.sh/uv/) and regenerate them:
+
+```bash
+npm run generate:sea-routes
+npm run check:sea-routes
+```
+
+The generator runs `searoute` in an isolated Python environment; it does not add
+Python or maritime-routing code to the browser bundle. Curated `via` points are
+preserved for inland rivers and canals that are not covered by the ocean network.
+
 > Note: `vite.config.ts` sets `base: '/routemapper/'` to match this repo's
 > GitHub Pages URL. If you fork this under a different repo name, update
 > that base path (or set it to `/` for a custom domain / user/org page).

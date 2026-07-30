@@ -92,6 +92,7 @@ function routeToGeoJSON(nodes: GeoNode[], route: RouteOption | null) {
           type: "LineString" as const,
           coordinates: [
             [from.lon, from.lat],
+            ...(leg.via ?? []),
             [to.lon, to.lat],
           ],
         },

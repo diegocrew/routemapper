@@ -76,6 +76,7 @@ function reconstructLegs(graph: Graph, path: string[]): RouteLeg[] {
         distanceKm: edge.leg.distanceKm,
         usd: edge.usd + pendingUsd,
         hours: edge.hours + pendingHours,
+        via: edge.leg.via,
       });
       pendingUsd = 0;
       pendingHours = 0;
