@@ -79,6 +79,9 @@ export function RouteResults({
               </span>
             ))}
           </div>
+          {showSecurity && opt.zoneLabels.length > 0 && (
+            <div className="route-card-zones">crosses {opt.zoneLabels.join(" · ")}</div>
+          )}
         </button>
       ))}
       {atRisk && saferAvailable && !safetyRequested && (

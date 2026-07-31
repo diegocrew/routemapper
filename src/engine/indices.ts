@@ -1,29 +1,28 @@
 import indicesData from "../data/indices.json";
 import type { Mode } from "./types";
 
-interface CountryTier {
+interface CountryScores {
   econ: number;
-  sec: number;
+  security: number;
 }
 
-const countryTiers = indicesData.countryTiers as Record<string, CountryTier>;
+const countries = indicesData.countries as Record<string, CountryScores>;
 const cityEconomicBonus = indicesData.cityEconomicBonus as Record<string, number>;
+const nodeSecurity = indicesData.nodeSecurity as Record<string, number>;
 
-const DEFAULT_TIER: CountryTier = { econ: 2, sec: 3 };
+const DEFAULT_SCORES: CountryScores = { econ: 30, security: 50 };
 
-function tierToScore(tier: number): number {
-  return tier * 20 - 10;
-}
+const clamp = (value: number) => Math.max(0, Math.min(100, value));
 
 export function economicIndex(nodeId: string, country: string): number {
-  const tier = countryTiers[country] ?? DEFAULT_TIER;
-  const bonus = cityEconomicBonus[nodeId] ?? 0;
-  return Math.max(0, Math.min(100, tierToScore(tier.econ) + bonus));
+  const base = (countries[country] ?? DEFAULT_SCORES).econ;
+  return clamp(base + (cityEconomicBonus[nodeId] ?? 0));
 }
 
-export function securityIndex(country: string): number {
-  const tier = countryTiers[country] ?? DEFAULT_TIER;
-  return Math.max(0, Math.min(100, tierToScore(tier.sec)));
+/** A city can be materially safer or more dangerous than its country, and that override wins. */
+export function securityIndex(country: string, nodeId?: string): number {
+  const override = nodeId === undefined ? undefined : nodeSecurity[nodeId];
+  return clamp(override ?? (countries[country] ?? DEFAULT_SCORES).security);
 }
 
 /** Below this a route is flagged and a safer alternative is offered. */

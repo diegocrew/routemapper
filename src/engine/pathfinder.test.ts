@@ -79,6 +79,22 @@ describe("routing engine (synthetic graph)", () => {
     const options = engine.computeRoutes({ originId: "a", destinationId: "a", allowedModes: ["sea", "air", "rail", "truck"] });
     expect(options).toHaveLength(0);
   });
+
+  it("charges more dwell time to transfer at a weak hub than at an efficient one", () => {
+    const build = (country: string) => {
+      const start: GeoNode = { id: "s", name: "S", country, kind: "seaport", lat: 0, lon: 0 };
+      const hub: GeoNode = { id: "h", name: "H", country, kind: "seaport", lat: 10, lon: 10 };
+      const end: GeoNode = { id: "e", name: "E", country, kind: "airport", lat: 30, lon: 30 };
+      const edges: BaseEdge[] = [
+        { from: "s", to: "h", mode: "sea" },
+        { from: "h", to: "e", mode: "air" },
+      ];
+      const engine = createRouteEngine([start, hub, end], edges, costs);
+      return engine.computeRoutes({ originId: "s", destinationId: "e", allowedModes: ["sea", "air"] })[0];
+    };
+
+    expect(build("Chad").totalHours).toBeGreaterThan(build("Netherlands").totalHours);
+  });
 });
 
 describe("routing engine (real dataset smoke test)", () => {
@@ -315,5 +331,89 @@ describe("routing engine (real dataset smoke test)", () => {
     const safest = withSafety.find((o) => o.key === "safest");
     const cheapest = withSafety.find((o) => o.key === "cheapest");
     if (safest && cheapest) expect(safest.securityScore).toBeGreaterThanOrEqual(cheapest.securityScore);
+  });
+
+  it("keeps civilian cargo out of a military-only zone but lets defense cargo through", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const request = {
+      originId: "pyongyang",
+      destinationId: "rotterdam",
+      allowedModes: ["sea", "air", "rail", "truck"] as Mode[],
+    };
+    expect(engine.computeRoutes({ ...request, cargoType: "general" })).toHaveLength(0);
+    expect(engine.computeRoutes({ ...request, cargoType: "military" }).length).toBeGreaterThan(0);
+  });
+
+  it("reports the risk zones a route transits and scores them like a stop", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [cheapest] = engine.computeRoutes({
+      originId: "jeddah",
+      destinationId: "singapore",
+      allowedModes: ["sea"],
+      cargoType: "general",
+    });
+    expect(cheapest.zoneLabels.length).toBeGreaterThan(0);
+    expect(cheapest.securityScore).toBeLessThan(50);
+  });
+
+  it("closes a sanctioned border to civilian cargo but not to defense cargo", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const request = {
+      originId: "new_delhi",
+      destinationId: "islamabad",
+      allowedModes: ["rail", "truck"] as Mode[],
+    };
+    expect(engine.computeRoutes({ ...request, cargoType: "general" })).toHaveLength(0);
+    expect(engine.computeRoutes({ ...request, cargoType: "military" }).length).toBeGreaterThan(0);
+  });
+
+  it("charges a canal toll on top of distance", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [viaSuez] = engine.computeRoutes({
+      originId: "jeddah",
+      destinationId: "alexandria",
+      allowedModes: ["sea"],
+    });
+    const tollFree = viaSuez.legs.reduce((sum, l) => sum + l.distanceKm * costs.modes.sea.usdPerKm, 0);
+    expect(viaSuez.legs.some((l) => l.zones?.suez_canal)).toBe(true);
+    expect(viaSuez.totalUsd).toBeGreaterThan(tollFree);
+  });
+
+  it("closes the St. Lawrence Seaway in winter and reopens it in summer", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const request = { originId: "toronto", destinationId: "montreal", allowedModes: ["sea"] as Mode[] };
+    expect(engine.computeRoutes({ ...request, month: 7 }).length).toBeGreaterThan(0);
+    expect(engine.computeRoutes({ ...request, month: 2 })).toHaveLength(0);
+  });
+
+  it("slows a Baltic crossing during the ice months", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const request = { originId: "helsinki", destinationId: "tallinn", allowedModes: ["sea"] as Mode[] };
+    const summer = engine.computeRoutes({ ...request, month: 7 })[0];
+    const winter = engine.computeRoutes({ ...request, month: 2 })[0];
+    expect(winter.totalHours).toBeGreaterThan(summer.totalHours);
+    expect(winter.totalUsd).toBeCloseTo(summer.totalUsd);
+  });
+
+  it("scales cost with consignment size and grounds a load too heavy to fly", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const request = { originId: "shanghai", destinationId: "rotterdam", allowedModes: ["sea", "air"] as Mode[] };
+    const single = engine.computeRoutes({ ...request, weightTonnes: 20 })[0];
+    const double = engine.computeRoutes({ ...request, weightTonnes: 40 })[0];
+    expect(double.totalUsd).toBeCloseTo(single.totalUsd * 2);
+    expect(double.totalHours).toBeCloseTo(single.totalHours);
+
+    const heavy = engine.computeRoutes({ ...request, weightTonnes: 400 });
+    expect(heavy.every((o) => o.legs.every((l) => l.mode !== "air"))).toBe(true);
+  });
+
+  it("bills short hops at a higher rate per km than long hauls", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const rate = (originId: string, destinationId: string) => {
+      const [route] = engine.computeRoutes({ originId, destinationId, allowedModes: ["sea"] });
+      const km = route.legs.reduce((sum, l) => sum + l.distanceKm, 0);
+      return route.legs.reduce((sum, l) => sum + l.usd, 0) / km;
+    };
+    expect(rate("rotterdam", "felixstowe")).toBeGreaterThan(rate("shanghai", "rotterdam"));
   });
 });

@@ -23,6 +23,8 @@ function App() {
   const [waypointIds, setWaypointIds] = useState<string[]>([]);
   const [allowedModes, setAllowedModes] = useState<Set<Mode>>(new Set(ALL_MODES));
   const [cargoType, setCargoType] = useState<string>("general");
+  const [month, setMonth] = useState<number>(() => new Date().getMonth() + 1);
+  const [weightTonnes, setWeightTonnes] = useState<number>(costs.cargo.defaultTonnes);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [preferSafety, setPreferSafety] = useState(false);
@@ -59,7 +61,15 @@ function App() {
     if (!originId || !destinationId || originId === destinationId) {
       return { baseOptions: [] as RouteOption[], saferOption: null as RouteOption | null };
     }
-    const request = { originId, destinationId, waypointIds, allowedModes: [...allowedModes], cargoType };
+    const request = {
+      originId,
+      destinationId,
+      waypointIds,
+      allowedModes: [...allowedModes],
+      cargoType,
+      month,
+      weightTonnes,
+    };
     const baseOptions = engine.computeRoutes(request);
     const bestSecurity = Math.max(0, ...baseOptions.map((o) => o.securityScore));
     if (!showSecurity || baseOptions.length === 0 || bestSecurity >= SECURITY_ALERT_THRESHOLD) {
@@ -67,8 +77,7 @@ function App() {
     }
     const safer = engine.computeRoutes({ ...request, preferSafety: true }).find((o) => o.key === "safest");
     return { baseOptions, saferOption: safer && safer.securityScore > bestSecurity ? safer : null };
-  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoType, showSecurity]);
-
+  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoType, showSecurity, month, weightTonnes]);
   const routeOptions = preferSafety && saferOption ? [...baseOptions, saferOption] : baseOptions;
 
   const activeKey = routeOptions.some((o) => o.key === selectedKey) ? selectedKey : (routeOptions[0]?.key ?? null);
@@ -135,6 +144,16 @@ function App() {
         onCargoTypeChange={(key) => {
           setCargoType(key);
           setPreferSafety(false);
+          setSelectedKey(null);
+        }}
+        month={month}
+        onMonthChange={(next) => {
+          setMonth(next);
+          setSelectedKey(null);
+        }}
+        weightTonnes={weightTonnes}
+        onWeightChange={(next) => {
+          setWeightTonnes(next);
           setSelectedKey(null);
         }}
         routeOptions={routeOptions}

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "india_pakistan",
+    "label": "India–Pakistan border (freight suspended)",
+    "countries": ["India", "Pakistan"],
+    "modes": ["rail", "truck"]
+  },
+  {
+    "id": "armenia_azerbaijan",
+    "label": "Armenia–Azerbaijan border (closed)",
+    "countries": ["Armenia", "Azerbaijan"],
+    "modes": ["rail", "truck"]
+  },
+  {
+    "id": "armenia_turkey",
+    "label": "Armenia–Turkey border (closed)",
+    "countries": ["Armenia", "Turkey"],
+    "modes": ["rail", "truck"]
+  },
+  {
+    "id": "algeria_morocco",
+    "label": "Algeria–Morocco border (closed)",
+    "countries": ["Algeria", "Morocco"],
+    "modes": ["rail", "truck"]
+  },
+  {
+    "id": "israel_lebanon",
+    "label": "Israel–Lebanon border (closed)",
+    "countries": ["Israel", "Lebanon"],
+    "modes": ["rail", "truck"]
+  },
+  {
+    "id": "israel_syria",
+    "label": "Israel–Syria border (closed)",
+    "countries": ["Israel", "Syria"],
+    "modes": ["rail", "truck"]
+  },
+  {
+    "id": "ukraine_russia",
+    "label": "Ukraine–Russia border (closed)",
+    "countries": ["Ukraine", "Russia"],
+    "modes": ["rail", "truck", "air"]
+  },
+  {
+    "id": "ukraine_belarus",
+    "label": "Ukraine–Belarus border (closed)",
+    "countries": ["Ukraine", "Belarus"],
+    "modes": ["rail", "truck", "air"]
+  },
+  {
+    "id": "russia_eu_road",
+    "label": "EU ban on Russian and Belarusian hauliers",
+    "countries": ["Poland", "Finland", "Estonia", "Latvia", "Lithuania", "Romania", "Norway"],
+    "pairsWith": ["Russia", "Belarus"],
+    "modes": ["truck"]
+  },
+  {
+    "id": "russia_eu_air",
+    "label": "Russia–EU/UK/US airspace closure",
+    "countries": ["Russia", "Belarus"],
+    "pairsWith": [
+      "Germany",
+      "France",
+      "Netherlands",
+      "Belgium",
+      "Poland",
+      "Finland",
+      "Sweden",
+      "Denmark",
+      "Norway",
+      "Estonia",
+      "Latvia",
+      "Lithuania",
+      "Czechia",
+      "Austria",
+      "Italy",
+      "Spain",
+      "Portugal",
+      "Ireland",
+      "Greece",
+      "Romania",
+      "Bulgaria",
+      "Hungary",
+      "Slovakia",
+      "Slovenia",
+      "Croatia",
+      "United Kingdom",
+      "United States",
+      "Canada",
+      "Japan",
+      "South Korea",
+      "Australia",
+      "New Zealand",
+      "Switzerland"
+    ],
+    "modes": ["air"]
+  },
+  {
+    "id": "north_korea_south_korea",
+    "label": "Korean DMZ (closed)",
+    "countries": ["North Korea", "South Korea"],
+    "modes": ["rail", "truck", "air", "sea"]
+  }
+]

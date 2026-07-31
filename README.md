@@ -44,6 +44,7 @@ npm run generate:sea-routes      # ocean lanes, via searoute
 npm run generate:inland-routes   # river/canal legs, routed on real waterways
 npm run generate:rail-routes     # keeps rail off open water
 npm run generate:truck-edges     # rebuild after changing nodes.json
+npm run generate:edge-zones      # re-tag legs after changing zones.json
 npm run check:sea-routes
 npm run audit:geography          # report any leg crossing the wrong medium
 ```
@@ -84,8 +85,28 @@ src/
   schedules aren't freely available, routes are ranked using configurable
   per-mode constants (`$/km`, `km/h`, per-hub loading overhead). Tune these
   to make the model more realistic without touching engine code.
+- **Hub efficiency**: the flat per-mode hub overhead is scaled per node by its
+  economic score, so clearing cargo through a weak port costs noticeably more
+  time (and somewhat more money) than through an efficient one.
+- **Indices** (`src/data/indices.json`): 0-100 economic and security scores per
+  country, with per-city economic bonuses and per-node security overrides for
+  places that differ from their country as a whole.
+- **Zones** (`src/data/zones.json`): chokepoints and risk corridors
+  (Bab-el-Mandeb, Hormuz, Malacca, the Black Sea, the Sahel…) as polygons with
+  their own security score, a war-risk surcharge charged per km actually spent
+  inside, and a flat transit toll for the canals. Legs are tagged with the zones
+  they cross — and how far into each — by `npm run generate:edge-zones`, so no
+  polygon tests run in the browser. Zones marked `military-only` are closed to
+  civilian cargo entirely, both the legs crossing them and the nodes inside them.
+  Canal tolls are per container (Suez ~$45, Panama ~$85), scaled to match the
+  per-container basis of the `$/km` rates.
+- **Restrictions** (`src/data/restrictions.json`): closed land borders, haulier
+  bans and airspace closures, matched on the countries at each end of a leg for
+  the listed modes. `pairsWith` makes a rule one-sided — the EU haulier ban
+  applies between the EU states and Russia/Belarus, not within either group.
 - **Cargo types** exclude certain modes (e.g. hazardous goods can't fly) —
-  also configurable in `costs.config.json`.
+  also configurable in `costs.config.json`. Defense cargo ignores security
+  scoring, closed borders and closed zones.
 
 ## Deployment
 
@@ -96,7 +117,11 @@ publish automatically.
 
 ## Known MVP limitations
 
-- No live freight pricing/schedule data — costs are estimates.
+- No live freight pricing/schedule data — costs are estimates, and the
+  economic/security scores are curated estimation rather than sourced data.
+- Zones are tagged on sea, rail and truck legs only; air legs are generated at
+  runtime, so overflight bans aren't modelled — airspace closures only apply
+  between the endpoint countries of a flight.
 - ~150 nodes and hand-picked trunk routes, not exhaustive global coverage.
 - Truck legs use great-circle distance with a road detour factor, not real
   road-network routing; drivability is checked against coastlines, so a road

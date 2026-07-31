@@ -15,13 +15,18 @@ describe("transitIndex", () => {
 });
 
 describe("economicIndex / securityIndex", () => {
-  it("gives a top-tier country a base score of 90", () => {
+  it("reads the curated country score", () => {
     expect(economicIndex("some_unbonused_city", "Germany")).toBe(90);
-    expect(securityIndex("Germany")).toBe(90);
+    expect(securityIndex("Germany")).toBe(88);
   });
 
   it("applies a city-level bonus on top of the country base, clamped to 100", () => {
     expect(economicIndex("new_york", "United States")).toBe(100);
+  });
+
+  it("lets a city override its country's security score", () => {
+    expect(securityIndex("Somalia", "mogadishu")).toBe(3);
+    expect(securityIndex("Somalia")).toBe(4);
   });
 
   it("falls back to a mid-range default for an unrecognized country string", () => {

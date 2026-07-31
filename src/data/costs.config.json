@@ -1,13 +1,30 @@
 {
   "modes": {
     "sea": { "label": "Cargo Ship", "usdPerKm": 0.028, "kmPerHour": 33, "detourFactor": 1.15, "hubUsd": 300, "hubHours": 24 },
-    "air": { "label": "Cargo Plane", "usdPerKm": 0.45, "kmPerHour": 800, "detourFactor": 1.05, "hubUsd": 220, "hubHours": 5 },
+    "air": { "label": "Cargo Plane", "usdPerKm": 0.45, "kmPerHour": 800, "detourFactor": 1.05, "hubUsd": 220, "hubHours": 5, "maxTonnes": 120 },
     "rail": { "label": "Freight Train", "usdPerKm": 0.06, "kmPerHour": 55, "detourFactor": 1.3, "hubUsd": 110, "hubHours": 8 },
     "truck": { "label": "Truck", "usdPerKm": 0.12, "kmPerHour": 65, "detourFactor": 1.3, "hubUsd": 60, "hubHours": 1.5 }
   },
   "truck": {
     "maxLegKm": 700,
     "maxNeighbors": 6
+  },
+  "cargo": {
+    "defaultTonnes": 20,
+    "tonnesPerUnit": 20,
+    "m3PerUnit": 33
+  },
+  "distanceTiers": [
+    { "km": 500, "multiplier": 1.9 },
+    { "km": 1500, "multiplier": 1.35 },
+    { "km": 5000, "multiplier": 1.05 },
+    { "km": null, "multiplier": 1 }
+  ],
+  "hub": {
+    "minDwellFactor": 0.6,
+    "maxDwellFactor": 2.2,
+    "minFeeFactor": 0.9,
+    "maxFeeFactor": 1.6
   },
   "cargoTypes": {
     "general": { "label": "General Cargo", "excludeModes": [] },

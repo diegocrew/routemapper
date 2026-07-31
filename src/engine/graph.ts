@@ -1,7 +1,24 @@
-import type { BaseEdge, CostsConfig, GeoNode, Mode } from "./types";
+import type { BaseEdge, CostsConfig, DistanceTier, GeoNode, Mode } from "./types";
 import { haversineKm } from "./geo";
+import { economicIndex } from "./indices";
+import { getZone, seasonalDelay } from "./zones";
 
 export const HUB = "HUB";
+
+/**
+ * A transfer at Rotterdam and one at Lagos used to cost the same flat overhead.
+ * The economic score stands in for port/customs efficiency: a weak hub mostly
+ * costs you time (demurrage, clearance) and somewhat more money (handling,
+ * informal fees), while a strong one clears cargo faster than the baseline.
+ */
+function hubFactors(node: GeoNode | undefined, cfg: CostsConfig["hub"]) {
+  if (!node) return { usd: 1, hours: 1 };
+  const efficiency = economicIndex(node.id, node.country) / 100;
+  return {
+    usd: cfg.maxFeeFactor + (cfg.minFeeFactor - cfg.maxFeeFactor) * efficiency,
+    hours: cfg.maxDwellFactor + (cfg.minDwellFactor - cfg.maxDwellFactor) * efficiency,
+  };
+}
 
 export interface LegInfo {
   from: string;
@@ -9,6 +26,7 @@ export interface LegInfo {
   mode: Mode;
   distanceKm: number;
   via?: [number, number][];
+  zones?: Record<string, number>;
 }
 
 export interface AdjEdge {
@@ -34,7 +52,40 @@ export function stateKey(nodeId: string, mode: Mode | typeof HUB): string {
  * keeps Dijkstra itself mode-agnostic: mode-transfer penalties fall naturally out
  * of the graph shape instead of needing special-cased search logic.
  */
-export function buildGraph(nodes: GeoNode[], edges: BaseEdge[], costs: CostsConfig, allowedModes: Set<Mode>): Graph {
+/** Everything that can close a leg off or make it dearer than its distance suggests. */
+export interface AccessRules {
+  blockedZones: Set<string>;
+  isBorderClosed: (fromCountry: string, toCountry: string, mode: Mode) => unknown;
+  /** Departure month, for seasonal delays. */
+  month?: number;
+  /** Chargeable units (roughly containers) the consignment occupies. */
+  units?: number;
+}
+
+const OPEN: AccessRules = { blockedZones: new Set(), isBorderClosed: () => undefined };
+
+/** Tariffs taper with distance, so each bracket of km is billed at its own multiplier. */
+function taperedUsd(distanceKm: number, usdPerKm: number, tiers: DistanceTier[]): number {
+  let remaining = distanceKm;
+  let previous = 0;
+  let usd = 0;
+  for (const tier of tiers) {
+    if (remaining <= 0) break;
+    const bracket = tier.km === null ? remaining : Math.min(remaining, tier.km - previous);
+    usd += bracket * usdPerKm * tier.multiplier;
+    remaining -= bracket;
+    previous = tier.km ?? previous;
+  }
+  return usd;
+}
+
+export function buildGraph(
+  nodes: GeoNode[],
+  edges: BaseEdge[],
+  costs: CostsConfig,
+  allowedModes: Set<Mode>,
+  access: AccessRules = OPEN,
+): Graph {
   const nodeById = new Map(nodes.map((n) => [n.id, n]));
   const adjacency = new Map<string, AdjEdge[]>();
   const modesAtNode = new Map<string, Set<Mode>>();
@@ -51,9 +102,12 @@ export function buildGraph(nodes: GeoNode[], edges: BaseEdge[], costs: CostsConf
 
   for (const e of edges) {
     if (!allowedModes.has(e.mode)) continue;
+    const zoneEntries = Object.entries(e.zones ?? {});
+    if (zoneEntries.some(([id]) => access.blockedZones.has(id))) continue;
     const a = nodeById.get(e.from);
     const b = nodeById.get(e.to);
     if (!a || !b) continue;
+    if (access.isBorderClosed(a.country, b.country, e.mode)) continue;
 
     const modeCfg = costs.modes[e.mode];
     const routePoints = [a, ...(e.via ?? []).map(([lon, lat]) => ({ lon, lat })), b];
@@ -62,8 +116,13 @@ export function buildGraph(nodes: GeoNode[], edges: BaseEdge[], costs: CostsConf
       0,
     );
     const distanceKm = routeDistanceKm * modeCfg.detourFactor;
-    const usd = distanceKm * modeCfg.usdPerKm;
-    const hours = distanceKm / modeCfg.kmPerHour;
+    const zoneUsd = zoneEntries.reduce((sum, [id, km]) => {
+      const zone = getZone(id);
+      return zone ? sum + km * zone.surchargeUsdPerKm + zone.tollUsd : sum;
+    }, 0);
+    const units = access.units ?? 1;
+    const usd = (taperedUsd(distanceKm, modeCfg.usdPerKm, costs.distanceTiers) + zoneUsd) * units;
+    const hours = (distanceKm / modeCfg.kmPerHour) * seasonalDelay(zoneEntries.map(([id]) => id), access.month);
 
     registerMode(a.id, e.mode);
     registerMode(b.id, e.mode);
@@ -73,24 +132,25 @@ export function buildGraph(nodes: GeoNode[], edges: BaseEdge[], costs: CostsConf
       usd,
       hours,
       isLoad: false,
-      leg: { from: a.id, to: b.id, mode: e.mode, distanceKm, via: e.via },
+      leg: { from: a.id, to: b.id, mode: e.mode, distanceKm, via: e.via, zones: e.zones },
     });
     addEdge(stateKey(b.id, e.mode), {
       to: stateKey(a.id, e.mode),
       usd,
       hours,
       isLoad: false,
-      leg: { from: b.id, to: a.id, mode: e.mode, distanceKm, via: e.via?.toReversed() },
+      leg: { from: b.id, to: a.id, mode: e.mode, distanceKm, via: e.via?.toReversed(), zones: e.zones },
     });
   }
 
   for (const [nodeId, modes] of modesAtNode) {
+    const factors = hubFactors(nodeById.get(nodeId), costs.hub);
     for (const mode of modes) {
       const modeCfg = costs.modes[mode];
       addEdge(stateKey(nodeId, HUB), {
         to: stateKey(nodeId, mode),
-        usd: modeCfg.hubUsd,
-        hours: modeCfg.hubHours,
+        usd: modeCfg.hubUsd * factors.usd * (access.units ?? 1),
+        hours: modeCfg.hubHours * factors.hours,
         isLoad: true,
       });
       addEdge(stateKey(nodeId, mode), {

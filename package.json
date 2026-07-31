@@ -10,6 +10,7 @@
     "generate:inland-routes": "node tools/generateInlandWaterRoutes.mjs",
     "generate:rail-routes": "node tools/generateRailRoutes.mjs",
     "generate:truck-edges": "node tools/generateTruckEdges.mjs",
+    "generate:edge-zones": "node tools/tagEdgeZones.mjs",
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "audit:geography": "node tools/auditGeography.mjs",
     "lint": "oxlint",

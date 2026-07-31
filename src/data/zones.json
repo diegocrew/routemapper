@@ -1,0 +1,189 @@
+[
+  {
+    "id": "northern_sea_route",
+    "label": "Northern Sea Route (ice-free Jul–Nov)",
+    "security": 70,
+    "access": "open",
+    "surchargeUsdPerKm": 0.01,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "closedMonths": [12, 1, 2, 3, 4, 5, 6],
+    "polygon": [[25, 68], [180, 68], [180, 84], [25, 84]]
+  },
+  {
+    "id": "st_lawrence_seaway",
+    "label": "St. Lawrence Seaway & Great Lakes (closed Jan–Mar)",
+    "security": 90,
+    "access": "open",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 12,
+    "modes": ["sea"],
+    "closedMonths": [1, 2, 3],
+    "polygon": [[-93, 41], [-74, 41], [-74, 49], [-93, 49]]
+  },
+  {
+    "id": "baltic_ice",
+    "label": "Northern Baltic winter ice",
+    "security": 85,
+    "access": "open",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "delayMonths": [1, 2, 3],
+    "delayFactor": 1.4,
+    "polygon": [[17, 58], [30, 58], [30, 66], [17, 66]]
+  },
+  {
+    "id": "danube_low_water",
+    "label": "Danube low-water season",
+    "security": 80,
+    "access": "open",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "delayMonths": [8, 9],
+    "delayFactor": 1.35,
+    "polygon": [[16, 43], [29, 43], [29, 49], [16, 49]]
+  },
+  {
+    "id": "caribbean_hurricane",
+    "label": "Caribbean & Gulf hurricane season",
+    "security": 65,
+    "access": "open",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "delayMonths": [8, 9, 10],
+    "delayFactor": 1.15,
+    "polygon": [[-98, 8], [-58, 8], [-58, 32], [-98, 32]]
+  },
+  {
+    "id": "suez_canal",
+    "label": "Suez Canal",
+    "security": 60,
+    "access": "open",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 45,
+    "modes": ["sea"],
+    "polygon": [[32.15, 29.85], [32.75, 29.85], [32.75, 31.35], [32.15, 31.35]]
+  },
+  {
+    "id": "panama_canal",
+    "label": "Panama Canal",
+    "security": 70,
+    "access": "open",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 85,
+    "modes": ["sea"],
+    "polygon": [[-80.05, 8.85], [-79.45, 8.85], [-79.45, 9.45], [-80.05, 9.45]]
+  },
+  {
+    "id": "kiel_canal",
+    "label": "Kiel Canal",
+    "security": 90,
+    "access": "open",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 8,
+    "modes": ["sea"],
+    "polygon": [[9.05, 53.8], [10.25, 53.8], [10.25, 54.45], [9.05, 54.45]]
+  },
+  {
+    "id": "bab_el_mandeb",
+    "label": "Bab-el-Mandeb & Gulf of Aden",
+    "security": 12,
+    "access": "open",
+    "surchargeUsdPerKm": 0.06,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[36, 10], [52, 10], [52, 18], [36, 18]]
+  },
+  {
+    "id": "somali_basin",
+    "label": "Somali Basin piracy zone",
+    "security": 28,
+    "access": "open",
+    "surchargeUsdPerKm": 0.02,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[45, -6], [62, -6], [62, 12], [45, 12]]
+  },
+  {
+    "id": "hormuz",
+    "label": "Strait of Hormuz",
+    "security": 30,
+    "access": "open",
+    "surchargeUsdPerKm": 0.04,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[54, 24], [58.5, 24], [58.5, 28], [54, 28]]
+  },
+  {
+    "id": "gulf_of_guinea",
+    "label": "Gulf of Guinea piracy zone",
+    "security": 34,
+    "access": "open",
+    "surchargeUsdPerKm": 0.02,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[-2, -2], [9, -2], [9, 7], [-2, 7]]
+  },
+  {
+    "id": "malacca",
+    "label": "Malacca & Singapore Straits",
+    "security": 55,
+    "access": "open",
+    "surchargeUsdPerKm": 0.01,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[95, -1], [105, -1], [105, 7], [95, 7]]
+  },
+  {
+    "id": "black_sea",
+    "label": "Black Sea war-risk area",
+    "security": 15,
+    "access": "open",
+    "surchargeUsdPerKm": 0.08,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[27, 41], [42, 41], [42, 47], [27, 47]]
+  },
+  {
+    "id": "azov_sea",
+    "label": "Sea of Azov (closed to commercial traffic)",
+    "security": 5,
+    "access": "military-only",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[34.5, 45], [39.5, 45], [39.5, 47.5], [34.5, 47.5]]
+  },
+  {
+    "id": "taiwan_strait",
+    "label": "Taiwan Strait",
+    "security": 45,
+    "access": "open",
+    "surchargeUsdPerKm": 0.01,
+    "tollUsd": 0,
+    "modes": ["sea"],
+    "polygon": [[117, 22], [122.5, 22], [122.5, 26.5], [117, 26.5]]
+  },
+  {
+    "id": "sahel",
+    "label": "Sahel overland corridor",
+    "security": 16,
+    "access": "open",
+    "surchargeUsdPerKm": 0.05,
+    "tollUsd": 0,
+    "modes": ["truck", "rail"],
+    "polygon": [[-12, 12], [16, 12], [16, 20], [-12, 20]]
+  },
+  {
+    "id": "dprk",
+    "label": "North Korean territory (closed to civilian transit)",
+    "security": 20,
+    "access": "military-only",
+    "surchargeUsdPerKm": 0,
+    "tollUsd": 0,
+    "polygon": [[124, 37.6], [130.8, 37.6], [130.8, 43.1], [124, 43.1]]
+  }
+]

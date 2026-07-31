@@ -8,6 +8,7 @@ import { CityDetails } from "./CityDetails";
 import { MODE_COLORS, MODE_LABELS } from "../map/modeStyle";
 
 const ALL_MODES: Mode[] = ["sea", "air", "rail", "truck"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 interface CargoOption {
   key: string;
@@ -30,6 +31,10 @@ interface ControlPanelProps {
   cargoType: string;
   cargoOptions: CargoOption[];
   onCargoTypeChange: (key: string) => void;
+  month: number;
+  onMonthChange: (month: number) => void;
+  weightTonnes: number;
+  onWeightChange: (tonnes: number) => void;
   routeOptions: RouteOption[];
   selectedKey: string | null;
   onSelectOption: (key: string) => void;
@@ -63,6 +68,10 @@ export function ControlPanel({
   cargoType,
   cargoOptions,
   onCargoTypeChange,
+  month,
+  onMonthChange,
+  weightTonnes,
+  onWeightChange,
   routeOptions,
   selectedKey,
   onSelectOption,
@@ -140,6 +149,28 @@ export function ControlPanel({
           ))}
         </select>
       </label>
+
+      <div className="field-row">
+        <label className="field">
+          <span className="field-label">Departs</span>
+          <select value={month} onChange={(e) => onMonthChange(Number(e.target.value))}>
+            {MONTHS.map((label, i) => (
+              <option key={label} value={i + 1}>{label}</option>
+            ))}
+          </select>
+        </label>
+        <label className="field">
+          <span className="field-label">Weight (t)</span>
+          <input
+            type="number"
+            min={1}
+            max={5000}
+            step={1}
+            value={weightTonnes}
+            onChange={(e) => onWeightChange(Math.max(1, Number(e.target.value) || 1))}
+          />
+        </label>
+      </div>
 
       <div className="field">
         <span className="field-label">Route options</span>
