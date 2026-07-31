@@ -58,8 +58,6 @@ export interface AccessRules {
   isBorderClosed: (fromCountry: string, toCountry: string, mode: Mode) => unknown;
   /** Departure month, for seasonal delays. */
   month?: number;
-  /** Chargeable units (roughly containers) the consignment occupies. */
-  units?: number;
 }
 
 const OPEN: AccessRules = { blockedZones: new Set(), isBorderClosed: () => undefined };
@@ -120,8 +118,7 @@ export function buildGraph(
       const zone = getZone(id);
       return zone ? sum + km * zone.surchargeUsdPerKm + zone.tollUsd : sum;
     }, 0);
-    const units = access.units ?? 1;
-    const usd = (taperedUsd(distanceKm, modeCfg.usdPerKm, costs.distanceTiers) + zoneUsd) * units;
+    const usd = taperedUsd(distanceKm, modeCfg.usdPerKm, costs.distanceTiers) + zoneUsd;
     const hours = (distanceKm / modeCfg.kmPerHour) * seasonalDelay(zoneEntries.map(([id]) => id), access.month);
 
     registerMode(a.id, e.mode);
@@ -149,7 +146,7 @@ export function buildGraph(
       const modeCfg = costs.modes[mode];
       addEdge(stateKey(nodeId, HUB), {
         to: stateKey(nodeId, mode),
-        usd: modeCfg.hubUsd * factors.usd * (access.units ?? 1),
+        usd: modeCfg.hubUsd * factors.usd,
         hours: modeCfg.hubHours * factors.hours,
         isLoad: true,
       });

@@ -10,32 +10,68 @@ import { borderCheck } from "./restrictions";
 
 type Weight = (edge: AdjEdge) => number;
 
-function dijkstra(graph: Graph, source: string, target: string, weight: Weight): string[] | null {
-  const dist = new Map<string, number>();
-  const prev = new Map<string, string>();
-  const visited = new Set<string>();
-  dist.set(source, 0);
+/** Binary min-heap keyed on tentative distance; lazily deleted, so entries can be stale. */
+class Frontier {
+  #items: { node: string; dist: number }[] = [];
 
-  while (true) {
-    let current: string | null = null;
-    let currentDist = Infinity;
-    for (const [node, d] of dist) {
-      if (!visited.has(node) && d < currentDist) {
-        current = node;
-        currentDist = d;
+  push(node: string, dist: number) {
+    const items = this.#items;
+    items.push({ node, dist });
+    let i = items.length - 1;
+    while (i > 0) {
+      const parent = (i - 1) >> 1;
+      if (items[parent].dist <= items[i].dist) break;
+      [items[parent], items[i]] = [items[i], items[parent]];
+      i = parent;
+    }
+  }
+
+  pop() {
+    const items = this.#items;
+    const top = items[0];
+    const last = items.pop()!;
+    if (items.length > 0) {
+      items[0] = last;
+      let i = 0;
+      while (true) {
+        const l = 2 * i + 1;
+        const r = l + 1;
+        let smallest = i;
+        if (l < items.length && items[l].dist < items[smallest].dist) smallest = l;
+        if (r < items.length && items[r].dist < items[smallest].dist) smallest = r;
+        if (smallest === i) break;
+        [items[smallest], items[i]] = [items[i], items[smallest]];
+        i = smallest;
       }
     }
-    if (current === null) break;
+    return top;
+  }
+
+  get size() {
+    return this.#items.length;
+  }
+}
+
+function dijkstra(graph: Graph, source: string, target: string, weight: Weight): string[] | null {
+  const dist = new Map<string, number>([[source, 0]]);
+  const prev = new Map<string, string>();
+  const visited = new Set<string>();
+  const frontier = new Frontier();
+  frontier.push(source, 0);
+
+  while (frontier.size > 0) {
+    const { node: current, dist: currentDist } = frontier.pop();
+    if (visited.has(current)) continue;
     if (current === target) break;
     visited.add(current);
 
-    const edges = graph.adjacency.get(current) ?? [];
-    for (const edge of edges) {
+    for (const edge of graph.adjacency.get(current) ?? []) {
       if (visited.has(edge.to)) continue;
       const next = currentDist + weight(edge);
       if (next < (dist.get(edge.to) ?? Infinity)) {
         dist.set(edge.to, next);
         prev.set(edge.to, current);
+        frontier.push(edge.to, next);
       }
     }
   }
@@ -54,7 +90,7 @@ function dijkstra(graph: Graph, source: string, target: string, weight: Weight):
 }
 
 /** Walks a Dijkstra path back into the physical legs it represents, folding each hub's load overhead into the leg that follows it. */
-function reconstructLegs(graph: Graph, path: string[]): RouteLeg[] {
+function reconstructLegs(graph: Graph, path: string[], units: number): RouteLeg[] {
   const legs: RouteLeg[] = [];
   let pendingUsd = 0;
   let pendingHours = 0;
@@ -76,7 +112,7 @@ function reconstructLegs(graph: Graph, path: string[]): RouteLeg[] {
         to: edge.leg.to,
         mode: edge.leg.mode,
         distanceKm: edge.leg.distanceKm,
-        usd: edge.usd + pendingUsd,
+        usd: (edge.usd + pendingUsd) * units,
         hours: edge.hours + pendingHours,
         via: edge.leg.via,
         zones: edge.leg.zones,
@@ -128,6 +164,20 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
   const availableModes = computeAvailableModes(nodes, allEdges);
   const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
+  // Rebuilding the graph walks ~110k edges, so it is kept per constraint set.
+  // Consignment size deliberately isn't part of the key: it scales every price
+  // by the same factor, so it can be applied to the finished legs instead.
+  const graphCache = new Map<string, Graph>();
+  const CACHE_LIMIT = 12;
+  const cachedGraph = (key: string, build: () => Graph): Graph => {
+    const hit = graphCache.get(key);
+    if (hit) return hit;
+    const graph = build();
+    if (graphCache.size >= CACHE_LIMIT) graphCache.delete(graphCache.keys().next().value!);
+    graphCache.set(key, graph);
+    return graph;
+  };
+
   return {
     getNodeInfo(nodeId: string): NodeInfo {
       const modes = [...(availableModes.get(nodeId) ?? [])];
@@ -173,12 +223,14 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
         : nodes.filter((n) => n.kind !== "military" && !inClosedZone(n));
       if (stops.some((id) => !eligibleNodes.some((n) => n.id === id))) return [];
 
-      const graph = buildGraph(eligibleNodes, allEdges, costs, allowedModes, {
-        blockedZones: new Set([...blockedZones, ...closedInMonth(request.month)]),
-        isBorderClosed: borderCheck(cargoRule),
-        month: request.month,
-        units,
-      });
+      const graphKey = `${[...allowedModes].sort().join(",")}|${request.cargoType ?? ""}|${request.month ?? ""}`;
+      const graph = cachedGraph(graphKey, () =>
+        buildGraph(eligibleNodes, allEdges, costs, allowedModes, {
+          blockedZones: new Set([...blockedZones, ...closedInMonth(request.month)]),
+          isBorderClosed: borderCheck(cargoRule),
+          month: request.month,
+        }),
+      );
       const scoresSecurity = !cargoRule?.ignoresSecurity;
 
       // Entering a hostile hub or transiting a risky corridor is what costs you,
@@ -217,7 +269,7 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
             ok = false;
             break;
           }
-          legs.push(...reconstructLegs(graph, path));
+          legs.push(...reconstructLegs(graph, path, units));
         }
         if (!ok || legs.length === 0) continue;
 
