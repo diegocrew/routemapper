@@ -79,23 +79,126 @@ function selectedToGeoJSON(nodes: GeoNode[], originId: string | null, destinatio
   return { type: "FeatureCollection" as const, features };
 }
 
+const DEM_SOURCE = "rm-dem";
+const TERRAIN_DEM_SOURCE = "rm-dem-terrain";
+const HILLSHADE_LAYER = "rm-hillshade";
+
+const DEM_TILES = {
+  type: "raster-dem" as const,
+  tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+  encoding: "terrarium" as const,
+  tileSize: 256,
+  maxzoom: 12,
+  attribution:
+    '<a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md">Tilezen Joerd terrain</a>',
+};
+
+/**
+ * The dark basemap is deliberately flat, which reads as an empty void at world
+ * zoom. A shaded relief underlay brings out mountain ranges, and the basemap's
+ * own river lines are widened and lifted out of near-black so continents read
+ * as terrain rather than silhouettes.
+ */
+function addTerrainAndWater(map: MLMap) {
+  map.addSource(DEM_SOURCE, DEM_TILES);
+  // MapLibre wants 3D terrain on its own source so the two don't share a tile cache.
+  map.addSource(TERRAIN_DEM_SOURCE, DEM_TILES);
+
+  map.addLayer(
+    {
+      id: HILLSHADE_LAYER,
+      type: "hillshade",
+      source: DEM_SOURCE,
+      paint: {
+        "hillshade-exaggeration": 0.6,
+        "hillshade-shadow-color": "#04060a",
+        "hillshade-highlight-color": "#8aa3bd",
+        "hillshade-accent-color": "#24384c",
+        "hillshade-illumination-direction": 315,
+      },
+    },
+    map.getLayer("water") ? "water" : undefined,
+  );
+
+  if (map.getLayer("waterway")) {
+    map.setPaintProperty("waterway", "line-color", "#3f6b8f");
+    map.setPaintProperty("waterway", "line-width", [
+      "interpolate",
+      ["linear"],
+      ["zoom"],
+      3,
+      0.6,
+      6,
+      1,
+      10,
+      1.6,
+      16,
+      3,
+    ]);
+    map.setLayerZoomRange("waterway", 2, 24);
+  }
+  if (map.getLayer("water")) map.setPaintProperty("water", "fill-color", "#16222c");
+
+  // Globe removes Mercator's polar distortion and draws Pacific lanes as the
+  // short hop they really are; the sky gives it an atmosphere at the limb.
+  map.setProjection({ type: "globe" });
+  map.setSky({
+    "sky-color": "#0a1626",
+    "horizon-color": "#2b4a6b",
+    "fog-color": "#0b1220",
+    "fog-ground-blend": 0.6,
+    "horizon-fog-blend": 0.7,
+    "sky-horizon-blend": 0.85,
+    "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.9, 5, 0.4, 7, 0],
+  });
+}
+
+/**
+ * Splits a leg where it crosses the antimeridian. MapLibre wraps each vertex
+ * into [-180, 180] on its own, so a Pacific crossing left in one piece is drawn
+ * as a straight line back across every continent instead of over the dateline.
+ */
+function splitAtAntimeridian(coordinates: number[][]): number[][][] {
+  const wrap = (lon: number) => ((((lon + 180) % 360) + 360) % 360) - 180;
+  const parts: number[][][] = [];
+  let current: number[][] = [];
+
+  for (const [rawLon, lat] of coordinates) {
+    const lon = wrap(rawLon);
+    const previous = current[current.length - 1];
+    if (previous && Math.abs(lon - previous[0]) > 180) {
+      const eastward = lon < previous[0];
+      const edge = eastward ? 180 : -180;
+      const span = lon + (eastward ? 360 : -360) - previous[0];
+      const crossLat = previous[1] + (lat - previous[1]) * ((edge - previous[0]) / span);
+      current.push([edge, crossLat]);
+      parts.push(current);
+      current = [[-edge, crossLat]];
+    }
+    current.push([lon, lat]);
+  }
+  if (current.length > 1) parts.push(current);
+  return parts;
+}
+
 function routeToGeoJSON(nodes: GeoNode[], route: RouteOption | null) {
   const byId = new Map(nodes.map((n) => [n.id, n]));
   const features = (route?.legs ?? []).flatMap((leg) => {
     const from = byId.get(leg.from);
     const to = byId.get(leg.to);
     if (!from || !to) return [];
+    const parts = splitAtAntimeridian([
+      [from.lon, from.lat],
+      ...(leg.via ?? []),
+      [to.lon, to.lat],
+    ]);
     return [
       {
         type: "Feature" as const,
-        geometry: {
-          type: "LineString" as const,
-          coordinates: [
-            [from.lon, from.lat],
-            ...(leg.via ?? []),
-            [to.lon, to.lat],
-          ],
-        },
+        geometry:
+          parts.length === 1
+            ? { type: "LineString" as const, coordinates: parts[0] }
+            : { type: "MultiLineString" as const, coordinates: parts },
         properties: { mode: leg.mode },
       },
     ];
@@ -126,6 +229,10 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, on
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
 
     map.on("load", () => {
+      addTerrainAndWater(map);
+      map.addControl(new maplibregl.GlobeControl(), "top-right");
+      map.addControl(new maplibregl.TerrainControl({ source: TERRAIN_DEM_SOURCE, exaggeration: 1.4 }), "top-right");
+
       map.addSource(NODES_SOURCE, { type: "geojson", data: nodesToGeoJSON(nodes) });
       map.addSource(SELECTED_SOURCE, { type: "geojson", data: selectedToGeoJSON(nodes, null, null, []) });
       map.addSource(ROUTE_SOURCE, { type: "geojson", data: routeToGeoJSON(nodes, null) });
