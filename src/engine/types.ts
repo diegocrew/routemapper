@@ -33,6 +33,8 @@ export interface CargoTypeConfig {
   excludeModes: Mode[];
   /** Military-kind nodes are off-limits to every cargo type except the one(s) with this set — that cargo type may use military nodes *and* ordinary civilian nodes. */
   allowMilitaryNodes?: boolean;
+  /** Escorted cargo defends itself, so hostile stops along the way aren't scored or routed around. */
+  ignoresSecurity?: boolean;
 }
 
 export interface CostsConfig {
@@ -51,7 +53,7 @@ export interface RouteLeg {
   via?: [number, number][];
 }
 
-export type RouteOptionKey = "cheapest" | "fastest" | "most-direct";
+export type RouteOptionKey = "cheapest" | "fastest" | "most-direct" | "safest";
 
 export interface RouteOption {
   key: RouteOptionKey;
@@ -60,6 +62,8 @@ export interface RouteOption {
   totalUsd: number;
   totalHours: number;
   transferCount: number;
+  /** 0-100 across every stop on the route; 0 when the cargo type ignores security. */
+  securityScore: number;
 }
 
 export interface RouteRequest {
@@ -69,4 +73,6 @@ export interface RouteRequest {
   cargoType?: string;
   /** Node ids the route must pass through, in order, between origin and destination. */
   waypointIds?: string[];
+  /** Also return a route that trades cost for safer stops. */
+  preferSafety?: boolean;
 }

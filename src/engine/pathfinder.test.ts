@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createRouteEngine } from "./pathfinder";
-import type { BaseEdge, CostsConfig, GeoNode } from "./types";
+import type { BaseEdge, CostsConfig, GeoNode, Mode } from "./types";
 import nodesData from "../data/nodes.json";
 import edgesData from "../data/edges.json";
 import costsData from "../data/costs.config.json";
@@ -285,5 +285,35 @@ describe("routing engine (real dataset smoke test)", () => {
       allowedModes: ["sea", "air", "rail", "truck"],
     });
     expect(options).toHaveLength(0);
+  });
+
+  it("scores civilian routes for security and leaves military cargo unscored", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const request = {
+      originId: "rotterdam",
+      destinationId: "new_york",
+      allowedModes: ["sea"] as Mode[],
+    };
+    const civilian = engine.computeRoutes({ ...request, cargoType: "general" });
+    expect(civilian[0].securityScore).toBeGreaterThan(0);
+
+    const military = engine.computeRoutes({ ...request, cargoType: "military" });
+    expect(military[0].securityScore).toBe(0);
+  });
+
+  it("only offers a safest option when safety is requested, and it is no less safe", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const request = {
+      originId: "kabul",
+      destinationId: "rotterdam",
+      allowedModes: ["sea", "rail", "truck"] as Mode[],
+      cargoType: "general",
+    };
+    expect(engine.computeRoutes(request).some((o) => o.key === "safest")).toBe(false);
+
+    const withSafety = engine.computeRoutes({ ...request, preferSafety: true });
+    const safest = withSafety.find((o) => o.key === "safest");
+    const cheapest = withSafety.find((o) => o.key === "cheapest");
+    if (safest && cheapest) expect(safest.securityScore).toBeGreaterThanOrEqual(cheapest.securityScore);
   });
 });

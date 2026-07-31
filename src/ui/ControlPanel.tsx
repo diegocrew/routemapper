@@ -33,6 +33,10 @@ interface ControlPanelProps {
   routeOptions: RouteOption[];
   selectedKey: string | null;
   onSelectOption: (key: string) => void;
+  showSecurity: boolean;
+  saferAvailable: boolean;
+  safetyRequested: boolean;
+  onRequestSafer: () => void;
   selectedRoute: RouteOption | null;
   getNodeInfo: (nodeId: string) => NodeInfo;
   selectedNodeId: string | null;
@@ -62,6 +66,10 @@ export function ControlPanel({
   routeOptions,
   selectedKey,
   onSelectOption,
+  showSecurity,
+  saferAvailable,
+  safetyRequested,
+  onRequestSafer,
   selectedRoute,
   getNodeInfo,
   selectedNodeId,
@@ -135,7 +143,15 @@ export function ControlPanel({
 
       <div className="field">
         <span className="field-label">Route options</span>
-        <RouteResults options={routeOptions} selectedKey={selectedKey} onSelect={onSelectOption} />
+        <RouteResults
+          options={routeOptions}
+          selectedKey={selectedKey}
+          onSelect={onSelectOption}
+          showSecurity={showSecurity}
+          saferAvailable={saferAvailable}
+          safetyRequested={safetyRequested}
+          onRequestSafer={onRequestSafer}
+        />
       </div>
 
       {selectedRoute && <RouteStopsDetail route={selectedRoute} nodes={nodes} getNodeInfo={getNodeInfo} />}

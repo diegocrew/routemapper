@@ -14,6 +14,6 @@
     "hazmat": { "label": "Hazardous / Dangerous Goods", "excludeModes": ["air"] },
     "oversized": { "label": "Oversized / Heavy Machinery", "excludeModes": ["air"] },
     "perishable": { "label": "Perishable / Refrigerated", "excludeModes": ["sea"] },
-    "military": { "label": "Military / Defense Cargo", "excludeModes": [], "allowMilitaryNodes": true }
+    "military": { "label": "Military / Defense Cargo", "excludeModes": [], "allowMilitaryNodes": true, "ignoresSecurity": true }
   }
 }

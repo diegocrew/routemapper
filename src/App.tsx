@@ -3,6 +3,7 @@ import { MapView } from "./map/MapView";
 import { ControlPanel } from "./ui/ControlPanel";
 import { MapLegend } from "./ui/MapLegend";
 import { createRouteEngine } from "./engine/pathfinder";
+import { SECURITY_ALERT_THRESHOLD } from "./engine/indices";
 import type { CostsConfig, GeoNode, BaseEdge, Mode, RouteOption } from "./engine/types";
 import nodesData from "./data/nodes.json";
 import edgesData from "./data/edges.json";
@@ -24,6 +25,7 @@ function App() {
   const [cargoType, setCargoType] = useState<string>("general");
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [preferSafety, setPreferSafety] = useState(false);
 
   // A location can only hold one role at a time, so claiming a new role clears any other it was previously assigned.
   const setOriginId = (id: string | null) => {
@@ -48,16 +50,26 @@ function App() {
     setSelectedKey(null);
   };
 
-  const routeOptions: RouteOption[] = useMemo(() => {
-    if (!originId || !destinationId || originId === destinationId) return [];
-    return engine.computeRoutes({
-      originId,
-      destinationId,
-      waypointIds,
-      allowedModes: [...allowedModes],
-      cargoType,
-    });
-  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoType]);
+  const showSecurity = !costs.cargoTypes[cargoType]?.ignoresSecurity;
+
+  // A safer routing is worked out up front so the offer is only made when one
+  // actually exists — when the risk is the origin or destination itself, no
+  // amount of rerouting helps and there is nothing to offer.
+  const { baseOptions, saferOption } = useMemo(() => {
+    if (!originId || !destinationId || originId === destinationId) {
+      return { baseOptions: [] as RouteOption[], saferOption: null as RouteOption | null };
+    }
+    const request = { originId, destinationId, waypointIds, allowedModes: [...allowedModes], cargoType };
+    const baseOptions = engine.computeRoutes(request);
+    const bestSecurity = Math.max(0, ...baseOptions.map((o) => o.securityScore));
+    if (!showSecurity || baseOptions.length === 0 || bestSecurity >= SECURITY_ALERT_THRESHOLD) {
+      return { baseOptions, saferOption: null };
+    }
+    const safer = engine.computeRoutes({ ...request, preferSafety: true }).find((o) => o.key === "safest");
+    return { baseOptions, saferOption: safer && safer.securityScore > bestSecurity ? safer : null };
+  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoType, showSecurity]);
+
+  const routeOptions = preferSafety && saferOption ? [...baseOptions, saferOption] : baseOptions;
 
   const activeKey = routeOptions.some((o) => o.key === selectedKey) ? selectedKey : (routeOptions[0]?.key ?? null);
   const selectedRoute = routeOptions.find((o) => o.key === activeKey) ?? null;
@@ -120,10 +132,21 @@ function App() {
         onSetModes={(modes) => setAllowedModes(new Set(modes))}
         cargoType={cargoType}
         cargoOptions={cargoOptions}
-        onCargoTypeChange={setCargoType}
+        onCargoTypeChange={(key) => {
+          setCargoType(key);
+          setPreferSafety(false);
+          setSelectedKey(null);
+        }}
         routeOptions={routeOptions}
         selectedKey={activeKey}
         onSelectOption={setSelectedKey}
+        showSecurity={showSecurity}
+        saferAvailable={saferOption !== null}
+        safetyRequested={preferSafety}
+        onRequestSafer={() => {
+          setPreferSafety(true);
+          setSelectedKey("safest");
+        }}
         selectedRoute={selectedRoute}
         getNodeInfo={engine.getNodeInfo}
         selectedNodeId={selectedNodeId}

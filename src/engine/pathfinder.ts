@@ -4,7 +4,7 @@ import type { BaseEdge, CostsConfig, GeoNode, Mode, RouteLeg, RouteOption, Route
 import { buildGraph } from "./graph";
 import { buildTruckEdges } from "./truckEdges";
 import { buildAirEdges } from "./airEdges";
-import { economicIndex, securityIndex, transitIndex } from "./indices";
+import { economicIndex, routeSecurityIndex, securityIndex, transitIndex } from "./indices";
 
 type Weight = (edge: AdjEdge) => number;
 
@@ -87,12 +87,12 @@ function reconstructLegs(graph: Graph, path: string[]): RouteLeg[] {
   return legs;
 }
 
-function combineLegs(legs: RouteLeg[], key: RouteOptionKey, label: string): RouteOption {
+function combineLegs(legs: RouteLeg[], key: RouteOptionKey, label: string, securityScore: number): RouteOption {
   const totalUsd = legs.reduce((sum, l) => sum + l.usd, 0);
   const totalHours = legs.reduce((sum, l) => sum + l.hours, 0);
   const transferCount = legs.slice(1).filter((l, i) => l.mode !== legs[i].mode).length;
 
-  return { key, label, legs, totalUsd, totalHours, transferCount };
+  return { key, label, legs, totalUsd, totalHours, transferCount, securityScore };
 }
 
 function routesEqual(a: RouteOption, b: RouteOption): boolean {
@@ -148,12 +148,26 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
       if (stops.some((id) => !eligibleNodes.some((n) => n.id === id))) return [];
 
       const graph = buildGraph(eligibleNodes, allEdges, costs, allowedModes);
+      const scoresSecurity = !cargoRule?.ignoresSecurity;
+
+      // Entering a hostile hub is what costs you, so risk multiplies the price of
+      // the leg that arrives there; squaring it keeps mildly-rated stops cheap.
+      const riskFactor = (nodeId: string | undefined) => {
+        if (!nodeId) return 1;
+        const node = nodeById.get(nodeId);
+        if (!node) return 1;
+        const risk = (100 - securityIndex(node.country)) / 100;
+        return 1 + risk * risk * 8;
+      };
 
       const runs: { key: RouteOptionKey; label: string; weight: Weight }[] = [
         { key: "cheapest", label: "Cheapest", weight: (e) => e.usd },
         { key: "fastest", label: "Fastest", weight: (e) => e.hours },
         { key: "most-direct", label: "Most Direct", weight: (e) => e.leg?.distanceKm ?? 0 },
       ];
+      if (request.preferSafety && scoresSecurity) {
+        runs.push({ key: "safest", label: "Safest", weight: (e) => e.usd * riskFactor(e.leg?.to) });
+      }
 
       const options: RouteOption[] = [];
       for (const run of runs) {
@@ -171,7 +185,11 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
         }
         if (!ok || legs.length === 0) continue;
 
-        const option = combineLegs(legs, run.key, run.label);
+        const visited = [legs[0].from, ...legs.map((l) => l.to)];
+        const score = scoresSecurity
+          ? routeSecurityIndex(visited.map((id) => securityIndex(nodeById.get(id)?.country ?? "")))
+          : 0;
+        const option = combineLegs(legs, run.key, run.label, score);
         if (!options.some((o) => routesEqual(o, option))) {
           options.push(option);
         }
