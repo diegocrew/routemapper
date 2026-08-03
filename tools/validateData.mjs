@@ -85,6 +85,41 @@ for (const zone of zones) {
   if (!tagged) warn(`zone ${zone.id} is tagged on no leg — it currently has no effect`);
 }
 
+// A pocket of sea lanes with no link to the main network still gets routed to,
+// but only by trucking in from the nearest port, which produces nonsense legs.
+{
+  const neighbours = new Map();
+  for (const edge of edges) {
+    if (edge.mode !== "sea") continue;
+    for (const [a, b] of [[edge.from, edge.to], [edge.to, edge.from]]) {
+      if (!neighbours.has(a)) neighbours.set(a, []);
+      neighbours.get(a).push(b);
+    }
+  }
+  const seen = new Set();
+  const components = [];
+  for (const start of neighbours.keys()) {
+    if (seen.has(start)) continue;
+    const stack = [start];
+    const component = [];
+    seen.add(start);
+    while (stack.length > 0) {
+      const id = stack.pop();
+      component.push(id);
+      for (const next of neighbours.get(id)) {
+        if (seen.has(next)) continue;
+        seen.add(next);
+        stack.push(next);
+      }
+    }
+    components.push(component);
+  }
+  components.sort((a, b) => b.length - a.length);
+  for (const component of components.slice(1)) {
+    warn(`sea lanes for ${component.join(", ")} are cut off from the main maritime network`);
+  }
+}
+
 for (const rule of restrictions) {
   for (const country of [...rule.countries, ...(rule.pairsWith ?? [])]) {
     if (!countriesWithNodes.has(country)) {
