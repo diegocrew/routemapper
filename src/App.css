@@ -210,6 +210,73 @@ button {
   color: #e2e8f0;
 }
 
+.cargo-row {
+  display: flex;
+  gap: 8px;
+}
+
+.cargo-class {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 0 84px;
+}
+
+.cargo-class-option {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: #94a3b8;
+  border-radius: 8px;
+  padding: 8px 6px;
+  font-size: 12px;
+  flex: 1;
+}
+
+.cargo-class-option.on {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.18);
+  color: #f1f5f9;
+}
+
+.cargo-handling {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  flex: 1;
+}
+
+.cargo-toggle {
+  --cargo-color: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  color: #94a3b8;
+  padding: 7px 2px;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+
+.cargo-toggle:hover {
+  border-color: var(--cargo-color);
+  color: #e2e8f0;
+}
+
+.cargo-toggle.on {
+  background: var(--cargo-color);
+  border-color: var(--cargo-color);
+  color: #0b1220;
+}
+
+.cargo-toggle svg {
+  width: 22px;
+  height: 22px;
+}
+
 .hint {
   font-size: 12.5px;
   color: #94a3b8;

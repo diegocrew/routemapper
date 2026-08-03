@@ -1,5 +1,5 @@
-import type { CSSProperties } from "react";
-import type { GeoNode, Mode, RouteOption } from "../engine/types";
+import type { CSSProperties, ReactNode } from "react";
+import type { CargoClass, GeoNode, Mode, RouteOption } from "../engine/types";
 import type { NodeInfo } from "../engine/pathfinder";
 import { NodePicker } from "./NodePicker";
 import { RouteResults } from "./RouteResults";
@@ -9,8 +9,44 @@ import { MODE_COLORS, MODE_LABELS } from "../map/modeStyle";
 
 const ALL_MODES: Mode[] = ["sea", "air", "rail", "truck"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const CARGO_CLASSES: CargoClass[] = ["civilian", "military"];
 
-interface CargoOption {
+const BiohazardIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <g fill="none" stroke="currentColor" strokeWidth="1.7">
+      <circle cx="12" cy="6.6" r="3.5" />
+      <circle cx="6.9" cy="15.4" r="3.5" />
+      <circle cx="17.1" cy="15.4" r="3.5" />
+    </g>
+    <circle cx="12" cy="12.4" r="2.1" fill="currentColor" />
+  </svg>
+);
+
+const SnowflakeIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round">
+    <path d="M12 2.5v19M3.8 7.2l16.4 9.6M20.2 7.2 3.8 16.8" />
+    <path d="M9.6 4.6 12 6.4l2.4-1.8M9.6 19.4 12 17.6l2.4 1.8" />
+    <path d="m5 10.6 1-2.7 2.8.4M19 13.4l-1 2.7-2.8-.4M19 10.6l-1-2.7-2.8.4M5 13.4l1 2.7 2.8-.4" />
+  </svg>
+);
+
+const HvtIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round">
+    <path d="M12 2.6 4.6 5.6v6c0 4.6 3 8.4 7.4 9.8 4.4-1.4 7.4-5.2 7.4-9.8v-6L12 2.6Z" />
+    <circle cx="12" cy="10" r="2.1" />
+    <path d="M8.5 16.6c.6-1.9 1.9-2.9 3.5-2.9s2.9 1 3.5 2.9" strokeLinecap="round" />
+  </svg>
+);
+
+/** Colour carries the meaning here: biohazard keeps its green until the load is
+ * military, where amber stands in for a possible radiological consignment. */
+const HANDLING_STYLE: Record<string, { icon: ReactNode; short: string; color: string; militaryColor?: string }> = {
+  hazmat: { icon: <BiohazardIcon />, short: "Hazard", color: "#22c55e", militaryColor: "#facc15" },
+  perishable: { icon: <SnowflakeIcon />, short: "Chilled", color: "#38bdf8" },
+  hvt: { icon: <HvtIcon />, short: "HVT", color: "#c084fc" },
+};
+
+interface HandlingOption {
   key: string;
   label: string;
 }
@@ -28,9 +64,12 @@ interface ControlPanelProps {
   allowedModes: Set<Mode>;
   onToggleMode: (mode: Mode) => void;
   onSetModes: (modes: Mode[]) => void;
-  cargoType: string;
-  cargoOptions: CargoOption[];
-  onCargoTypeChange: (key: string) => void;
+  cargoClass: CargoClass;
+  cargoClassLabels: Record<CargoClass, string>;
+  onCargoClassChange: (cargoClass: CargoClass) => void;
+  handling: string[];
+  handlingOptions: HandlingOption[];
+  onToggleHandling: (key: string) => void;
   month: number;
   onMonthChange: (month: number) => void;
   weightTonnes: number;
@@ -38,7 +77,7 @@ interface ControlPanelProps {
   routeOptions: RouteOption[];
   selectedKey: string | null;
   onSelectOption: (key: string) => void;
-  showSecurity: boolean;
+  noRouteReason: string | null;
   saferAvailable: boolean;
   safetyRequested: boolean;
   onRequestSafer: () => void;
@@ -65,9 +104,12 @@ export function ControlPanel({
   allowedModes,
   onToggleMode,
   onSetModes,
-  cargoType,
-  cargoOptions,
-  onCargoTypeChange,
+  cargoClass,
+  cargoClassLabels,
+  onCargoClassChange,
+  handling,
+  handlingOptions,
+  onToggleHandling,
   month,
   onMonthChange,
   weightTonnes,
@@ -75,7 +117,7 @@ export function ControlPanel({
   routeOptions,
   selectedKey,
   onSelectOption,
-  showSecurity,
+  noRouteReason,
   saferAvailable,
   safetyRequested,
   onRequestSafer,
@@ -141,14 +183,43 @@ export function ControlPanel({
         </div>
       </div>
 
-      <label className="field">
-        <span className="field-label">Cargo type</span>
-        <select value={cargoType} onChange={(e) => onCargoTypeChange(e.target.value)}>
-          {cargoOptions.map((c) => (
-            <option key={c.key} value={c.key}>{c.label}</option>
-          ))}
-        </select>
-      </label>
+      <div className="field">
+        <span className="field-label">Cargo</span>
+        <div className="cargo-row">
+          <div className="cargo-class" role="group" aria-label="Cargo class">
+            {CARGO_CLASSES.map((key) => (
+              <button
+                key={key}
+                className={`cargo-class-option ${cargoClass === key ? "on" : ""}`}
+                aria-pressed={cargoClass === key}
+                onClick={() => onCargoClassChange(key)}
+              >
+                {cargoClassLabels[key]}
+              </button>
+            ))}
+          </div>
+          <div className="cargo-handling">
+            {handlingOptions.map((option) => {
+              const style = HANDLING_STYLE[option.key];
+              const on = handling.includes(option.key);
+              const color = (cargoClass === "military" && style.militaryColor) || style.color;
+              return (
+                <button
+                  key={option.key}
+                  className={`cargo-toggle ${on ? "on" : ""}`}
+                  style={{ "--cargo-color": color } as CSSProperties}
+                  aria-pressed={on}
+                  title={option.label}
+                  onClick={() => onToggleHandling(option.key)}
+                >
+                  {style.icon}
+                  <span>{style.short}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
       <div className="field-row">
         <label className="field">
@@ -178,7 +249,7 @@ export function ControlPanel({
           options={routeOptions}
           selectedKey={selectedKey}
           onSelect={onSelectOption}
-          showSecurity={showSecurity}
+          noRouteReason={noRouteReason}
           saferAvailable={saferAvailable}
           safetyRequested={safetyRequested}
           onRequestSafer={onRequestSafer}

@@ -1,5 +1,5 @@
 import zonesData from "../data/zones.json";
-import type { CargoTypeConfig, Zone } from "./types";
+import type { CargoRule, Zone } from "./types";
 
 export const zones = zonesData as Zone[];
 const zoneById = new Map(zones.map((z) => [z.id, z]));
@@ -19,9 +19,9 @@ function contains(zone: Zone, lon: number, lat: number): boolean {
 
 export const zonesAt = (lon: number, lat: number): Zone[] => zones.filter((z) => contains(z, lon, lat));
 
-/** Zones a given cargo type may not enter at all. Escorted cargo goes anywhere. */
-export function blockedZoneIds(cargoRule: CargoTypeConfig | undefined): Set<string> {
-  if (cargoRule?.allowMilitaryNodes) return new Set();
+/** Zones a given shipment may not enter at all. Escorted cargo goes anywhere. */
+export function blockedZoneIds(cargoRule: CargoRule): Set<string> {
+  if (cargoRule.allowMilitaryNodes) return new Set();
   return new Set(zones.filter((z) => z.access === "military-only").map((z) => z.id));
 }
 

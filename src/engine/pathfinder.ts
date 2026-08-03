@@ -7,6 +7,7 @@ import { buildAirEdges } from "./airEdges";
 import { economicIndex, routeSecurityIndex, securityIndex, transitIndex } from "./indices";
 import { blockedZoneIds, closedInMonth, getZone, zonesAt } from "./zones";
 import { borderCheck } from "./restrictions";
+import { resolveCargo } from "./cargo";
 
 type Weight = (edge: AdjEdge) => number;
 
@@ -191,8 +192,8 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
     },
 
     computeRoutes(request: RouteRequest): RouteOption[] {
-      const cargoRule = request.cargoType ? costs.cargoTypes[request.cargoType] : undefined;
-      const excluded = new Set(cargoRule?.excludeModes ?? []);
+      const cargoRule = resolveCargo(costs, request.cargoClass, request.handling);
+      const excluded = new Set(cargoRule.excludeModes);
       const weightTonnes = request.weightTonnes ?? costs.cargo.defaultTonnes;
       const units = Math.max(
         1,
@@ -218,12 +219,13 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
       // rule closes off nodes that sit inside a military-only zone.
       const blockedZones = blockedZoneIds(cargoRule);
       const inClosedZone = (n: GeoNode) => zonesAt(n.lon, n.lat).some((z) => blockedZones.has(z.id));
-      const eligibleNodes = cargoRule?.allowMilitaryNodes
+      const eligibleNodes = cargoRule.allowMilitaryNodes
         ? nodes
         : nodes.filter((n) => n.kind !== "military" && !inClosedZone(n));
       if (stops.some((id) => !eligibleNodes.some((n) => n.id === id))) return [];
 
-      const graphKey = `${[...allowedModes].sort().join(",")}|${request.cargoType ?? ""}|${request.month ?? ""}`;
+      const handlingKey = [...(request.handling ?? [])].sort().join("+");
+      const graphKey = `${[...allowedModes].sort().join(",")}|${request.cargoClass ?? ""}|${handlingKey}|${request.month ?? ""}`;
       const graph = cachedGraph(graphKey, () =>
         buildGraph(eligibleNodes, allEdges, costs, allowedModes, {
           blockedZones: new Set([...blockedZones, ...closedInMonth(request.month)]),
@@ -231,7 +233,7 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
           month: request.month,
         }),
       );
-      const scoresSecurity = !cargoRule?.ignoresSecurity;
+
 
       // Entering a hostile hub or transiting a risky corridor is what costs you,
       // so risk multiplies the price of that leg; squaring keeps mild risk cheap.
@@ -253,7 +255,7 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
         { key: "fastest", label: "Fastest", weight: (e) => e.hours },
         { key: "most-direct", label: "Most Direct", weight: (e) => e.leg?.distanceKm ?? 0 },
       ];
-      if (request.preferSafety && scoresSecurity) {
+      if (request.preferSafety) {
         runs.push({ key: "safest", label: "Safest", weight: (e) => e.usd * riskFactor(e.leg?.to, e.leg?.zones) });
       }
 
@@ -275,12 +277,10 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
 
         const visited = [legs[0].from, ...legs.map((l) => l.to)];
         const crossed = [...new Set(legs.flatMap((l) => Object.keys(l.zones ?? {})))];
-        const score = scoresSecurity
-          ? routeSecurityIndex([
-              ...visited.map((id) => securityIndex(nodeById.get(id)?.country ?? "", id)),
-              ...crossed.map((id) => getZone(id)?.security ?? 100),
-            ])
-          : 0;
+        const score = routeSecurityIndex([
+          ...visited.map((id) => securityIndex(nodeById.get(id)?.country ?? "", id)),
+          ...crossed.map((id) => getZone(id)?.security ?? 100),
+        ]);
         const zoneLabels = crossed.map((id) => getZone(id)?.label ?? id);
         const option = combineLegs(legs, run.key, run.label, score, zoneLabels);
         if (!options.some((o) => routesEqual(o, option))) {

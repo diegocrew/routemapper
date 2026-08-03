@@ -6,7 +6,7 @@ interface RouteResultsProps {
   options: RouteOption[];
   selectedKey: string | null;
   onSelect: (key: string) => void;
-  showSecurity: boolean;
+  noRouteReason: string | null;
   saferAvailable: boolean;
   safetyRequested: boolean;
   onRequestSafer: () => void;
@@ -32,17 +32,21 @@ export function RouteResults({
   options,
   selectedKey,
   onSelect,
-  showSecurity,
+  noRouteReason,
   saferAvailable,
   safetyRequested,
   onRequestSafer,
 }: RouteResultsProps) {
   if (options.length === 0) {
-    return <p className="hint">No route found for the current constraints. Try allowing more transport modes.</p>;
+    return (
+      <p className="hint">
+        {noRouteReason ?? "No route found for the current constraints. Try allowing more transport modes."}
+      </p>
+    );
   }
 
   const bestSecurity = Math.max(...options.map((o) => o.securityScore));
-  const atRisk = showSecurity && bestSecurity < SECURITY_ALERT_THRESHOLD;
+  const atRisk = bestSecurity < SECURITY_ALERT_THRESHOLD;
 
   return (
     <div className="route-results">
@@ -62,14 +66,10 @@ export function RouteResults({
             <span>{opt.legs.length} leg{opt.legs.length === 1 ? "" : "s"}</span>
             <span>·</span>
             <span>{opt.transferCount} transfer{opt.transferCount === 1 ? "" : "s"}</span>
-            {showSecurity && (
-              <>
-                <span>·</span>
-                <span className={`route-security ${securityTone(opt.securityScore)}`}>
-                  security {opt.securityScore}
-                </span>
-              </>
-            )}
+            <span>·</span>
+            <span className={`route-security ${securityTone(opt.securityScore)}`}>
+              security {opt.securityScore}
+            </span>
           </div>
           <div className="route-card-legs">
             {opt.legs.map((leg, i) => (
@@ -79,7 +79,7 @@ export function RouteResults({
               </span>
             ))}
           </div>
-          {showSecurity && opt.zoneLabels.length > 0 && (
+          {opt.zoneLabels.length > 0 && (
             <div className="route-card-zones">crosses {opt.zoneLabels.join(" · ")}</div>
           )}
         </button>

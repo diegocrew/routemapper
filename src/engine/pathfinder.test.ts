@@ -39,13 +39,13 @@ describe("routing engine (synthetic graph)", () => {
     }
   });
 
-  it("returns no routes when cargo type excludes the only viable mode", () => {
+  it("returns no routes when cargo handling excludes the only viable mode", () => {
     const engine = createRouteEngine(syntheticNodes, syntheticEdges, costs);
     const options = engine.computeRoutes({
       originId: "a",
       destinationId: "d",
       allowedModes: ["air"],
-      cargoType: "hazmat",
+      handling: ["hazmat"],
     });
     expect(options).toHaveLength(0);
   });
@@ -250,7 +250,7 @@ describe("routing engine (real dataset smoke test)", () => {
       originId: "norfolk_naval",
       destinationId: "guantanamo",
       allowedModes: ["sea"],
-      cargoType: "military",
+      cargoClass: "military",
     });
     expect(options.length).toBeGreaterThan(0);
     expect(options.some((o) => o.legs.some((l) => l.mode === "sea"))).toBe(true);
@@ -262,7 +262,7 @@ describe("routing engine (real dataset smoke test)", () => {
       originId: "area_51",
       destinationId: "ramstein",
       allowedModes: ["sea", "air", "rail", "truck"],
-      cargoType: "military",
+      cargoClass: "military",
     });
     expect(options.length).toBeGreaterThan(0);
   });
@@ -273,7 +273,7 @@ describe("routing engine (real dataset smoke test)", () => {
       originId: "area_51",
       destinationId: "rotterdam",
       allowedModes: ["sea", "air", "rail", "truck"],
-      cargoType: "military",
+      cargoClass: "military",
     });
     expect(options.length).toBeGreaterThan(0);
   });
@@ -287,7 +287,7 @@ describe("routing engine (real dataset smoke test)", () => {
       originId: "faslane",
       destinationId: "glasgow",
       allowedModes: ["truck"],
-      cargoType: "military",
+      cargoClass: "military",
     });
     expect(options.length).toBeGreaterThan(0);
     expect(options[0].legs.every((l) => l.mode === "truck")).toBe(true);
@@ -303,18 +303,18 @@ describe("routing engine (real dataset smoke test)", () => {
     expect(options).toHaveLength(0);
   });
 
-  it("scores civilian routes for security and leaves military cargo unscored", () => {
+  it("scores security for every cargo class, defense freight included", () => {
     const engine = createRouteEngine(nodes, edges, costs);
     const request = {
       originId: "rotterdam",
       destinationId: "new_york",
       allowedModes: ["sea"] as Mode[],
     };
-    const civilian = engine.computeRoutes({ ...request, cargoType: "general" });
+    const civilian = engine.computeRoutes({ ...request, cargoClass: "civilian" as const });
     expect(civilian[0].securityScore).toBeGreaterThan(0);
 
-    const military = engine.computeRoutes({ ...request, cargoType: "military" });
-    expect(military[0].securityScore).toBe(0);
+    const military = engine.computeRoutes({ ...request, cargoClass: "military" as const });
+    expect(military[0].securityScore).toBeGreaterThan(0);
   });
 
   it("only offers a safest option when safety is requested, and it is no less safe", () => {
@@ -323,7 +323,7 @@ describe("routing engine (real dataset smoke test)", () => {
       originId: "kabul",
       destinationId: "rotterdam",
       allowedModes: ["sea", "rail", "truck"] as Mode[],
-      cargoType: "general",
+      cargoClass: "civilian" as const,
     };
     expect(engine.computeRoutes(request).some((o) => o.key === "safest")).toBe(false);
 
@@ -340,8 +340,8 @@ describe("routing engine (real dataset smoke test)", () => {
       destinationId: "rotterdam",
       allowedModes: ["sea", "air", "rail", "truck"] as Mode[],
     };
-    expect(engine.computeRoutes({ ...request, cargoType: "general" })).toHaveLength(0);
-    expect(engine.computeRoutes({ ...request, cargoType: "military" }).length).toBeGreaterThan(0);
+    expect(engine.computeRoutes({ ...request, cargoClass: "civilian" as const })).toHaveLength(0);
+    expect(engine.computeRoutes({ ...request, cargoClass: "military" as const }).length).toBeGreaterThan(0);
   });
 
   it("reports the risk zones a route transits and scores them like a stop", () => {
@@ -350,7 +350,7 @@ describe("routing engine (real dataset smoke test)", () => {
       originId: "jeddah",
       destinationId: "singapore",
       allowedModes: ["sea"],
-      cargoType: "general",
+      cargoClass: "civilian",
     });
     expect(cheapest.zoneLabels.length).toBeGreaterThan(0);
     expect(cheapest.securityScore).toBeLessThan(50);
@@ -363,8 +363,8 @@ describe("routing engine (real dataset smoke test)", () => {
       destinationId: "islamabad",
       allowedModes: ["rail", "truck"] as Mode[],
     };
-    expect(engine.computeRoutes({ ...request, cargoType: "general" })).toHaveLength(0);
-    expect(engine.computeRoutes({ ...request, cargoType: "military" }).length).toBeGreaterThan(0);
+    expect(engine.computeRoutes({ ...request, cargoClass: "civilian" as const })).toHaveLength(0);
+    expect(engine.computeRoutes({ ...request, cargoClass: "military" as const }).length).toBeGreaterThan(0);
   });
 
   it("charges a canal toll on top of distance", () => {

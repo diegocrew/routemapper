@@ -3,8 +3,9 @@ import { MapView } from "./map/MapView";
 import { ControlPanel } from "./ui/ControlPanel";
 import { MapLegend } from "./ui/MapLegend";
 import { createRouteEngine } from "./engine/pathfinder";
+import { resolveCargo } from "./engine/cargo";
 import { SECURITY_ALERT_THRESHOLD } from "./engine/indices";
-import type { CostsConfig, GeoNode, BaseEdge, Mode, RouteOption } from "./engine/types";
+import type { CargoClass, CargoHandlingConfig, CostsConfig, GeoNode, BaseEdge, Mode, RouteOption } from "./engine/types";
 import nodesData from "./data/nodes.json";
 import edgesData from "./data/edges.json";
 import costsData from "./data/costs.config.json";
@@ -15,6 +16,9 @@ const edges = edgesData as BaseEdge[];
 const costs = costsData as CostsConfig;
 const ALL_MODES: Mode[] = ["sea", "air", "rail", "truck"];
 
+const handlingLabel = (cfg: CargoHandlingConfig, cargoClass: CargoClass) =>
+  (cargoClass === "military" && cfg.militaryLabel) || cfg.label;
+
 function App() {
   const engine = useMemo(() => createRouteEngine(nodes, edges, costs), []);
 
@@ -22,7 +26,8 @@ function App() {
   const [destinationId, setDestinationIdRaw] = useState<string | null>(null);
   const [waypointIds, setWaypointIds] = useState<string[]>([]);
   const [allowedModes, setAllowedModes] = useState<Set<Mode>>(new Set(ALL_MODES));
-  const [cargoType, setCargoType] = useState<string>("general");
+  const [cargoClass, setCargoClass] = useState<CargoClass>("civilian");
+  const [handling, setHandling] = useState<string[]>([]);
   const [month, setMonth] = useState<number>(() => new Date().getMonth() + 1);
   const [weightTonnes, setWeightTonnes] = useState<number>(costs.cargo.defaultTonnes);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
@@ -52,11 +57,12 @@ function App() {
     setSelectedKey(null);
   };
 
-  const showSecurity = !costs.cargoTypes[cargoType]?.ignoresSecurity;
+  const cargoRule = resolveCargo(costs, cargoClass, handling);
 
   // A safer routing is worked out up front so the offer is only made when one
   // actually exists — when the risk is the origin or destination itself, no
-  // amount of rerouting helps and there is nothing to offer.
+  // amount of rerouting helps and there is nothing to offer. Protected
+  // transport skips the offer and gets the safest option outright.
   const { baseOptions, saferOption } = useMemo(() => {
     if (!originId || !destinationId || originId === destinationId) {
       return { baseOptions: [] as RouteOption[], saferOption: null as RouteOption | null };
@@ -66,24 +72,62 @@ function App() {
       destinationId,
       waypointIds,
       allowedModes: [...allowedModes],
-      cargoType,
+      cargoClass,
+      handling,
       month,
       weightTonnes,
     };
     const baseOptions = engine.computeRoutes(request);
     const bestSecurity = Math.max(0, ...baseOptions.map((o) => o.securityScore));
-    if (!showSecurity || baseOptions.length === 0 || bestSecurity >= SECURITY_ALERT_THRESHOLD) {
+    if (baseOptions.length === 0 || (!cargoRule.alwaysSafest && bestSecurity >= SECURITY_ALERT_THRESHOLD)) {
       return { baseOptions, saferOption: null };
     }
     const safer = engine.computeRoutes({ ...request, preferSafety: true }).find((o) => o.key === "safest");
     return { baseOptions, saferOption: safer && safer.securityScore > bestSecurity ? safer : null };
-  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoType, showSecurity, month, weightTonnes]);
-  const routeOptions = preferSafety && saferOption ? [...baseOptions, saferOption] : baseOptions;
+  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoClass, handling, cargoRule.alwaysSafest, month, weightTonnes]);
+  const routeOptions = (preferSafety || cargoRule.alwaysSafest) && saferOption ? [...baseOptions, saferOption] : baseOptions;
+
+  // "No route" is nearly always a rule the user set rather than a gap in the
+  // network, so say which one instead of leaving them to guess.
+  const noRouteReason = useMemo(() => {
+    if (routeOptions.length > 0 || !originId || !destinationId || originId === destinationId) return null;
+    const stops = [originId, ...waypointIds, destinationId].map((id) => nodes.find((n) => n.id === id));
+    if (!cargoRule.allowMilitaryNodes && stops.some((n) => n?.kind === "military")) {
+      return "That is a restricted military site — only Military cargo may be routed to it.";
+    }
+    if (handling.length === 0) return null;
+
+    const request = {
+      originId,
+      destinationId,
+      waypointIds,
+      allowedModes: [...allowedModes],
+      cargoClass,
+      month,
+      weightTonnes,
+    };
+    if (engine.computeRoutes({ ...request, handling: [] }).length === 0) return null;
+    const blocking = handling.filter((id) => engine.computeRoutes({ ...request, handling: [id] }).length === 0);
+    if (blocking.length === 0) return null;
+
+    const rules = blocking.map((id) => handlingLabel(costs.cargoHandling[id], cargoClass)).join(" and ");
+    const barred = resolveCargo(costs, cargoClass, blocking)
+      .excludeModes.map((m) => costs.modes[m].label.toLowerCase())
+      .join(" or ");
+    return `${rules} cannot travel by ${barred}, and nothing else connects these stops.`;
+  }, [engine, routeOptions.length, originId, destinationId, waypointIds, allowedModes, cargoClass, cargoRule.allowMilitaryNodes, handling, month, weightTonnes]);
 
   const activeKey = routeOptions.some((o) => o.key === selectedKey) ? selectedKey : (routeOptions[0]?.key ?? null);
   const selectedRoute = routeOptions.find((o) => o.key === activeKey) ?? null;
 
-  const cargoOptions = Object.entries(costs.cargoTypes).map(([key, cfg]) => ({ key, label: cfg.label }));
+  const cargoClassLabels = {
+    civilian: costs.cargoClasses.civilian.label,
+    military: costs.cargoClasses.military.label,
+  };
+  const handlingOptions = Object.entries(costs.cargoHandling).map(([key, cfg]) => ({
+    key,
+    label: handlingLabel(cfg, cargoClass),
+  }));
 
   const roleOf = (id: string): "origin" | "destination" | "waypoint" | null => {
     if (id === originId) return "origin";
@@ -139,10 +183,17 @@ function App() {
         allowedModes={allowedModes}
         onToggleMode={handleToggleMode}
         onSetModes={(modes) => setAllowedModes(new Set(modes))}
-        cargoType={cargoType}
-        cargoOptions={cargoOptions}
-        onCargoTypeChange={(key) => {
-          setCargoType(key);
+        cargoClass={cargoClass}
+        cargoClassLabels={cargoClassLabels}
+        onCargoClassChange={(next) => {
+          setCargoClass(next);
+          setPreferSafety(false);
+          setSelectedKey(null);
+        }}
+        handling={handling}
+        handlingOptions={handlingOptions}
+        onToggleHandling={(key) => {
+          setHandling((prev) => (prev.includes(key) ? prev.filter((h) => h !== key) : [...prev, key]));
           setPreferSafety(false);
           setSelectedKey(null);
         }}
@@ -159,9 +210,9 @@ function App() {
         routeOptions={routeOptions}
         selectedKey={activeKey}
         onSelectOption={setSelectedKey}
-        showSecurity={showSecurity}
+        noRouteReason={noRouteReason}
         saferAvailable={saferOption !== null}
-        safetyRequested={preferSafety}
+        safetyRequested={preferSafety || cargoRule.alwaysSafest === true}
         onRequestSafer={() => {
           setPreferSafety(true);
           setSelectedKey("safest");

@@ -75,13 +75,29 @@ export interface CargoSizingConfig {
   m3PerUnit: number;
 }
 
-export interface CargoTypeConfig {
+export type CargoClass = "civilian" | "military";
+
+export interface CargoClassConfig {
   label: string;
-  excludeModes: Mode[];
-  /** Military-kind nodes are off-limits to every cargo type except the one(s) with this set — that cargo type may use military nodes *and* ordinary civilian nodes. */
+  /** Military-kind nodes are off-limits to every class except the one(s) with this set — that class may use military nodes *and* ordinary civilian ones. */
   allowMilitaryNodes?: boolean;
-  /** Escorted cargo defends itself, so hostile stops along the way aren't scored or routed around. */
-  ignoresSecurity?: boolean;
+}
+
+/** A handling requirement carried on top of a class, e.g. hazmat or cold chain. */
+export interface CargoHandlingConfig {
+  label: string;
+  /** Shown instead of `label` under the military class. */
+  militaryLabel?: string;
+  excludeModes?: Mode[];
+  /** Cargo that is a target in itself: the safest routing is worked out and offered without being asked for. */
+  alwaysSafest?: boolean;
+}
+
+/** One shipment's class and handling flags folded into the rules routing actually applies. */
+export interface CargoRule {
+  excludeModes: Mode[];
+  allowMilitaryNodes?: boolean;
+  alwaysSafest?: boolean;
 }
 
 export interface HubEfficiencyConfig {
@@ -98,7 +114,8 @@ export interface CostsConfig {
   hub: HubEfficiencyConfig;
   cargo: CargoSizingConfig;
   distanceTiers: DistanceTier[];
-  cargoTypes: Record<string, CargoTypeConfig>;
+  cargoClasses: Record<CargoClass, CargoClassConfig>;
+  cargoHandling: Record<string, CargoHandlingConfig>;
 }
 
 export interface RouteLeg {
@@ -121,7 +138,7 @@ export interface RouteOption {
   totalUsd: number;
   totalHours: number;
   transferCount: number;
-  /** 0-100 across every stop and zone on the route; 0 when the cargo type ignores security. */
+  /** 0-100 across every stop and zone on the route. */
   securityScore: number;
   /** Labels of the risk zones this route passes through. */
   zoneLabels: string[];
@@ -131,7 +148,9 @@ export interface RouteRequest {
   originId: string;
   destinationId: string;
   allowedModes: Mode[];
-  cargoType?: string;
+  cargoClass?: CargoClass;
+  /** Handling flag ids (keys of `cargoHandling`) that apply to this shipment. */
+  handling?: string[];
   /** Node ids the route must pass through, in order, between origin and destination. */
   waypointIds?: string[];
   /** Also return a route that trades cost for safer stops. */
