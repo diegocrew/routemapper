@@ -1,0 +1,75 @@
+import { describe, expect, it } from "vitest";
+import { createZoneIndex } from "./zones";
+import type { CargoRule, Zone } from "./types";
+
+const civilian: CargoRule = { excludeModes: [] };
+const military: CargoRule = { excludeModes: [], allowMilitaryNodes: true };
+
+function square(centerLon: number, centerLat: number, half = 1): [number, number][] {
+  return [
+    [centerLon - half, centerLat - half],
+    [centerLon + half, centerLat - half],
+    [centerLon + half, centerLat + half],
+    [centerLon - half, centerLat + half],
+  ];
+}
+
+const hazardZone: Zone = {
+  id: "quake_test",
+  label: "Test earthquake",
+  security: 20,
+  access: "hazard",
+  surchargeUsdPerKm: 0,
+  tollUsd: 0,
+  hazardKind: "earthquake",
+  detectedAt: "2026-08-20T00:00:00.000Z",
+  polygon: square(0, 0),
+};
+
+const militaryZone: Zone = {
+  id: "restricted_test",
+  label: "Test restricted zone",
+  security: 10,
+  access: "military-only",
+  surchargeUsdPerKm: 0,
+  tollUsd: 0,
+  polygon: square(50, 50),
+};
+
+const openZone: Zone = {
+  id: "open_test",
+  label: "Test open zone",
+  security: 80,
+  access: "open",
+  surchargeUsdPerKm: 0.5,
+  tollUsd: 10,
+  polygon: square(100, 10),
+};
+
+describe("createZoneIndex", () => {
+  it("blocks civilian cargo from a hazard zone, same as a military-only zone", () => {
+    const index = createZoneIndex([hazardZone, militaryZone, openZone]);
+    const blocked = index.blockedZoneIds(civilian);
+    expect(blocked.has("quake_test")).toBe(true);
+    expect(blocked.has("restricted_test")).toBe(true);
+    expect(blocked.has("open_test")).toBe(false);
+  });
+
+  it("lets military cargo through a hazard zone (blockedZoneIds empty)", () => {
+    const index = createZoneIndex([hazardZone, militaryZone, openZone]);
+    expect(index.blockedZoneIds(military).size).toBe(0);
+  });
+
+  it("tracks hazard zone ids separately from other access kinds", () => {
+    const index = createZoneIndex([hazardZone, militaryZone, openZone]);
+    expect(index.hazardZoneIds.has("quake_test")).toBe(true);
+    expect(index.hazardZoneIds.has("restricted_test")).toBe(false);
+    expect(index.hazardZoneIds.has("open_test")).toBe(false);
+  });
+
+  it("finds a point inside a hazard zone's polygon", () => {
+    const index = createZoneIndex([hazardZone]);
+    expect(index.zonesAt(0, 0).map((z) => z.id)).toEqual(["quake_test"]);
+    expect(index.zonesAt(80, 80)).toEqual([]);
+  });
+});

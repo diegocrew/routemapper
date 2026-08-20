@@ -29,3 +29,6 @@ export const KIND_COLORS: Record<string, string> = {
   railhub: "#fb923c",
   military: "#ef4444",
 };
+
+/** Distinct from KIND_COLORS.military — hazard zones are a temporary condition, not a permanent restricted site. */
+export const HAZARD_COLOR = "#dc2626";

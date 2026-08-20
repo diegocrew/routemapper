@@ -108,6 +108,38 @@ src/
   also configurable in `costs.config.json`. Defense cargo ignores security
   scoring, closed borders and closed zones.
 
+## Hazard zones (earthquakes & wildfires)
+
+`.github/workflows/hazards.yml` runs `npm run fetch:hazards`
+(`tools/fetchHazards.mjs`) four times a day: it pulls the USGS earthquake feed
+(magnitude ≥5.5, 7-day window) and NASA FIRMS wildfire detections (last 4
+days, clustered to avoid one zone per hotspot pixel), turns them into
+temporary `access: "hazard"` zones, tags which legs cross them, and commits
+`src/data/hazardZones.json` / `src/data/hazardEdgeZones.json`. Retention is
+free: each run just re-fetches the current upstream window and overwrites
+these files, so an event disappears on its own once it ages out of USGS/FIRMS's
+own bucket — there's no separate expiry step.
+
+Civilian cargo is blocked from an active hazard zone exactly like a
+military-only zone (including any node inside one); military cargo can still
+transit it, with a warning shown on the route. Active zones are also drawn on
+the map as a red circle.
+
+The magnitude threshold, wildfire clustering distance/confidence, and the
+earthquake radius-by-magnitude table are all approximations, flagged and kept
+as tunable constants at the top of `tools/fetchHazards.mjs` — in the same
+spirit as this repo's other hand-approximated geography (see below).
+
+Setup required once per repo: add a `NASA` secret (a FIRMS `MAP_KEY`, free from
+https://firms.modaps.eosdis.nasa.gov/api/map_key/) under Settings → Secrets →
+Actions, and enable Settings → Actions → General → Workflow permissions →
+"Read and write permissions" so the scheduled job can push its commit (which
+then triggers the normal `deploy.yml` build/deploy). Earthquakes need no key.
+Wildfires do — unlike some NASA APIs, FIRMS's Area API has no working
+keyless/demo tier (confirmed by testing against the live endpoint), so without
+the secret the workflow still runs and commits earthquake zones, it just skips
+wildfires that run.
+
 ## Deployment
 
 `.github/workflows/deploy.yml` builds and deploys to GitHub Pages

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { KIND_COLORS } from "../map/modeStyle";
+import { HAZARD_COLOR, KIND_COLORS } from "../map/modeStyle";
 import type { NodeKind } from "../engine/types";
 
 const KIND_LABELS: Record<NodeKind, string> = {
@@ -50,6 +50,11 @@ export function MapLegend() {
               {r.label}
             </div>
           ))}
+          <div className="map-legend-divider" />
+          <div className="map-legend-row">
+            <span className="map-legend-dot" style={{ background: HAZARD_COLOR }} />
+            Active hazard (earthquake/wildfire)
+          </div>
         </div>
       )}
     </div>

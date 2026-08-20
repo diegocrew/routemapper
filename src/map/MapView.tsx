@@ -2,9 +2,10 @@ import { useEffect, useRef } from "react";
 import * as maplibregl from "maplibre-gl";
 import type { Map as MLMap, MapLayerMouseEvent } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import type { GeoNode } from "../engine/types";
+import type { GeoNode, Zone } from "../engine/types";
 import type { RouteOption } from "../engine/types";
-import { KIND_COLORS, MODE_COLORS } from "./modeStyle";
+import { HAZARD_COLOR, KIND_COLORS, MODE_COLORS } from "./modeStyle";
+import hazardZonesData from "../data/hazardZones.json";
 
 // MapLibre resolves its worker script relative to its own module's runtime
 // `import.meta.url`, which Rollup can't statically follow — so in a
@@ -27,6 +28,9 @@ const SELECTED_LAYER = "rm-selected-circle";
 const ROUTE_SOURCE = "rm-route";
 const ROUTE_LAYER = "rm-route-line";
 const ROUTE_CASING_LAYER = "rm-route-casing";
+const HAZARDS_SOURCE = "rm-hazards";
+const HAZARDS_FILL_LAYER = "rm-hazards-fill";
+const HAZARDS_OUTLINE_LAYER = "rm-hazards-outline";
 
 interface MapViewProps {
   nodes: GeoNode[];
@@ -181,6 +185,20 @@ function splitAtAntimeridian(coordinates: number[][]): number[][][] {
   return parts;
 }
 
+/** Hazard zones are generated offline on a schedule (tools/fetchHazards.mjs) and baked into the build, so this is static — no live updates needed inside the running app. */
+function hazardsToGeoJSON() {
+  return {
+    type: "FeatureCollection" as const,
+    features: (hazardZonesData as Zone[])
+      .filter((z) => z.access === "hazard")
+      .map((z) => ({
+        type: "Feature" as const,
+        geometry: { type: "Polygon" as const, coordinates: [z.polygon] },
+        properties: { label: z.label },
+      })),
+  };
+}
+
 function routeToGeoJSON(nodes: GeoNode[], route: RouteOption | null) {
   const byId = new Map(nodes.map((n) => [n.id, n]));
   const features = (route?.legs ?? []).flatMap((leg) => {
@@ -236,6 +254,21 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, on
       map.addSource(NODES_SOURCE, { type: "geojson", data: nodesToGeoJSON(nodes) });
       map.addSource(SELECTED_SOURCE, { type: "geojson", data: selectedToGeoJSON(nodes, null, null, []) });
       map.addSource(ROUTE_SOURCE, { type: "geojson", data: routeToGeoJSON(nodes, null) });
+      map.addSource(HAZARDS_SOURCE, { type: "geojson", data: hazardsToGeoJSON() });
+
+      map.addLayer({
+        id: HAZARDS_FILL_LAYER,
+        type: "fill",
+        source: HAZARDS_SOURCE,
+        paint: { "fill-color": HAZARD_COLOR, "fill-opacity": 0.18 },
+      });
+
+      map.addLayer({
+        id: HAZARDS_OUTLINE_LAYER,
+        type: "line",
+        source: HAZARDS_SOURCE,
+        paint: { "line-color": HAZARD_COLOR, "line-width": 1.5, "line-opacity": 0.8 },
+      });
 
       map.addLayer({
         id: ROUTE_CASING_LAYER,

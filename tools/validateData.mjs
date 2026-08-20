@@ -17,6 +17,8 @@ const nodes = read("nodes.json");
 const edges = read("edges.json");
 const truckEdges = read("truckEdges.json");
 const zones = read("zones.json");
+const hazardZones = read("hazardZones.json");
+const hazardEdgeZones = read("hazardEdgeZones.json");
 const restrictions = read("restrictions.json");
 const indices = read("indices.json");
 const costs = read("costs.config.json");
@@ -85,6 +87,24 @@ for (const zone of zones) {
   if (!tagged) warn(`zone ${zone.id} is tagged on no leg — it currently has no effect`);
 }
 
+// hazardZones.json/hazardEdgeZones.json are refreshed by the scheduled
+// tools/fetchHazards.mjs run rather than hand-curated, but still need to stay
+// internally consistent and in sync with the current edges.
+const hazardZoneIds = new Set();
+for (const zone of hazardZones) {
+  if (hazardZoneIds.has(zone.id)) fail(`duplicate hazard zone id: ${zone.id}`);
+  hazardZoneIds.add(zone.id);
+  if (zone.access !== "hazard") fail(`hazard zone ${zone.id} must have access "hazard"`);
+  if (zone.polygon.length < 3) fail(`hazard zone ${zone.id} has fewer than 3 polygon points`);
+}
+const edgeKeys = new Set([...edges, ...truckEdges].map((e) => `${e.from}|${e.to}|${e.mode ?? "truck"}`));
+for (const [key, tags] of Object.entries(hazardEdgeZones)) {
+  if (!edgeKeys.has(key)) fail(`hazardEdgeZones.json references unknown edge ${key}`);
+  for (const id of Object.keys(tags)) {
+    if (!hazardZoneIds.has(id)) fail(`hazardEdgeZones.json tags ${key} with unknown hazard zone ${id}`);
+  }
+}
+
 // A pocket of sea lanes with no link to the main network still gets routed to,
 // but only by trucking in from the nearest port, which produces nonsense legs.
 {
@@ -148,5 +168,5 @@ if (errors.length > 0) {
   console.error(`\n${errors.length} data problem(s).`);
   process.exitCode = 1;
 } else {
-  console.log(`Data OK: ${nodes.length} nodes, ${edges.length} curated edges, ${truckEdges.length} truck edges, ${zones.length} zones, ${restrictions.length} restrictions.`);
+  console.log(`Data OK: ${nodes.length} nodes, ${edges.length} curated edges, ${truckEdges.length} truck edges, ${zones.length} zones, ${hazardZones.length} hazard zones, ${restrictions.length} restrictions.`);
 }

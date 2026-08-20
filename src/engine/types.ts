@@ -26,7 +26,8 @@ export interface Zone {
   label: string;
   /** 0-100, folded into a route's security score like any stop. */
   security: number;
-  access: "open" | "military-only";
+  /** "hazard" zones are generated offline (earthquakes/wildfires) and are blocked exactly like military-only ones, but flagged separately so military transit can carry a warning instead of being treated as a restricted site. */
+  access: "open" | "military-only" | "hazard";
   /** War-risk insurance and escort costs, charged per km actually spent inside. */
   surchargeUsdPerKm: number;
   /** Flat transit fee, per container, charged once per leg that passes through. */
@@ -38,6 +39,10 @@ export interface Zone {
   /** Months when transit is slowed rather than stopped, and by how much. */
   delayMonths?: number[];
   delayFactor?: number;
+  /** Set only on generated hazard zones. */
+  hazardKind?: "earthquake" | "wildfire";
+  /** ISO timestamp the hazard was detected/generated, set only on generated hazard zones. */
+  detectedAt?: string;
   polygon: [number, number][];
 }
 
@@ -142,6 +147,8 @@ export interface RouteOption {
   securityScore: number;
   /** Labels of the risk zones this route passes through. */
   zoneLabels: string[];
+  /** Set when this route crosses an active hazard zone — only possible at all for cargo with allowMilitaryNodes, since civilian cargo is blocked from hazard zones outright. */
+  hazardWarnings: string[];
 }
 
 export interface RouteRequest {

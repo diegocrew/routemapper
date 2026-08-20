@@ -11,6 +11,7 @@
     "generate:rail-routes": "node tools/generateRailRoutes.mjs",
     "generate:truck-edges": "node tools/generateTruckEdges.mjs",
     "generate:edge-zones": "node tools/tagEdgeZones.mjs",
+    "fetch:hazards": "node tools/fetchHazards.mjs",
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "validate:data": "node tools/validateData.mjs",
     "audit:geography": "node tools/auditGeography.mjs",

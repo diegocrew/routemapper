@@ -5,7 +5,7 @@ import { buildGraph } from "./graph";
 import { buildTruckEdges } from "./truckEdges";
 import { buildAirEdges } from "./airEdges";
 import { economicIndex, routeSecurityIndex, securityIndex, transitIndex } from "./indices";
-import { blockedZoneIds, closedInMonth, getZone, zonesAt } from "./zones";
+import { blockedZoneIds, closedInMonth, edgeKey, getZone, hazardEdgeZones, hazardZoneIds, zonesAt } from "./zones";
 import { borderCheck } from "./restrictions";
 import { resolveCargo } from "./cargo";
 
@@ -133,12 +133,13 @@ function combineLegs(
   label: string,
   securityScore: number,
   zoneLabels: string[],
+  hazardWarnings: string[],
 ): RouteOption {
   const totalUsd = legs.reduce((sum, l) => sum + l.usd, 0);
   const totalHours = legs.reduce((sum, l) => sum + l.hours, 0);
   const transferCount = legs.slice(1).filter((l, i) => l.mode !== legs[i].mode).length;
 
-  return { key, label, legs, totalUsd, totalHours, transferCount, securityScore, zoneLabels };
+  return { key, label, legs, totalUsd, totalHours, transferCount, securityScore, zoneLabels, hazardWarnings };
 }
 
 function routesEqual(a: RouteOption, b: RouteOption): boolean {
@@ -161,7 +162,14 @@ export interface RouteEngine {
 export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], costs: CostsConfig): RouteEngine {
   const truckEdges = buildTruckEdges(nodes);
   const airEdges = buildAirEdges(nodes);
-  const allEdges = [...curatedEdges, ...truckEdges, ...airEdges];
+  // Hazard-zone crossings are tagged separately from the hand-curated edge
+  // files (see tools/fetchHazards.mjs) so the bot never rewrites them; merge
+  // the two here so blocking/surcharge/seasonal logic downstream sees one
+  // combined `zones` map per edge.
+  const allEdges = [...curatedEdges, ...truckEdges, ...airEdges].map((e) => {
+    const extra = hazardEdgeZones[edgeKey(e.from, e.to, e.mode)];
+    return extra ? { ...e, zones: { ...e.zones, ...extra } } : e;
+  });
   const availableModes = computeAvailableModes(nodes, allEdges);
   const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
@@ -282,7 +290,10 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
           ...crossed.map((id) => getZone(id)?.security ?? 100),
         ]);
         const zoneLabels = crossed.map((id) => getZone(id)?.label ?? id);
-        const option = combineLegs(legs, run.key, run.label, score, zoneLabels);
+        const hazardWarnings = crossed
+          .filter((id) => hazardZoneIds.has(id))
+          .map((id) => `${getZone(id)?.label ?? id} — active hazard, military transit only`);
+        const option = combineLegs(legs, run.key, run.label, score, zoneLabels, hazardWarnings);
         if (!options.some((o) => routesEqual(o, option))) {
           options.push(option);
         }

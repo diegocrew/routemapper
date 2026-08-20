@@ -1,0 +1,37 @@
+name: Refresh hazard zones
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run fetch:hazards
+        env:
+          FIRMS_API_KEY: ${{ secrets.NASA }}
+      - run: npm run validate:data
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/hazardZones.json src/data/hazardEdgeZones.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh hazard zones"
+            git push
+          else
+            echo "No hazard changes this run."
+          fi

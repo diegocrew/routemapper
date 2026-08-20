@@ -82,6 +82,9 @@ export function RouteResults({
           {opt.zoneLabels.length > 0 && (
             <div className="route-card-zones">crosses {opt.zoneLabels.join(" · ")}</div>
           )}
+          {opt.hazardWarnings.length > 0 && (
+            <div className="route-card-hazard">⚠ {opt.hazardWarnings.join(" · ")}</div>
+          )}
         </button>
       ))}
       {atRisk && saferAvailable && !safetyRequested && (
