@@ -283,3 +283,31 @@ publish automatically.
 - A few inland waterway legs (Dnipro, lower Yangtze, St. Lawrence, Mekong)
   are hand-curated approximations of the river course.
 - No accounts, saved routes, or mobile app.
+
+## TODO: denser, less hop-starved sea and rail networks
+
+Sea and rail edges today are a small hand-picked set of trunk routes (see
+`edges.json` above), so a route can be forced through an odd detour just
+because the curated network happens to have an edge there and not somewhere
+more direct — e.g. a ship continuing past its actual port of call because the
+next port over is the only one with a good onward rail link, when a more
+sensible rail link from the first port simply hasn't been curated yet.
+
+- **Sea**: open water has effectively no obstacles (coastlines, canals and ice
+  aside — already modelled), so this is the easy half. `generate:sea-routes`
+  already calls `searoute` to compute a real coastline-respecting path between
+  *any* two coastal points; it's just only wired up for ~20 hand-picked pairs.
+  Fix: generate each seaport's edges to its K nearest other seaports (same
+  shape as truck's `maxNeighbors` cap, or the military-installation "3 nearest
+  curated hubs" spoke pattern), run each through `searoute`, and let Dijkstra
+  chain hops for long hauls — the same way real shipping and the truck network
+  here both work already (nobody sails great-circle for 8,000 km either).
+- **Rail**: harder, because unlike roads or open water, rail track is fixed
+  physical infrastructure with real gaps that have nothing to do with distance
+  (gauge breaks, no track across oceans, missing links). A proximity-based
+  "K nearest rail hubs" generator would happily invent edges that don't
+  physically exist. Doing this properly needs a real rail network dataset —
+  OpenStreetMap's `railway=rail` ways via Overpass, or a regional extract —
+  and computing connectivity over the *actual* track graph, the way `searoute`
+  already gives the real water graph for sea. Treat as a separate, later phase
+  from the sea fix.
