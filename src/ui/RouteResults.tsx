@@ -85,6 +85,11 @@ export function RouteResults({
           {opt.hazardWarnings.length > 0 && (
             <div className="route-card-hazard">⚠ {opt.hazardWarnings.join(" · ")}</div>
           )}
+          {opt.clearedHazards.length > 0 && (
+            <div className="route-card-cleared">
+              forecast to clear before arrival: {opt.clearedHazards.join(" · ")}
+            </div>
+          )}
         </button>
       ))}
       {atRisk && saferAvailable && !safetyRequested && (

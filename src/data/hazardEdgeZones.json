@@ -1,15 +1,43 @@
 {
   "shanghai|rotterdam|sea": {
-    "fire_51.04_2.29_71": 20
+    "fire_51.04_2.29_71": 20,
+    "navwarn_p_2024_241": 38
   },
   "singapore|rotterdam|sea": {
-    "fire_51.04_2.29_71": 20
+    "fire_51.04_2.29_71": 20,
+    "navwarn_p_2024_241": 38
+  },
+  "singapore|dubai|sea": {
+    "navwarn_p_2023_1938": 60
+  },
+  "colombo|mumbai|sea": {
+    "navwarn_p_2023_3497": 20,
+    "navwarn_p_2023_3916": 60
+  },
+  "mumbai|dubai|sea": {
+    "navwarn_p_2023_1938": 60,
+    "navwarn_p_2023_3497": 43,
+    "navwarn_p_2023_3916": 46
+  },
+  "mumbai|jeddah|sea": {
+    "navwarn_p_2023_3497": 40,
+    "navwarn_p_2023_3916": 20
+  },
+  "jeddah|alexandria|sea": {
+    "navwarn_p_2024_241": 50
   },
   "port_sudan|alexandria|sea": {
-    "fire_31.08_29.80_168": 16
+    "fire_31.08_29.80_168": 16,
+    "navwarn_p_2024_241": 38
   },
   "alexandria|piraeus|sea": {
     "fire_31.08_29.80_168": 16
+  },
+  "piraeus|shanghai|sea": {
+    "navwarn_p_2024_241": 38
+  },
+  "piraeus|singapore|sea": {
+    "navwarn_p_2024_241": 38
   },
   "piraeus|rotterdam|sea": {
     "fire_51.04_2.29_71": 20
@@ -28,6 +56,13 @@
   },
   "cape_town|rotterdam|sea": {
     "fire_51.04_2.29_71": 20
+  },
+  "cape_town|mumbai|sea": {
+    "navwarn_p_2023_3497": 43,
+    "navwarn_p_2023_3916": 46
+  },
+  "panama_city|santos|sea": {
+    "navwarn_4_2023_1100": 424
   },
   "los_angeles|seattle|sea": {
     "fire_47.57_-122.36_1790": 20
@@ -584,6 +619,14 @@
     "fire_18.59_-70.73_1314": 40,
     "fire_19.16_-71.49_2941": 60
   },
+  "karachi|dubai|sea": {
+    "navwarn_p_2023_1938": 60
+  },
+  "karachi|mumbai|sea": {
+    "navwarn_p_2023_3497": 43,
+    "navwarn_p_2023_3916": 46,
+    "navwarn_p_2024_1423": 39
+  },
   "anchorage|seattle|sea": {
     "fire_47.57_-122.36_1790": 20
   },
@@ -671,7 +714,9 @@
     "fire_44.07_23.15_90": 11,
     "fire_44.22_22.85_91": 33,
     "fire_44.54_22.53_2582": 33,
-    "fire_44.86_21.22_2207": 37
+    "fire_44.86_21.22_2207": 37,
+    "navwarn_a_2022_838": 46,
+    "navwarn_a_2023_1645": 16
   },
   "kyiv|odesa|sea": {
     "fire_46.55_32.79_22": 31,
@@ -684,11 +729,25 @@
     "fire_47.72_35.20_45": 59,
     "fire_48.48_34.63_57": 30,
     "fire_49.56_31.55_2254": 45,
-    "fire_50.03_31.18_2255": 37
+    "fire_50.03_31.18_2255": 37,
+    "navwarn_a_2022_838": 274
+  },
+  "odesa|istanbul|sea": {
+    "navwarn_a_2022_838": 297
+  },
+  "odesa|piraeus|sea": {
+    "navwarn_a_2022_838": 297
+  },
+  "constanta|istanbul|sea": {
+    "navwarn_a_2023_1645": 51
+  },
+  "constanta|piraeus|sea": {
+    "navwarn_a_2023_1645": 19
   },
   "basra|dubai|sea": {
     "fire_30.29_47.71_1640": 52,
-    "fire_30.48_47.63_1643": 17
+    "fire_30.48_47.63_1643": 17,
+    "navwarn_p_2023_1938": 11
   },
   "kinshasa|brazzaville|sea": {
     "fire_-4.13_15.08_7873": 5,
@@ -877,6 +936,29 @@
   "vladivostok_base|yokosuka|sea": {
     "fire_35.36_139.86_2621": 17
   },
+  "pearl_harbor|kwajalein|sea": {
+    "navwarn_12_2023_93": 382
+  },
+  "pearl_harbor|midway_site|sea": {
+    "navwarn_12_2023_93": 566,
+    "storm_cp012026_0h": 424
+  },
+  "karwar|masirah_site|sea": {
+    "navwarn_p_2023_3497": 40
+  },
+  "pearl_harbor|pmrf|sea": {
+    "navwarn_12_2023_93": 269
+  },
+  "severomorsk|vladivostok_base|sea": {
+    "navwarn_p_2024_241": 38
+  },
+  "djibouti_base|karwar|sea": {
+    "navwarn_p_2023_3497": 40
+  },
+  "karwar|toulon|sea": {
+    "navwarn_p_2023_3497": 40,
+    "navwarn_p_2024_241": 38
+  },
   "kadena|yokosuka|sea": {
     "fire_35.36_139.86_2621": 17
   },
@@ -884,7 +966,8 @@
     "fire_36.66_3.14_103": 7
   },
   "abu_dhabi|dubai|sea": {
-    "fire_24.52_54.03_2171": 32
+    "fire_24.52_54.03_2171": 32,
+    "navwarn_p_2023_1938": 11
   },
   "doha|manama|sea": {
     "fire_25.90_51.55_1626": 18
@@ -894,7 +977,11 @@
   },
   "kuwait_city|basra|sea": {
     "fire_30.29_47.71_1640": 52,
-    "fire_30.48_47.63_1643": 17
+    "fire_30.48_47.63_1643": 17,
+    "navwarn_p_2024_311": 39
+  },
+  "manama|dubai|sea": {
+    "navwarn_p_2023_1938": 11
   },
   "bangui|brazzaville|sea": {
     "fire_-2.06_16.22_2515": 39,
@@ -916,12 +1003,25 @@
     "fire_-4.27_15.45_7299": 50,
     "fire_3.94_18.91_2555": 37
   },
+  "caracas|port_of_spain|sea": {
+    "navwarn_4_2023_1100": 355
+  },
   "medan|singapore|sea": {
     "quake_us6000tkyk": 128
   },
   "nanjing|shanghai|sea": {
     "fire_31.98_120.63_2994": 29,
     "fire_32.19_118.75_2996": 11
+  },
+  "port_of_spain|cartagena|sea": {
+    "navwarn_4_2023_1100": 424
+  },
+  "karwar|mumbai|sea": {
+    "navwarn_p_2023_3497": 83,
+    "navwarn_p_2023_3916": 46
+  },
+  "pearl_harbor|los_angeles|sea": {
+    "navwarn_12_2023_93": 11
   },
   "4th_guards_military_base|mozdok_air_base|truck": {
     "fire_43.61_44.34_1679": 37

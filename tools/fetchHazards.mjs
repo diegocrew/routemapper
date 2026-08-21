@@ -108,6 +108,25 @@ function haversineKm(a, b) {
   return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(h));
 }
 
+/** Destination point `distanceKm` from `center` along `bearingDeg` (0 = north), used to run a storm's movement vector forward. */
+function destinationPoint(center, bearingDeg, distanceKm) {
+  const rad = (d) => (d * Math.PI) / 180;
+  const deg = (r) => (r * 180) / Math.PI;
+  const delta = distanceKm / EARTH_RADIUS_KM;
+  const theta = rad(bearingDeg);
+  const lat1 = rad(center.lat);
+  const lon1 = rad(center.lon);
+
+  const lat2 = Math.asin(Math.sin(lat1) * Math.cos(delta) + Math.cos(lat1) * Math.sin(delta) * Math.cos(theta));
+  const lon2 =
+    lon1 +
+    Math.atan2(
+      Math.sin(theta) * Math.sin(delta) * Math.cos(lat1),
+      Math.cos(delta) - Math.sin(lat1) * Math.sin(lat2),
+    );
+  return { lon: deg(lon2), lat: deg(lat2) };
+}
+
 // --- Earthquakes -------------------------------------------------------------
 
 function quakeRadiusKm(magnitude) {
@@ -301,6 +320,170 @@ async function fetchGdacsZones() {
   return zones;
 }
 
+// --- Tropical cyclones (NOAA NHC) ---------------------------------------------
+
+// NHC publishes each active storm's position, intensity and movement vector.
+// Extrapolating that vector forward is dead-reckoning, NOT the official NHC
+// forecast cone (which is a shapefile, and encodes real track uncertainty), so
+// these forecast steps widen with lead time to stand in for that uncertainty.
+const NHC_FEED = "https://www.nhc.noaa.gov/CurrentStorms.json";
+const NHC_FORECAST_STEPS_H = [0, 24, 48, 72];
+const NHC_SPREAD_KM_PER_H = 1.6; // radius growth per hour of lead time
+const STORM_RADIUS_KM = [
+  { minKt: 0, km: 150 },
+  { minKt: 64, km: 220 }, // hurricane force
+  { minKt: 96, km: 300 }, // major
+];
+
+function stormRadiusKm(intensityKt) {
+  return [...STORM_RADIUS_KM].reverse().find((b) => intensityKt >= b.minKt)?.km ?? 150;
+}
+
+async function fetchStormZones() {
+  const response = await fetch(NHC_FEED, { signal: AbortSignal.timeout(30000) });
+  if (!response.ok) throw new Error(`NHC request failed: ${response.status}`);
+  const { activeStorms = [] } = await response.json();
+
+  const zones = [];
+  for (const storm of activeStorms) {
+    const lat = Number(storm.latitudeNumeric);
+    const lon = Number(storm.longitudeNumeric);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+
+    const intensityKt = Number(storm.intensity) || 0;
+    const issued = Date.parse(storm.lastUpdate ?? Date.now());
+    const baseKm = stormRadiusKm(intensityKt);
+    const speedKt = Number(storm.movementSpeed) || 0;
+    const headingDeg = Number(storm.movementDir) || 0;
+
+    for (const leadH of NHC_FORECAST_STEPS_H) {
+      const travelledKm = speedKt * 1.852 * leadH;
+      const point = leadH === 0 ? { lon, lat } : destinationPoint({ lon, lat }, headingDeg, travelledKm);
+      const stepH = NHC_FORECAST_STEPS_H[NHC_FORECAST_STEPS_H.indexOf(leadH) + 1] ?? leadH + 24;
+      zones.push({
+        id: `storm_${storm.id}_${leadH}h`,
+        label:
+          leadH === 0
+            ? `${storm.name} (${intensityKt} kt)`
+            : `${storm.name} (${intensityKt} kt) — forecast +${leadH}h`,
+        security: 20,
+        access: "hazard",
+        surchargeUsdPerKm: GDACS_TYPES.TC.surchargeUsdPerKm,
+        tollUsd: 0,
+        hazardKind: "cyclone",
+        modes: ["sea"],
+        detectedAt: new Date(issued).toISOString(),
+        activeFrom: new Date(issued + leadH * 3600 * 1000).toISOString(),
+        activeUntil: new Date(issued + stepH * 3600 * 1000).toISOString(),
+        ...(leadH > 0 ? { forecast: true } : {}),
+        center: [Number(point.lon.toFixed(3)), Number(point.lat.toFixed(3))],
+        radiusKm: Math.round(baseKm + leadH * NHC_SPREAD_KM_PER_H),
+      });
+    }
+  }
+  return zones;
+}
+
+// --- Navigational warnings (NGA) ----------------------------------------------
+
+// NAVAREA broadcast warnings are what mariners actually get told to avoid.
+// Most are routine (drilling-rig positions, buoy outages); only the ones that
+// close or endanger water are useful here.
+const NGA_FEED = "https://msi.nga.mil/api/publications/broadcast-warn?output=json&status=A";
+const NGA_HAZARD_TERMS =
+  /\b(firing|gunnery|missile|rocket|live fire|ordnance|unexploded|mine|minefield|piracy|pirate|naval exercise|military exercise|dangerous|prohibited|closed area|hazardous operations)\b/i;
+const NGA_RADIUS_RANGE_KM = [25, 300];
+/** A warning listing positions spread wider than this is a list of unrelated points, not one area. */
+const NGA_MAX_SPREAD_KM = 600;
+
+/** NAVAREA text carries positions as `19-23.0N 092-03.1W` (degrees-minutes). */
+function parsePositions(text) {
+  const points = [];
+  const pattern = /(\d{1,3})-(\d{1,2}(?:\.\d+)?)\s*([NS])\s+(\d{1,3})-(\d{1,2}(?:\.\d+)?)\s*([EW])/gi;
+  for (const match of text.matchAll(pattern)) {
+    const lat = (Number(match[1]) + Number(match[2]) / 60) * (match[3].toUpperCase() === "S" ? -1 : 1);
+    const lon = (Number(match[4]) + Number(match[5]) / 60) * (match[6].toUpperCase() === "W" ? -1 : 1);
+    if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) points.push({ lat, lon });
+  }
+  return points;
+}
+
+const DTG_MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+/** NGA stamps warnings with a military date-time group: `081653Z MAY 2024`. */
+function parseDtg(value) {
+  const match = /^(\d{2})(\d{2})(\d{2})Z\s+([A-Z]{3})\s+(\d{4})$/i.exec(String(value ?? "").trim());
+  if (!match) return null;
+  const month = DTG_MONTHS.indexOf(match[4].toUpperCase());
+  if (month < 0) return null;
+  return new Date(Date.UTC(Number(match[5]), month, Number(match[1]), Number(match[2]), Number(match[3])));
+}
+
+async function fetchNavWarningZones() {
+  const response = await fetch(NGA_FEED, { signal: AbortSignal.timeout(30000) });
+  if (!response.ok) throw new Error(`NGA request failed: ${response.status}`);
+  const warnings = (await response.json())["broadcast-warn"] ?? [];
+
+  const zones = [];
+  for (const warning of warnings) {
+    const text = warning.text ?? "";
+    if (!NGA_HAZARD_TERMS.test(text)) continue;
+
+    const points = parsePositions(text);
+    if (points.length === 0) continue;
+    const center = {
+      lat: points.reduce((s, p) => s + p.lat, 0) / points.length,
+      lon: points.reduce((s, p) => s + p.lon, 0) / points.length,
+    };
+    const spreadKm = Math.max(0, ...points.map((p) => haversineKm(p, center)));
+    if (spreadKm > NGA_MAX_SPREAD_KM) continue;
+
+    const summary = text.replace(/\s+/g, " ").trim().slice(0, 90);
+    zones.push({
+      id: `navwarn_${warning.navArea}_${warning.msgYear}_${warning.msgNumber}`.toLowerCase(),
+      label: `NAVAREA ${warning.navArea} warning — ${summary}`,
+      security: 35,
+      access: "hazard",
+      surchargeUsdPerKm: 3,
+      tollUsd: 0,
+      hazardKind: "navwarning",
+      modes: ["sea"],
+      detectedAt: (parseDtg(warning.issueDate) ?? new Date()).toISOString(),
+      center: [Number(center.lon.toFixed(3)), Number(center.lat.toFixed(3))],
+      radiusKm: Math.round(
+        Math.min(NGA_RADIUS_RANGE_KM[1], Math.max(NGA_RADIUS_RANGE_KM[0], spreadKm + 25)),
+      ),
+    });
+  }
+  return zones;
+}
+
+// --- History ------------------------------------------------------------------
+
+// Each run overwrites the live files, so without this the past is simply gone.
+// One compact row per run keeps a trace of what the world looked like — enough
+// to answer "how often is this corridor disrupted in August" once a season of
+// rows has accumulated, without retaining thousands of wildfire polygons.
+const HISTORY_FILE = "hazardHistory.json";
+const HISTORY_MAX_ROWS = 1460; // ~1 year at the 4-runs-a-day schedule
+const HISTORY_NOTABLE_MAX = 40;
+
+function appendHistory(zones, counts) {
+  const notable = zones
+    .filter((z) => z.hazardKind !== "wildfire")
+    .slice(0, HISTORY_NOTABLE_MAX)
+    .map((z) => ({ id: z.id, kind: z.hazardKind, label: z.label, center: z.center, radiusKm: z.radiusKm }));
+
+  const row = { at: new Date().toISOString(), total: zones.length, counts, notable };
+  const file = path.join(ROOT, "src/data", HISTORY_FILE);
+  const rows = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : [];
+  rows.push(row);
+
+  const trimmed = rows.slice(-HISTORY_MAX_ROWS);
+  fs.writeFileSync(file, `[\n${trimmed.map((r) => JSON.stringify(r)).join(",\n")}\n]\n`, "utf8");
+  console.log(`History: ${trimmed.length} snapshots retained.`);
+}
+
 // --- Main ---------------------------------------------------------------------
 
 const retagOnly = process.argv.includes("--retag");
@@ -314,6 +497,8 @@ if (retagOnly) {
     ["earthquake", fetchEarthquakeZones],
     ["wildfire", fetchWildfireZones],
     ["GDACS", fetchGdacsZones],
+    ["storm", fetchStormZones],
+    ["nav warning", fetchNavWarningZones],
   ];
   const results = await Promise.all(
     sources.map(([name, fetchZones]) =>
@@ -330,6 +515,8 @@ if (retagOnly) {
   const counts = {};
   for (const zone of hazardZones) counts[zone.hazardKind] = (counts[zone.hazardKind] ?? 0) + 1;
   console.log(`Hazard zones: ${Object.entries(counts).map(([k, n]) => `${n} ${k}`).join(", ")}.`);
+
+  appendHistory(hazardZones, counts);
 }
 
 const nodes = readNodes(ROOT);

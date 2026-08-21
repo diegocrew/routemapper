@@ -40,9 +40,18 @@ export interface Zone {
   delayMonths?: number[];
   delayFactor?: number;
   /** Set only on generated hazard zones. Earthquakes and volcanoes close a site outright; the rest only make it expensive to cross. */
-  hazardKind?: "earthquake" | "wildfire" | "cyclone" | "flood" | "volcano";
+  hazardKind?: "earthquake" | "wildfire" | "cyclone" | "flood" | "volcano" | "navwarning";
   /** ISO timestamp the hazard was detected/generated, set only on generated hazard zones. */
   detectedAt?: string;
+  /**
+   * Validity window, set on hazards that have one — a storm forecast is only
+   * true for the hours it covers. A zone with no window is treated as in
+   * effect whenever it is present in the data at all.
+   */
+  activeFrom?: string;
+  activeUntil?: string;
+  /** Set on zones extrapolated forward in time rather than observed. */
+  forecast?: boolean;
   /**
    * Hand-drawn zones are rings; generated hazard zones are circles stored as
    * `center` + `radiusKm`, which is both far smaller on disk and much cheaper
@@ -139,6 +148,8 @@ export interface RouteLeg {
   hours: number;
   via?: [number, number][];
   zones?: Record<string, number>;
+  /** Hours from departure to arriving at the end of this leg, so a leg can be checked against a hazard's validity window. */
+  etaHours?: number;
 }
 
 export type RouteOptionKey = "cheapest" | "fastest" | "most-direct" | "safest";
@@ -156,6 +167,8 @@ export interface RouteOption {
   zoneLabels: string[];
   /** Set when this route crosses an active hazard zone — only possible at all for cargo with allowMilitaryNodes, since civilian cargo is blocked from hazard zones outright. */
   hazardWarnings: string[];
+  /** Hazards on this route that the shipment outruns: forecast to have expired by the time it reaches them. */
+  clearedHazards: string[];
 }
 
 export interface RouteRequest {
@@ -171,6 +184,8 @@ export interface RouteRequest {
   preferSafety?: boolean;
   /** Month of departure (1-12); drives seasonal closures and delays. */
   month?: number;
+  /** ISO date of departure. Hazards are applied only if their validity window covers the point in the journey where the shipment would actually meet them. */
+  departureDate?: string;
   weightTonnes?: number;
   volumeM3?: number;
 }

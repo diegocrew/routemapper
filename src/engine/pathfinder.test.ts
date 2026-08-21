@@ -193,15 +193,12 @@ describe("routing engine (real dataset smoke test)", () => {
 
     expect(route).toBeDefined();
     expect(route.legs.every((leg) => leg.mode === "sea")).toBe(true);
-    for (const segment of [
-      ["vienna", "budapest"],
-      ["budapest", "belgrade"],
-      ["belgrade", "constanta"],
-      ["constanta", "piraeus"],
-      ["mumbai", "colombo"],
-    ]) {
-      const leg = route.legs.find(({ from, to }) => from === segment[0] && to === segment[1]);
-      expect(leg?.via?.length).toBeGreaterThan(0);
+    // Which corridor gets picked shifts with live hazards (a Black Sea
+    // navigational warning is enough to price the Danube out), so this asserts
+    // the invariant that survives that: an inland leg to a landlocked capital
+    // must follow routed water geometry rather than a straight line over land.
+    for (const leg of route.legs) {
+      expect(leg.via?.length ?? 0).toBeGreaterThan(0);
     }
   });
 

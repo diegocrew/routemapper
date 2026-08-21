@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createZoneIndex } from "./zones";
+import { createZoneIndex, zoneActiveAt, zoneActiveBetween } from "./zones";
 import type { CargoRule, Zone } from "./types";
 
 const civilian: CargoRule = { excludeModes: [] };
@@ -113,5 +113,31 @@ describe("createZoneIndex", () => {
     const index = createZoneIndex([openZone]);
     expect(index.zonesAt(100, 10).map((z) => z.id)).toEqual(["open_test"]);
     expect(index.zonesAt(103, 10)).toEqual([]);
+  });
+});
+
+describe("zone validity windows", () => {
+  const forecast: Zone = {
+    ...wildfireZone,
+    id: "storm_forecast",
+    hazardKind: "cyclone",
+    activeFrom: "2026-08-20T00:00:00.000Z",
+    activeUntil: "2026-08-22T00:00:00.000Z",
+  };
+  const at = (iso: string) => Date.parse(iso);
+
+  it("is in effect only inside its window", () => {
+    expect(zoneActiveAt(forecast, at("2026-08-21T00:00:00Z"))).toBe(true);
+    expect(zoneActiveAt(forecast, at("2026-08-19T00:00:00Z"))).toBe(false);
+    expect(zoneActiveAt(forecast, at("2026-08-23T00:00:00Z"))).toBe(false);
+  });
+
+  it("counts as in effect when a journey window overlaps it at all", () => {
+    expect(zoneActiveBetween(forecast, at("2026-08-18T00:00:00Z"), at("2026-08-25T00:00:00Z"))).toBe(true);
+    expect(zoneActiveBetween(forecast, at("2026-08-23T00:00:00Z"), at("2026-08-25T00:00:00Z"))).toBe(false);
+  });
+
+  it("treats an observed hazard with no window as always in effect", () => {
+    expect(zoneActiveAt(wildfireZone, at("2030-01-01T00:00:00Z"))).toBe(true);
   });
 });

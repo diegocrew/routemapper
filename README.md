@@ -146,6 +146,8 @@ src/
 | --- | --- | --- |
 | USGS | Earthquakes, magnitude ≥5.5, 7-day window | none |
 | GDACS | Tropical cyclones, floods, volcanic eruptions at Orange/Red alert | none |
+| NOAA NHC | Active named storms + a dead-reckoned +24/48/72 h track | none |
+| NGA | NAVAREA broadcast warnings (firing areas, exercises, wrecks, piracy) | none |
 | NASA FIRMS | Wildfire hotspots, last 4 days, clustered | `NASA` secret |
 
 Each becomes a temporary `access: "hazard"` zone, and the legs crossing it are
@@ -160,6 +162,7 @@ What a hazard does depends on what it actually stops:
 | Earthquake | all | Closed to civilian cargo; military transits with a warning |
 | Volcanic eruption | all | Closed to civilian cargo (ash and site damage) |
 | Tropical cyclone | sea | Surcharge + low security score — routed around when possible |
+| Navigational warning | sea | Surcharge + low security score |
 | Flood | truck, rail | Surcharge + low security score |
 | Wildfire | all | Surcharge + low security score |
 
@@ -198,6 +201,31 @@ Wildfires do — unlike some NASA APIs, FIRMS's Area API has no working
 keyless/demo tier (confirmed by testing against the live endpoint), so without
 the secret the workflow still runs and commits earthquake zones, it just skips
 wildfires that run.
+
+## Forecasting and history
+
+A hazard can carry an `activeFrom`/`activeUntil` window, and a route request
+carries a departure date. Two things follow:
+
+- **Journey filtering.** A hazard whose window doesn't overlap
+  `[departure, departure + 30 days]` is ignored entirely — not blocked, not
+  surcharged, not warned about.
+- **Arrival checking.** Each leg records `etaHours` from departure, so a hazard
+  is only warned about if it is still in force when the shipment would actually
+  reach it. Hazards the shipment outruns are reported separately as
+  "forecast to clear before arrival" rather than silently dropped.
+
+Storm forecast steps come from NHC's published movement vector run forward by
+dead reckoning, with the radius widening by lead time to stand in for track
+uncertainty. This is *not* NHC's official forecast cone (that is a shapefile
+encoding real uncertainty); it is an approximation, flagged `forecast: true` on
+the zone.
+
+`src/data/hazardHistory.json` keeps one compact row per pipeline run — counts
+by kind plus the non-wildfire events — capped at ~a year of the 4-a-day
+schedule. The live files are overwritten wholesale on every run, so without
+this the past is simply gone; with it, a season of rows is enough to answer
+"how often is this corridor disrupted in August".
 
 ## Deployment
 

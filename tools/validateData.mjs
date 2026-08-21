@@ -92,7 +92,7 @@ for (const zone of zones) {
 // hazardZones.json/hazardEdgeZones.json are refreshed by the scheduled
 // tools/fetchHazards.mjs run rather than hand-curated, but still need to stay
 // internally consistent and in sync with the current edges.
-const HAZARD_KINDS = new Set(["earthquake", "wildfire", "cyclone", "flood", "volcano"]);
+const HAZARD_KINDS = new Set(["earthquake", "wildfire", "cyclone", "flood", "volcano", "navwarning"]);
 const hazardZoneIds = new Set();
 for (const zone of hazardZones) {
   if (hazardZoneIds.has(zone.id)) fail(`duplicate hazard zone id: ${zone.id}`);

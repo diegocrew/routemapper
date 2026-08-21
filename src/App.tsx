@@ -30,7 +30,9 @@ function App() {
   const [allowedModes, setAllowedModes] = useState<Set<Mode>>(new Set(ALL_MODES));
   const [cargoClass, setCargoClass] = useState<CargoClass>("civilian");
   const [handling, setHandling] = useState<string[]>([]);
-  const [month, setMonth] = useState<number>(() => new Date().getMonth() + 1);
+  // One control drives both: the calendar date is what hazard forecasts are checked against, and its month is what seasonal ice/closures key on.
+  const [departureDate, setDepartureDate] = useState<string>(() => new Date().toISOString().slice(0, 10));
+  const month = new Date(`${departureDate}T00:00:00Z`).getUTCMonth() + 1;
   const [weightTonnes, setWeightTonnes] = useState<number>(costs.cargo.defaultTonnes);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -78,6 +80,7 @@ function App() {
       cargoClass,
       handling,
       month,
+      departureDate,
       weightTonnes,
     };
     const baseOptions = engine.computeRoutes(request);
@@ -87,7 +90,7 @@ function App() {
     }
     const safer = engine.computeRoutes({ ...request, preferSafety: true }).find((o) => o.key === "safest");
     return { baseOptions, saferOption: safer && safer.securityScore > bestSecurity ? safer : null };
-  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoClass, handling, cargoRule.alwaysSafest, month, weightTonnes]);
+  }, [engine, originId, destinationId, waypointIds, allowedModes, cargoClass, handling, cargoRule.alwaysSafest, month, departureDate, weightTonnes]);
   const routeOptions = (preferSafety || cargoRule.alwaysSafest) && saferOption ? [...baseOptions, saferOption] : baseOptions;
 
   // "No route" is nearly always a rule the user set rather than a gap in the
@@ -107,6 +110,7 @@ function App() {
       allowedModes: [...allowedModes],
       cargoClass,
       month,
+      departureDate,
       weightTonnes,
     };
     if (engine.computeRoutes({ ...request, handling: [] }).length === 0) return null;
@@ -118,7 +122,7 @@ function App() {
       .excludeModes.map((m) => costs.modes[m].label.toLowerCase())
       .join(" or ");
     return `${rules} cannot travel by ${barred}, and nothing else connects these stops.`;
-  }, [engine, routeOptions.length, originId, destinationId, waypointIds, allowedModes, cargoClass, cargoRule.allowMilitaryNodes, handling, month, weightTonnes]);
+  }, [engine, routeOptions.length, originId, destinationId, waypointIds, allowedModes, cargoClass, cargoRule.allowMilitaryNodes, handling, month, departureDate, weightTonnes]);
 
   const activeKey = routeOptions.some((o) => o.key === selectedKey) ? selectedKey : (routeOptions[0]?.key ?? null);
   const selectedRoute = routeOptions.find((o) => o.key === activeKey) ?? null;
@@ -202,9 +206,9 @@ function App() {
           setPreferSafety(false);
           setSelectedKey(null);
         }}
-        month={month}
-        onMonthChange={(next) => {
-          setMonth(next);
+        departureDate={departureDate}
+        onDepartureDateChange={(next) => {
+          setDepartureDate(next);
           setSelectedKey(null);
         }}
         weightTonnes={weightTonnes}

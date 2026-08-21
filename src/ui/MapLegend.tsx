@@ -24,6 +24,7 @@ const HAZARD_ROWS: { kind: string; label: string; effect: string }[] = [
   { kind: "earthquake", label: "Earthquake", effect: "no civilian transit" },
   { kind: "volcano", label: "Eruption", effect: "no civilian transit" },
   { kind: "cyclone", label: "Tropical cyclone", effect: "sea legs avoid" },
+  { kind: "navwarning", label: "Nav warning", effect: "sea legs avoid" },
   { kind: "flood", label: "Flooding", effect: "road/rail legs avoid" },
   { kind: "wildfire", label: "Wildfire", effect: "legs avoid" },
 ];

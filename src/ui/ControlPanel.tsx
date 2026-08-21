@@ -8,7 +8,6 @@ import { CityDetails } from "./CityDetails";
 import { MODE_COLORS, MODE_LABELS } from "../map/modeStyle";
 
 const ALL_MODES: Mode[] = ["sea", "air", "rail", "truck"];
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const CARGO_CLASSES: CargoClass[] = ["civilian", "military"];
 
 const BiohazardIcon = () => (
@@ -70,8 +69,8 @@ interface ControlPanelProps {
   handling: string[];
   handlingOptions: HandlingOption[];
   onToggleHandling: (key: string) => void;
-  month: number;
-  onMonthChange: (month: number) => void;
+  departureDate: string;
+  onDepartureDateChange: (date: string) => void;
   weightTonnes: number;
   onWeightChange: (tonnes: number) => void;
   routeOptions: RouteOption[];
@@ -110,8 +109,8 @@ export function ControlPanel({
   handling,
   handlingOptions,
   onToggleHandling,
-  month,
-  onMonthChange,
+  departureDate,
+  onDepartureDateChange,
   weightTonnes,
   onWeightChange,
   routeOptions,
@@ -224,11 +223,11 @@ export function ControlPanel({
       <div className="field-row">
         <label className="field">
           <span className="field-label">Departs</span>
-          <select value={month} onChange={(e) => onMonthChange(Number(e.target.value))}>
-            {MONTHS.map((label, i) => (
-              <option key={label} value={i + 1}>{label}</option>
-            ))}
-          </select>
+          <input
+            type="date"
+            value={departureDate}
+            onChange={(e) => onDepartureDateChange(e.target.value)}
+          />
         </label>
         <label className="field">
           <span className="field-label">Weight (t)</span>

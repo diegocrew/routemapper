@@ -5,9 +5,12 @@ import { buildGraph } from "./graph";
 import { buildTruckEdges } from "./truckEdges";
 import { buildAirEdges } from "./airEdges";
 import { economicIndex, routeSecurityIndex, securityIndex, transitIndex } from "./indices";
-import { blockedZoneIds, closedInMonth, edgeKey, getZone, hazardEdgeZones, hazardZoneIds, zonesAt } from "./zones";
+import { blockedZoneIds, closedInMonth, edgeKey, getZone, hazardEdgeZones, hazardZoneIds, zoneActiveAt, zoneActiveBetween, zonesAt } from "./zones";
 import { borderCheck } from "./restrictions";
 import { resolveCargo } from "./cargo";
+
+/** How far ahead a departure looks for hazards. Beyond this a forecast is noise, and nothing in the feeds forecasts further. */
+const PLANNING_HORIZON_DAYS = 30;
 
 /** What crossing each hazard actually means for the shipment, shown on the route card. */
 const HAZARD_NOTES: Record<string, string> = {
@@ -16,6 +19,7 @@ const HAZARD_NOTES: Record<string, string> = {
   wildfire: "active wildfire on this leg, expect disruption",
   cyclone: "tropical cyclone on this leg, expect port closures and delay",
   flood: "flooding on this leg, expect road and rail disruption",
+  navwarning: "navigational warning in force on this leg",
 };
 
 type Weight = (edge: AdjEdge) => number;
@@ -143,12 +147,13 @@ function combineLegs(
   securityScore: number,
   zoneLabels: string[],
   hazardWarnings: string[],
+  clearedHazards: string[],
 ): RouteOption {
   const totalUsd = legs.reduce((sum, l) => sum + l.usd, 0);
   const totalHours = legs.reduce((sum, l) => sum + l.hours, 0);
   const transferCount = legs.slice(1).filter((l, i) => l.mode !== legs[i].mode).length;
 
-  return { key, label, legs, totalUsd, totalHours, transferCount, securityScore, zoneLabels, hazardWarnings };
+  return { key, label, legs, totalUsd, totalHours, transferCount, securityScore, zoneLabels, hazardWarnings, clearedHazards };
 }
 
 function routesEqual(a: RouteOption, b: RouteOption): boolean {
@@ -230,11 +235,21 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
       if (stops.some((id, i) => stops.indexOf(id) !== i)) return []; // repeated stop (e.g. waypoint == origin)
       if (stops.length < 2) return [];
 
+      // A forecast hazard is only real if it is still running when the shipment
+      // gets there. The planning window bounds what could possibly matter; the
+      // per-leg check below is what decides whether it actually did.
+      const departMs = request.departureDate ? Date.parse(request.departureDate) : Date.now();
+      const horizonMs = departMs + PLANNING_HORIZON_DAYS * 24 * 3600 * 1000;
+      const isZoneInEffect = (id: string) => {
+        const zone = getZone(id);
+        return zone ? zoneActiveBetween(zone, departMs, horizonMs) : true;
+      };
+
       // Military-kind nodes are off-limits to every cargo type except one flagged
       // allowMilitaryNodes — and that cargo type can still freely use civilian
       // nodes too, it just isn't restricted the way everyone else is. The same
       // rule closes off nodes that sit inside a military-only zone.
-      const blockedZones = blockedZoneIds(cargoRule);
+      const blockedZones = new Set([...blockedZoneIds(cargoRule)].filter(isZoneInEffect));
       const inClosedZone = (n: GeoNode) => zonesAt(n.lon, n.lat).some((z) => blockedZones.has(z.id));
       const eligibleNodes = cargoRule.allowMilitaryNodes
         ? nodes
@@ -242,11 +257,14 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
       if (stops.some((id) => !eligibleNodes.some((n) => n.id === id))) return [];
 
       const handlingKey = [...(request.handling ?? [])].sort().join("+");
-      const graphKey = `${[...allowedModes].sort().join(",")}|${request.cargoClass ?? ""}|${handlingKey}|${request.month ?? ""}`;
+      // Bucketed by day: two departures on the same date see the same hazards.
+      const dayKey = Math.floor(departMs / (24 * 3600 * 1000));
+      const graphKey = `${[...allowedModes].sort().join(",")}|${request.cargoClass ?? ""}|${handlingKey}|${request.month ?? ""}|${dayKey}`;
       const graph = cachedGraph(graphKey, () =>
         buildGraph(eligibleNodes, allEdges, costs, allowedModes, {
           blockedZones: new Set([...blockedZones, ...closedInMonth(request.month)]),
           isBorderClosed: borderCheck(cargoRule),
+          isZoneInEffect,
           month: request.month,
         }),
       );
@@ -292,6 +310,13 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
         }
         if (!ok || legs.length === 0) continue;
 
+        // Legs are walked in order so each one knows when the shipment reaches it.
+        let elapsedHours = 0;
+        for (const leg of legs) {
+          elapsedHours += leg.hours;
+          leg.etaHours = Math.round(elapsedHours);
+        }
+
         const visited = [legs[0].from, ...legs.map((l) => l.to)];
         const crossed = [...new Set(legs.flatMap((l) => Object.keys(l.zones ?? {})))];
         const score = routeSecurityIndex([
@@ -299,13 +324,25 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
           ...crossed.map((id) => getZone(id)?.security ?? 100),
         ]);
         const zoneLabels = crossed.map((id) => getZone(id)?.label ?? id);
-        const hazardWarnings = crossed
-          .filter((id) => hazardZoneIds.has(id))
-          .map((id) => {
+
+        const hazardWarnings: string[] = [];
+        const clearedHazards: string[] = [];
+        for (const leg of legs) {
+          const arrivalMs = departMs + (leg.etaHours ?? 0) * 3600 * 1000;
+          for (const id of Object.keys(leg.zones ?? {})) {
+            if (!hazardZoneIds.has(id)) continue;
             const zone = getZone(id);
-            return `${zone?.label ?? id} — ${HAZARD_NOTES[zone?.hazardKind ?? ""] ?? "active hazard on this leg"}`;
-          });
-        const option = combineLegs(legs, run.key, run.label, score, zoneLabels, hazardWarnings);
+            const label = zone?.label ?? id;
+            if (zone && !zoneActiveAt(zone, arrivalMs)) {
+              if (!clearedHazards.includes(label)) clearedHazards.push(label);
+              continue;
+            }
+            const note = `${label} — ${HAZARD_NOTES[zone?.hazardKind ?? ""] ?? "active hazard on this leg"}`;
+            if (!hazardWarnings.includes(note)) hazardWarnings.push(note);
+          }
+        }
+
+        const option = combineLegs(legs, run.key, run.label, score, zoneLabels, hazardWarnings, clearedHazards);
         if (!options.some((o) => routesEqual(o, option))) {
           options.push(option);
         }

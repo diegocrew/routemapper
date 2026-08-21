@@ -127,6 +127,19 @@ export function createZoneIndex(zones: Zone[]) {
   return { zones, getZone, zonesAt, blockedZoneIds, closedInMonth, seasonalDelay, hazardZoneIds };
 }
 
+/**
+ * Whether a zone is in effect at any point in [fromMs, toMs]. A zone with no
+ * validity window is always in effect — hand-drawn chokepoints and observed
+ * hazards have no expiry, only forecasts do.
+ */
+export function zoneActiveBetween(zone: Zone, fromMs: number, toMs: number): boolean {
+  if (zone.activeFrom && Date.parse(zone.activeFrom) > toMs) return false;
+  if (zone.activeUntil && Date.parse(zone.activeUntil) < fromMs) return false;
+  return true;
+}
+
+export const zoneActiveAt = (zone: Zone, atMs: number): boolean => zoneActiveBetween(zone, atMs, atMs);
+
 export const hazardZones = hazardZonesData as Zone[];
 
 const index = createZoneIndex([...(zonesData as Zone[]), ...hazardZones]);

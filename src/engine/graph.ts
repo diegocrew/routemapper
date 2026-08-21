@@ -58,6 +58,8 @@ export interface AccessRules {
   isBorderClosed: (fromCountry: string, toCountry: string, mode: Mode) => unknown;
   /** Departure month, for seasonal delays. */
   month?: number;
+  /** Zones outside their validity window for this journey, ignored for blocking, surcharge and delay. */
+  isZoneInEffect?: (id: string) => boolean;
 }
 
 const OPEN: AccessRules = { blockedZones: new Set(), isBorderClosed: () => undefined };
@@ -100,7 +102,8 @@ export function buildGraph(
 
   for (const e of edges) {
     if (!allowedModes.has(e.mode)) continue;
-    const zoneEntries = Object.entries(e.zones ?? {});
+    const inEffect = access.isZoneInEffect ?? (() => true);
+    const zoneEntries = Object.entries(e.zones ?? {}).filter(([id]) => inEffect(id));
     if (zoneEntries.some(([id]) => access.blockedZones.has(id))) continue;
     const a = nodeById.get(e.from);
     const b = nodeById.get(e.to);

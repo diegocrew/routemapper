@@ -40,4 +40,5 @@ export const HAZARD_KIND_COLORS: Record<string, string> = {
   cyclone: "#38bdf8",
   flood: "#3b82f6",
   volcano: "#a855f7",
+  navwarning: "#facc15",
 };
