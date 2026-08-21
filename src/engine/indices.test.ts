@@ -25,8 +25,16 @@ describe("economicIndex / securityIndex", () => {
   });
 
   it("lets a city override its country's security score", () => {
+    // The override is the final word for that node; the bare country score is
+    // the curated base minus whatever live sanctions/conflict penalty applies,
+    // so it is asserted as a bound rather than a fixed number.
     expect(securityIndex("Somalia", "mogadishu")).toBe(3);
-    expect(securityIndex("Somalia")).toBe(4);
+    expect(securityIndex("Somalia")).toBeLessThanOrEqual(4);
+  });
+
+  it("penalises a sanctioned country below its curated score, and leaves others alone", () => {
+    expect(securityIndex("Iran")).toBeLessThan(securityIndex("Switzerland"));
+    expect(securityIndex("Germany")).toBe(88);
   });
 
   it("falls back to a mid-range default for an unrecognized country string", () => {

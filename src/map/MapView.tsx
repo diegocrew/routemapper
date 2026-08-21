@@ -32,7 +32,17 @@ const HAZARDS_SOURCE = "rm-hazards";
 const HAZARDS_FILL_LAYER = "rm-hazards-fill";
 const HAZARDS_OUTLINE_LAYER = "rm-hazards-outline";
 const HAZARDS_POINT_LAYER = "rm-hazards-point";
+const FIRES_FILL_LAYER = "rm-fires-fill";
+const FIRES_OUTLINE_LAYER = "rm-fires-outline";
+const FIRES_POINT_LAYER = "rm-fires-point";
+// Wildfires outnumber every other hazard about two hundred to one, so they get their own switch rather than burying the rest of the layer.
 const HAZARD_LAYERS = [HAZARDS_FILL_LAYER, HAZARDS_OUTLINE_LAYER, HAZARDS_POINT_LAYER];
+const FIRE_LAYERS = [FIRES_FILL_LAYER, FIRES_OUTLINE_LAYER, FIRES_POINT_LAYER];
+
+const IS_WILDFIRE: maplibregl.ExpressionSpecification = ["==", ["get", "kind"], "wildfire"];
+const NOT_WILDFIRE: maplibregl.ExpressionSpecification = ["!=", ["get", "kind"], "wildfire"];
+const isPolygon: maplibregl.ExpressionSpecification = ["==", ["geometry-type"], "Polygon"];
+const isPoint: maplibregl.ExpressionSpecification = ["==", ["geometry-type"], "Point"];
 
 const hazardColorByKind: maplibregl.ExpressionSpecification = [
   "match",
@@ -45,6 +55,8 @@ const hazardColorByKind: maplibregl.ExpressionSpecification = [
   HAZARD_KIND_COLORS.flood,
   "volcano",
   HAZARD_KIND_COLORS.volcano,
+  "navwarning",
+  HAZARD_KIND_COLORS.navwarning,
   HAZARD_COLOR,
 ];
 
@@ -55,44 +67,59 @@ interface MapViewProps {
   waypointIds: string[];
   route: RouteOption | null;
   showHazards: boolean;
+  showWildfires: boolean;
   onToggleHazards: () => void;
+  onToggleWildfires: () => void;
   onSelectNode: (id: string) => void;
 }
 
-/** Sits in the map's own top-right button stack alongside zoom/globe/terrain, so every map-display switch is in one place. */
-class HazardToggleControl implements maplibregl.IControl {
-  private container: HTMLDivElement | null = null;
-  private button: HTMLButtonElement | null = null;
-  private readonly onToggle: () => void;
+interface ToggleSpec {
+  glyph: string;
+  className: string;
+  labelOn: string;
+  labelOff: string;
+  onToggle: () => void;
+}
 
-  constructor(onToggle: () => void) {
-    this.onToggle = onToggle;
+/** Sits in the map's own top-right button stack alongside zoom/globe/terrain, so every map-display switch is in one place. */
+class LayerToggleControl implements maplibregl.IControl {
+  private container: HTMLDivElement | null = null;
+  private readonly buttons: HTMLButtonElement[] = [];
+  private readonly specs: ToggleSpec[];
+
+  constructor(specs: ToggleSpec[]) {
+    this.specs = specs;
   }
 
   onAdd(): HTMLElement {
     this.container = document.createElement("div");
     this.container.className = "maplibregl-ctrl maplibregl-ctrl-group";
-    this.button = document.createElement("button");
-    this.button.type = "button";
-    this.button.className = "rm-hazard-toggle";
-    this.button.textContent = "⚠";
-    this.button.addEventListener("click", () => this.onToggle());
-    this.container.appendChild(this.button);
+    for (const spec of this.specs) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = spec.className;
+      button.textContent = spec.glyph;
+      button.addEventListener("click", () => spec.onToggle());
+      this.container.appendChild(button);
+      this.buttons.push(button);
+    }
     return this.container;
   }
 
   onRemove(): void {
     this.container?.remove();
     this.container = null;
-    this.button = null;
+    this.buttons.length = 0;
   }
 
-  setActive(active: boolean): void {
-    if (!this.button) return;
-    this.button.classList.toggle("rm-hazard-toggle-on", active);
-    this.button.title = active ? "Hide active hazards" : "Show active hazards";
-    this.button.setAttribute("aria-label", this.button.title);
-    this.button.setAttribute("aria-pressed", String(active));
+  setActive(index: number, active: boolean): void {
+    const button = this.buttons[index];
+    const spec = this.specs[index];
+    if (!button || !spec) return;
+    button.classList.toggle(`${spec.className}-on`, active);
+    button.title = active ? spec.labelOn : spec.labelOff;
+    button.setAttribute("aria-label", button.title);
+    button.setAttribute("aria-pressed", String(active));
   }
 }
 
@@ -317,7 +344,7 @@ function routeToGeoJSON(nodes: GeoNode[], route: RouteOption | null) {
   return { type: "FeatureCollection" as const, features };
 }
 
-export function MapView({ nodes, originId, destinationId, waypointIds, route, showHazards, onToggleHazards, onSelectNode }: MapViewProps) {
+export function MapView({ nodes, originId, destinationId, waypointIds, route, showHazards, showWildfires, onToggleHazards, onToggleWildfires, onSelectNode }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MLMap | null>(null);
   const loadedRef = useRef(false);
@@ -325,10 +352,14 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
   onSelectNodeRef.current = onSelectNode;
   const onToggleHazardsRef = useRef(onToggleHazards);
   onToggleHazardsRef.current = onToggleHazards;
-  const hazardControlRef = useRef<HazardToggleControl | null>(null);
-  // The map finishes loading after the first render, so the layers need the toggle's current value when they are created.
+  const onToggleWildfiresRef = useRef(onToggleWildfires);
+  onToggleWildfiresRef.current = onToggleWildfires;
+  const layerControlRef = useRef<LayerToggleControl | null>(null);
+  // The map finishes loading after the first render, so the layers need the toggles' current values when they are created.
   const showHazardsRef = useRef(showHazards);
   showHazardsRef.current = showHazards;
+  const showWildfiresRef = useRef(showWildfires);
+  showWildfiresRef.current = showWildfires;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -350,10 +381,26 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
       map.addControl(new maplibregl.GlobeControl(), "top-right");
       map.addControl(new maplibregl.TerrainControl({ source: TERRAIN_DEM_SOURCE, exaggeration: 1.4 }), "top-right");
 
-      const hazardControl = new HazardToggleControl(() => onToggleHazardsRef.current());
-      map.addControl(hazardControl, "top-right");
-      hazardControl.setActive(showHazardsRef.current);
-      hazardControlRef.current = hazardControl;
+      const layerControl = new LayerToggleControl([
+        {
+          glyph: "⚠",
+          className: "rm-hazard-toggle",
+          labelOn: "Hide active hazards (excluding wildfires)",
+          labelOff: "Show active hazards (excluding wildfires)",
+          onToggle: () => onToggleHazardsRef.current(),
+        },
+        {
+          glyph: "🔥",
+          className: "rm-fire-toggle",
+          labelOn: "Hide wildfires",
+          labelOff: "Show wildfires",
+          onToggle: () => onToggleWildfiresRef.current(),
+        },
+      ]);
+      map.addControl(layerControl, "top-right");
+      layerControl.setActive(0, showHazardsRef.current);
+      layerControl.setActive(1, showWildfiresRef.current);
+      layerControlRef.current = layerControl;
 
       map.addSource(NODES_SOURCE, { type: "geojson", data: nodesToGeoJSON(nodes) });
       map.addSource(SELECTED_SOURCE, { type: "geojson", data: selectedToGeoJSON(nodes, null, null, []) });
@@ -361,30 +408,38 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
       map.addSource(HAZARDS_SOURCE, { type: "geojson", data: hazardsToGeoJSON() });
 
       // Fire-season clusters overlap heavily, so at world zoom their footprints stack into one solid red mass — below zoom 5 the marker rings carry the layer instead.
-      map.addLayer({
-        id: HAZARDS_FILL_LAYER,
-        type: "fill",
-        source: HAZARDS_SOURCE,
-        filter: ["==", ["geometry-type"], "Polygon"],
-        layout: { visibility: showHazardsRef.current ? "visible" : "none" },
-        paint: {
-          "fill-color": hazardColorByKind,
-          "fill-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 7, 0.18],
-        },
-      });
+      const footprintFill: maplibregl.FillLayerSpecification["paint"] = {
+        "fill-color": hazardColorByKind,
+        "fill-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 7, 0.18],
+      };
+      const footprintOutline: maplibregl.LineLayerSpecification["paint"] = {
+        "line-color": hazardColorByKind,
+        "line-width": 1.5,
+        "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 7, 0.8],
+      };
 
-      map.addLayer({
-        id: HAZARDS_OUTLINE_LAYER,
-        type: "line",
-        source: HAZARDS_SOURCE,
-        filter: ["==", ["geometry-type"], "Polygon"],
-        layout: { visibility: showHazardsRef.current ? "visible" : "none" },
-        paint: {
-          "line-color": hazardColorByKind,
-          "line-width": 1.5,
-          "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 7, 0.8],
-        },
-      });
+      for (const [fillId, outlineId, kindFilter, visible] of [
+        [HAZARDS_FILL_LAYER, HAZARDS_OUTLINE_LAYER, NOT_WILDFIRE, showHazardsRef.current],
+        [FIRES_FILL_LAYER, FIRES_OUTLINE_LAYER, IS_WILDFIRE, showWildfiresRef.current],
+      ] as const) {
+        map.addLayer({
+          id: fillId,
+          type: "fill",
+          source: HAZARDS_SOURCE,
+          filter: ["all", isPolygon, kindFilter],
+          layout: { visibility: visible ? "visible" : "none" },
+          paint: { ...footprintFill },
+        });
+
+        map.addLayer({
+          id: outlineId,
+          type: "line",
+          source: HAZARDS_SOURCE,
+          filter: ["all", isPolygon, kindFilter],
+          layout: { visibility: visible ? "visible" : "none" },
+          paint: { ...footprintOutline },
+        });
+      }
 
       map.addLayer({
         id: ROUTE_CASING_LAYER,
@@ -486,23 +541,28 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
       });
 
       // Above the node dots: a hazard marker that sat underneath thousands of installations would never be seen.
-      map.addLayer({
-        id: HAZARDS_POINT_LAYER,
-        type: "circle",
-        source: HAZARDS_SOURCE,
-        filter: ["==", ["geometry-type"], "Point"],
-        layout: { visibility: showHazardsRef.current ? "visible" : "none" },
-        paint: {
-          // Fire-season regions hold hundreds of clusters within a few degrees: at world zoom the markers have to stay small and faint or they merge into one opaque blot.
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 1.5, 1.5, 4, 4, 6, 6.5],
-          // Hollow, so a hazard reads differently from the solid red dot of a military installation.
-          "circle-color": "rgba(0, 0, 0, 0)",
-          "circle-stroke-color": hazardColorByKind,
-          "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 1.5, 0.8, 4, 2],
-          // Fades out as the true footprint below becomes big enough to read on its own.
-          "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 1.5, 0.35, 4, 0.95, 7, 0],
-        },
-      });
+      for (const [pointId, kindFilter, visible] of [
+        [HAZARDS_POINT_LAYER, NOT_WILDFIRE, showHazardsRef.current],
+        [FIRES_POINT_LAYER, IS_WILDFIRE, showWildfiresRef.current],
+      ] as const) {
+        map.addLayer({
+          id: pointId,
+          type: "circle",
+          source: HAZARDS_SOURCE,
+          filter: ["all", isPoint, kindFilter],
+          layout: { visibility: visible ? "visible" : "none" },
+          paint: {
+            // Fire-season regions hold hundreds of clusters within a few degrees: at world zoom the markers have to stay small and faint or they merge into one opaque blot.
+            "circle-radius": ["interpolate", ["linear"], ["zoom"], 1.5, 1.5, 4, 4, 6, 6.5],
+            // Hollow, so a hazard reads differently from the solid red dot of a military installation.
+            "circle-color": "rgba(0, 0, 0, 0)",
+            "circle-stroke-color": hazardColorByKind,
+            "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 1.5, 0.8, 4, 2],
+            // Fades out as the true footprint below becomes big enough to read on its own.
+            "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 1.5, 0.35, 4, 0.95, 7, 0],
+          },
+        });
+      }
 
       map.on("mouseenter", NODES_LAYER, () => {
         map.getCanvas().style.cursor = "pointer";
@@ -518,7 +578,7 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
 
       // A bare red blob says nothing about what the hazard is, so name it on hover.
       const hazardPopup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 8 });
-      for (const layer of [HAZARDS_POINT_LAYER, HAZARDS_FILL_LAYER]) {
+      for (const layer of [HAZARDS_POINT_LAYER, HAZARDS_FILL_LAYER, FIRES_POINT_LAYER, FIRES_FILL_LAYER]) {
         map.on("mousemove", layer, (e: MapLayerMouseEvent) => {
           const label = e.features?.[0]?.properties?.label;
           if (typeof label !== "string") return;
@@ -575,8 +635,17 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
     for (const layer of HAZARD_LAYERS) {
       map.setLayoutProperty(layer, "visibility", showHazards ? "visible" : "none");
     }
-    hazardControlRef.current?.setActive(showHazards);
+    layerControlRef.current?.setActive(0, showHazards);
   }, [showHazards]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current) return;
+    for (const layer of FIRE_LAYERS) {
+      map.setLayoutProperty(layer, "visibility", showWildfires ? "visible" : "none");
+    }
+    layerControlRef.current?.setActive(1, showWildfires);
+  }, [showWildfires]);
 
   return <div ref={containerRef} style={{ position: "absolute", inset: 0 }} />;
 }

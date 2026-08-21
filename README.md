@@ -164,13 +164,48 @@ What a hazard does depends on what it actually stops:
 | Tropical cyclone | sea | Surcharge + low security score — routed around when possible |
 | Navigational warning | sea | Surcharge + low security score |
 | Flood | truck, rail | Surcharge + low security score |
-| Wildfire | all | Surcharge + low security score |
+| Wildfire | truck, rail | Surcharge + low security score |
 
 The closure/deterrent split matters: hard-blocking everything severed the
 civilian network, because the global fire feed alone covers thousands of zones
-at a time. Mode scoping is what makes cyclones and floods realistic — a
-cyclone should push a ship off a lane without touching the road network behind
-the port.
+at a time. Mode scoping is what makes the rest realistic — a cyclone should push
+a ship off a lane without touching the road network behind the port, and a
+wildfire should stop trucks and trains without surcharging aircraft overflying
+it or ships passing tens of km offshore.
+
+## Country risk (sanctions & conflict)
+
+`npm run fetch:country-risk` (`tools/fetchCountryRisk.mjs`) writes
+`src/data/countryRisk.json`: a **bounded adjustment** applied on top of the
+curated scores in `indices.json`. The curated numbers stay the source of truth
+— live data only nudges them, within caps set in the tool, so a bad feed day
+cannot rewrite the model. A hand-set `nodeSecurity` override is the final word
+for that node and is never adjusted.
+
+| Source | Signal | Cap |
+| --- | --- | --- |
+| OpenSanctions (CC-BY) | Sanctions programmes aimed at a country, weighted by designations | −18 security, −12 economic |
+| GDELT 2.0 | Conflict-related coverage volume for a country, 7-day | −12 security |
+
+Both are proxies, not verified measures, and both fail soft.
+
+One trap worth recording: OpenSanctions' per-country **target counts** say where
+sanctioned entities are *registered*, which ranks the United States, India and
+Nigeria among the highest — an artefact of company registration, not risk.
+Scoring on it produced a −23 penalty for the US. The **programme identifiers**
+(`AU-RUSSIA`, `UN-SC1718`) instead name the country a regime is aimed *at*, and
+that is what is used. The corrected output penalises Iran, Ukraine, Russia,
+North Korea, Afghanistan, DR Congo, Iraq and Syria hardest.
+
+Similarly, GDELT's `sourcecountry` is where an article was *published*, so
+aggregating on it just ranks countries by the size of their English-language
+press; the tool queries `locationcc:` per country instead, over a watchlist, so
+attribution is by the location an article is *about*. GDELT rate-limits hard and
+its endpoints are frequently unreachable — the collector gives up after three
+consecutive failures and contributes nothing rather than stalling the job.
+
+Because this lands on security and economic scores, it is civilian cargo that
+feels it: military cargo already ignores security scoring and closed borders.
 
 Hazard zones are drawn on the map whether or not a route has been planned, and
 can be hidden with the ⚠ button in the map's top-right control stack. Each kind

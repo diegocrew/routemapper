@@ -1,28 +1,18 @@
 /**
- * Pulls live natural hazards and turns them into temporary "hazard" zones in
- * the same shape as src/data/zones.json, then tags which curated/truck legs
- * cross them. Sources, all keyless except FIRMS:
- *   USGS   - earthquakes
- *   FIRMS  - wildfire hotspots (NASA)
- *   GDACS  - tropical cyclones, floods and volcanic eruptions, filtered to the
- *            Orange/Red alert levels so only events big enough to disrupt
- *            freight are carried
+ * Pulls live natural hazards into temporary "hazard" zones in the same shape
+ * as src/data/zones.json, then tags which curated/truck legs cross them. Each
+ * source lives in tools/feeds/ and is keyless except FIRMS.
  *
  * Run on a schedule by .github/workflows/hazards.yml — each run re-fetches the
  * current upstream window and overwrites the output files wholesale, so an
  * event "expires" simply by aging out of its source's own time bucket; there
- * is no separate delete/expiry step here.
+ * is no separate delete/expiry step. src/data/hazardHistory.json keeps a
+ * compact trace of what each run saw, since the live files are overwritten.
  *
  * Usage: node tools/fetchHazards.mjs [--retag]
  *        --retag re-tags which legs cross the already-committed hazard zones
- *        without calling any API — needed after nodes or edges change,
- *        since stale leg keys fail validation.
- * Env:   FIRMS_API_KEY - required for the wildfire half (get a free MAP_KEY at
- *        https://firms.modaps.eosdis.nasa.gov/api/map_key/ — confirmed by
- *        testing against the live API: unlike some NASA APIs, FIRMS's Area API
- *        has no working keyless/demo tier, it just 400s without a real key).
- *        Missing the key skips the wildfire fetch for this run rather than
- *        failing the whole script. Every other source needs no key at all.
+ *        without calling any API — needed after nodes or edges change, since
+ *        stale leg keys fail validation.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -30,6 +20,11 @@ import { fileURLToPath } from "node:url";
 
 import { createZoneGrid, zonesOnEdge } from "./lib/geo.mjs";
 import { readNodes } from "./lib/nodes.mjs";
+import { fetchEarthquakeZones } from "./feeds/usgs.mjs";
+import { fetchWildfireZones } from "./feeds/firms.mjs";
+import { fetchGdacsZones } from "./feeds/gdacs.mjs";
+import { fetchStormZones } from "./feeds/nhc.mjs";
+import { fetchNavWarningZones } from "./feeds/nga.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => JSON.parse(fs.readFileSync(path.join(ROOT, "src/data", file), "utf8"));
@@ -46,424 +41,20 @@ const writeCompactList = (file, list) =>
     "utf8",
   );
 
-// --- Tunable thresholds -----------------------------------------------------
-// All approximate; adjust here rather than scattering magic numbers below.
-
-const USGS_FEED = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
-const MIN_MAGNITUDE = 5.5; // below this, unlikely to disrupt a port/airport/rail hub
-
-// Felt-shaking radius by magnitude — a rough, explicitly approximate bucket
-// table, not a seismological model.
-const QUAKE_RADIUS_KM = [
-  { min: 5.5, max: 6.0, km: 60 },
-  { min: 6.0, max: 7.0, km: 120 },
-  { min: 7.0, max: 8.0, km: 220 },
-  { min: 8.0, max: Infinity, km: 350 },
+const SOURCES = [
+  ["earthquake", fetchEarthquakeZones],
+  ["wildfire", fetchWildfireZones],
+  ["GDACS", fetchGdacsZones],
+  ["storm", fetchStormZones],
+  ["nav warning", fetchNavWarningZones],
 ];
-
-const FIRMS_SOURCE = "VIIRS_SNPP_NRT";
-const FIRMS_DAY_RANGE = 4;
-const FIRMS_MIN_CONFIDENCE = 50; // 0-100 scale; VIIRS "l/n/h" is mapped onto this below
-// A global VIIRS window is hundreds of thousands of detections. Linking and
-// minimum-size thresholds are set so seasonal fire season smears collapse into
-// a few thousand zones rather than tens of thousands of near-duplicates.
-const CLUSTER_LINK_KM = 30; // detections within this of a cluster's centroid join it
-const MIN_CLUSTER_POINTS = 8; // smaller clusters are treated as noise
-const FIRE_BUFFER_KM = 10; // added on top of the cluster's own spread
-const FIRE_RADIUS_RANGE_KM = [15, 75]; // clamp so one hotspot isn't a pinprick and a big fire isn't a continent
-
-// Cheapest/fastest routing only reacts to money and time, so a hazard needs a
-// price to be routed around at all. Wildfires are passable but expensive;
-// earthquakes are closed to civilian cargo outright and this is what military
-// transit pays to cross anyway.
-const WILDFIRE_SURCHARGE_USD_PER_KM = 2;
-const QUAKE_SURCHARGE_USD_PER_KM = 5;
-
-// GDACS carries every disaster type on one alert scale; only these three
-// change how freight moves, and only at Orange/Red. Radii are alert-level
-// buckets rather than the real footprint (the list endpoint gives a centroid,
-// not a geometry), in the same explicitly-approximate spirit as the quake
-// table above.
-//
-// `modes` is what makes these useful: a cyclone is a sea problem, a flood is a
-// road and rail problem. Volcanoes carry no `modes` because ash closes the
-// site itself, which is also why they block civilian cargo outright.
-const GDACS_FEED =
-  "https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventlist=TC;FL;VO&alertlevel=Orange;Red";
-const GDACS_TYPES = {
-  TC: { kind: "cyclone", modes: ["sea"], radiusKm: { Orange: 300, Red: 500 }, surchargeUsdPerKm: 4, security: 25 },
-  FL: { kind: "flood", modes: ["truck", "rail"], radiusKm: { Orange: 80, Red: 150 }, surchargeUsdPerKm: 3, security: 30 },
-  VO: { kind: "volcano", modes: undefined, radiusKm: { Orange: 50, Red: 100 }, surchargeUsdPerKm: 5, security: 20 },
-};
-
-const EARTH_RADIUS_KM = 6371;
-
-// --- Geometry helpers --------------------------------------------------------
-
-function haversineKm(a, b) {
-  const rad = (d) => (d * Math.PI) / 180;
-  const dLat = rad(b.lat - a.lat);
-  const dLon = rad(b.lon - a.lon);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon / 2) ** 2;
-  return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(h));
-}
-
-/** Destination point `distanceKm` from `center` along `bearingDeg` (0 = north), used to run a storm's movement vector forward. */
-function destinationPoint(center, bearingDeg, distanceKm) {
-  const rad = (d) => (d * Math.PI) / 180;
-  const deg = (r) => (r * 180) / Math.PI;
-  const delta = distanceKm / EARTH_RADIUS_KM;
-  const theta = rad(bearingDeg);
-  const lat1 = rad(center.lat);
-  const lon1 = rad(center.lon);
-
-  const lat2 = Math.asin(Math.sin(lat1) * Math.cos(delta) + Math.cos(lat1) * Math.sin(delta) * Math.cos(theta));
-  const lon2 =
-    lon1 +
-    Math.atan2(
-      Math.sin(theta) * Math.sin(delta) * Math.cos(lat1),
-      Math.cos(delta) - Math.sin(lat1) * Math.sin(lat2),
-    );
-  return { lon: deg(lon2), lat: deg(lat2) };
-}
-
-// --- Earthquakes -------------------------------------------------------------
-
-function quakeRadiusKm(magnitude) {
-  const bucket = QUAKE_RADIUS_KM.find((b) => magnitude >= b.min && magnitude < b.max);
-  return bucket ? bucket.km : QUAKE_RADIUS_KM[QUAKE_RADIUS_KM.length - 1].km;
-}
-
-async function fetchEarthquakeZones() {
-  const response = await fetch(USGS_FEED);
-  if (!response.ok) throw new Error(`USGS feed request failed: ${response.status}`);
-  const geojson = await response.json();
-
-  const zones = [];
-  for (const feature of geojson.features ?? []) {
-    const magnitude = feature.properties?.mag;
-    if (typeof magnitude !== "number" || magnitude < MIN_MAGNITUDE) continue;
-    const [lon, lat] = feature.geometry?.coordinates ?? [];
-    if (typeof lon !== "number" || typeof lat !== "number") continue;
-
-    const radiusKm = quakeRadiusKm(magnitude);
-    const detectedAt = new Date(feature.properties.time).toISOString();
-    zones.push({
-      id: `quake_${feature.id}`,
-      label: `M${magnitude.toFixed(1)} earthquake — ${feature.properties.place ?? "location unknown"}`,
-      security: 20,
-      access: "hazard",
-      surchargeUsdPerKm: QUAKE_SURCHARGE_USD_PER_KM,
-      tollUsd: 0,
-      hazardKind: "earthquake",
-      detectedAt,
-      center: [Number(lon.toFixed(3)), Number(lat.toFixed(3))],
-      radiusKm,
-    });
-  }
-  return zones;
-}
-
-// --- Wildfires ----------------------------------------------------------------
-
-/** FIRMS confidence is "l"/"n"/"h" for VIIRS, 0-100 for MODIS; normalize to 0-100. */
-function normalizeConfidence(raw) {
-  if (raw === "l") return 30;
-  if (raw === "n") return 60;
-  if (raw === "h") return 90;
-  const num = Number(raw);
-  return Number.isFinite(num) ? num : 0;
-}
-
-function parseFirmsCsv(csv) {
-  const lines = csv.trim().split("\n");
-  if (lines.length < 2) return [];
-  const header = lines[0].split(",").map((h) => h.trim());
-  const latIdx = header.indexOf("latitude");
-  const lonIdx = header.indexOf("longitude");
-  const confIdx = header.indexOf("confidence");
-  const frpIdx = header.indexOf("frp");
-
-  const points = [];
-  for (const line of lines.slice(1)) {
-    const cols = line.split(",");
-    const lat = Number(cols[latIdx]);
-    const lon = Number(cols[lonIdx]);
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-    const confidence = normalizeConfidence(cols[confIdx]?.trim());
-    if (confidence < FIRMS_MIN_CONFIDENCE) continue;
-    points.push({ lat, lon, frp: Number(cols[frpIdx]) || 0 });
-  }
-  return points;
-}
-
-/**
- * Greedy single-pass clustering: a point joins the nearest cluster within
- * CLUSTER_LINK_KM of its centroid, else starts a new one. Candidate clusters
- * come from a coarse lon/lat grid keyed on the link distance, so a global
- * feed of hundreds of thousands of detections stays linear instead of
- * comparing every point against every cluster found so far. Good enough for
- * turning a hotspot smear into a handful of zones — not a real spatial index.
- */
-function clusterPoints(points) {
-  const cellDeg = CLUSTER_LINK_KM / 111.32;
-  const clusters = [];
-  const grid = new Map();
-  const cellOf = (p) => [Math.floor(p.lon / cellDeg), Math.floor(p.lat / cellDeg)];
-  const keyOf = (x, y) => `${x}|${y}`;
-
-  for (const point of points) {
-    const [cx, cy] = cellOf(point);
-    let best = null;
-    let bestKm = Infinity;
-    for (let dx = -1; dx <= 1; dx++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        for (const cluster of grid.get(keyOf(cx + dx, cy + dy)) ?? []) {
-          const km = haversineKm(point, cluster.centroid);
-          if (km <= CLUSTER_LINK_KM && km < bestKm) {
-            best = cluster;
-            bestKm = km;
-          }
-        }
-      }
-    }
-    if (best) {
-      best.points.push(point);
-      const n = best.points.length;
-      best.centroid = {
-        lat: best.centroid.lat + (point.lat - best.centroid.lat) / n,
-        lon: best.centroid.lon + (point.lon - best.centroid.lon) / n,
-      };
-    } else {
-      const cluster = { centroid: { lat: point.lat, lon: point.lon }, points: [point] };
-      clusters.push(cluster);
-      const key = keyOf(cx, cy);
-      const bucket = grid.get(key);
-      if (bucket) bucket.push(cluster);
-      else grid.set(key, [cluster]);
-    }
-  }
-  return clusters;
-}
-
-async function fetchWildfireZones() {
-  const mapKey = process.env.FIRMS_API_KEY;
-  if (!mapKey) {
-    console.log("FIRMS_API_KEY not set — skipping wildfire fetch (FIRMS has no working keyless tier).");
-    return [];
-  }
-  const url = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${mapKey}/${FIRMS_SOURCE}/world/${FIRMS_DAY_RANGE}`;
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`FIRMS request failed: ${response.status}`);
-  const csv = await response.text();
-  const points = parseFirmsCsv(csv);
-  const clusters = clusterPoints(points).filter((c) => c.points.length >= MIN_CLUSTER_POINTS);
-
-  const now = new Date().toISOString();
-  return clusters.map((cluster, i) => {
-    const spreadKm = Math.max(0, ...cluster.points.map((p) => haversineKm(p, cluster.centroid)));
-    const radiusKm = Math.min(
-      FIRE_RADIUS_RANGE_KM[1],
-      Math.max(FIRE_RADIUS_RANGE_KM[0], spreadKm + FIRE_BUFFER_KM),
-    );
-    return {
-      id: `fire_${cluster.centroid.lat.toFixed(2)}_${cluster.centroid.lon.toFixed(2)}_${i}`,
-      label: `Active wildfire (${cluster.points.length} detections) near ${cluster.centroid.lat.toFixed(1)}, ${cluster.centroid.lon.toFixed(1)}`,
-      security: 20,
-      access: "hazard",
-      surchargeUsdPerKm: WILDFIRE_SURCHARGE_USD_PER_KM,
-      tollUsd: 0,
-      hazardKind: "wildfire",
-      detectedAt: now,
-      center: [Number(cluster.centroid.lon.toFixed(3)), Number(cluster.centroid.lat.toFixed(3))],
-      radiusKm: Math.round(radiusKm),
-    };
-  });
-}
-
-// --- Cyclones, floods and volcanoes (GDACS) -----------------------------------
-
-async function fetchGdacsZones() {
-  const response = await fetch(GDACS_FEED, { signal: AbortSignal.timeout(30000) });
-  if (!response.ok) throw new Error(`GDACS request failed: ${response.status}`);
-  const geojson = await response.json();
-
-  const zones = [];
-  for (const feature of geojson.features ?? []) {
-    const props = feature.properties ?? {};
-    const spec = GDACS_TYPES[props.eventtype];
-    if (!spec) continue;
-    // The search endpoint returns a rolling history, most of it long over.
-    // GDACS's own `iscurrent` flag is the authority on what is still running —
-    // an event's `todate` can be in the past while the situation continues.
-    if (String(props.iscurrent) !== "true") continue;
-
-    const [lon, lat] = feature.geometry?.coordinates ?? [];
-    if (typeof lon !== "number" || typeof lat !== "number") continue;
-
-    const radiusKm = spec.radiusKm[props.alertlevel] ?? spec.radiusKm.Orange;
-    const zone = {
-      id: `gdacs_${props.eventtype}_${props.eventid}`.toLowerCase(),
-      label: `${props.name || props.description || spec.kind} (${props.alertlevel} alert)`,
-      security: spec.security,
-      access: "hazard",
-      surchargeUsdPerKm: spec.surchargeUsdPerKm,
-      tollUsd: 0,
-      hazardKind: spec.kind,
-      detectedAt: new Date(props.datemodified ?? props.fromdate ?? Date.now()).toISOString(),
-      center: [Number(lon.toFixed(3)), Number(lat.toFixed(3))],
-      radiusKm,
-    };
-    if (spec.modes) zone.modes = spec.modes;
-    zones.push(zone);
-  }
-  return zones;
-}
-
-// --- Tropical cyclones (NOAA NHC) ---------------------------------------------
-
-// NHC publishes each active storm's position, intensity and movement vector.
-// Extrapolating that vector forward is dead-reckoning, NOT the official NHC
-// forecast cone (which is a shapefile, and encodes real track uncertainty), so
-// these forecast steps widen with lead time to stand in for that uncertainty.
-const NHC_FEED = "https://www.nhc.noaa.gov/CurrentStorms.json";
-const NHC_FORECAST_STEPS_H = [0, 24, 48, 72];
-const NHC_SPREAD_KM_PER_H = 1.6; // radius growth per hour of lead time
-const STORM_RADIUS_KM = [
-  { minKt: 0, km: 150 },
-  { minKt: 64, km: 220 }, // hurricane force
-  { minKt: 96, km: 300 }, // major
-];
-
-function stormRadiusKm(intensityKt) {
-  return [...STORM_RADIUS_KM].reverse().find((b) => intensityKt >= b.minKt)?.km ?? 150;
-}
-
-async function fetchStormZones() {
-  const response = await fetch(NHC_FEED, { signal: AbortSignal.timeout(30000) });
-  if (!response.ok) throw new Error(`NHC request failed: ${response.status}`);
-  const { activeStorms = [] } = await response.json();
-
-  const zones = [];
-  for (const storm of activeStorms) {
-    const lat = Number(storm.latitudeNumeric);
-    const lon = Number(storm.longitudeNumeric);
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-
-    const intensityKt = Number(storm.intensity) || 0;
-    const issued = Date.parse(storm.lastUpdate ?? Date.now());
-    const baseKm = stormRadiusKm(intensityKt);
-    const speedKt = Number(storm.movementSpeed) || 0;
-    const headingDeg = Number(storm.movementDir) || 0;
-
-    for (const leadH of NHC_FORECAST_STEPS_H) {
-      const travelledKm = speedKt * 1.852 * leadH;
-      const point = leadH === 0 ? { lon, lat } : destinationPoint({ lon, lat }, headingDeg, travelledKm);
-      const stepH = NHC_FORECAST_STEPS_H[NHC_FORECAST_STEPS_H.indexOf(leadH) + 1] ?? leadH + 24;
-      zones.push({
-        id: `storm_${storm.id}_${leadH}h`,
-        label:
-          leadH === 0
-            ? `${storm.name} (${intensityKt} kt)`
-            : `${storm.name} (${intensityKt} kt) — forecast +${leadH}h`,
-        security: 20,
-        access: "hazard",
-        surchargeUsdPerKm: GDACS_TYPES.TC.surchargeUsdPerKm,
-        tollUsd: 0,
-        hazardKind: "cyclone",
-        modes: ["sea"],
-        detectedAt: new Date(issued).toISOString(),
-        activeFrom: new Date(issued + leadH * 3600 * 1000).toISOString(),
-        activeUntil: new Date(issued + stepH * 3600 * 1000).toISOString(),
-        ...(leadH > 0 ? { forecast: true } : {}),
-        center: [Number(point.lon.toFixed(3)), Number(point.lat.toFixed(3))],
-        radiusKm: Math.round(baseKm + leadH * NHC_SPREAD_KM_PER_H),
-      });
-    }
-  }
-  return zones;
-}
-
-// --- Navigational warnings (NGA) ----------------------------------------------
-
-// NAVAREA broadcast warnings are what mariners actually get told to avoid.
-// Most are routine (drilling-rig positions, buoy outages); only the ones that
-// close or endanger water are useful here.
-const NGA_FEED = "https://msi.nga.mil/api/publications/broadcast-warn?output=json&status=A";
-const NGA_HAZARD_TERMS =
-  /\b(firing|gunnery|missile|rocket|live fire|ordnance|unexploded|mine|minefield|piracy|pirate|naval exercise|military exercise|dangerous|prohibited|closed area|hazardous operations)\b/i;
-const NGA_RADIUS_RANGE_KM = [25, 300];
-/** A warning listing positions spread wider than this is a list of unrelated points, not one area. */
-const NGA_MAX_SPREAD_KM = 600;
-
-/** NAVAREA text carries positions as `19-23.0N 092-03.1W` (degrees-minutes). */
-function parsePositions(text) {
-  const points = [];
-  const pattern = /(\d{1,3})-(\d{1,2}(?:\.\d+)?)\s*([NS])\s+(\d{1,3})-(\d{1,2}(?:\.\d+)?)\s*([EW])/gi;
-  for (const match of text.matchAll(pattern)) {
-    const lat = (Number(match[1]) + Number(match[2]) / 60) * (match[3].toUpperCase() === "S" ? -1 : 1);
-    const lon = (Number(match[4]) + Number(match[5]) / 60) * (match[6].toUpperCase() === "W" ? -1 : 1);
-    if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) points.push({ lat, lon });
-  }
-  return points;
-}
-
-const DTG_MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
-/** NGA stamps warnings with a military date-time group: `081653Z MAY 2024`. */
-function parseDtg(value) {
-  const match = /^(\d{2})(\d{2})(\d{2})Z\s+([A-Z]{3})\s+(\d{4})$/i.exec(String(value ?? "").trim());
-  if (!match) return null;
-  const month = DTG_MONTHS.indexOf(match[4].toUpperCase());
-  if (month < 0) return null;
-  return new Date(Date.UTC(Number(match[5]), month, Number(match[1]), Number(match[2]), Number(match[3])));
-}
-
-async function fetchNavWarningZones() {
-  const response = await fetch(NGA_FEED, { signal: AbortSignal.timeout(30000) });
-  if (!response.ok) throw new Error(`NGA request failed: ${response.status}`);
-  const warnings = (await response.json())["broadcast-warn"] ?? [];
-
-  const zones = [];
-  for (const warning of warnings) {
-    const text = warning.text ?? "";
-    if (!NGA_HAZARD_TERMS.test(text)) continue;
-
-    const points = parsePositions(text);
-    if (points.length === 0) continue;
-    const center = {
-      lat: points.reduce((s, p) => s + p.lat, 0) / points.length,
-      lon: points.reduce((s, p) => s + p.lon, 0) / points.length,
-    };
-    const spreadKm = Math.max(0, ...points.map((p) => haversineKm(p, center)));
-    if (spreadKm > NGA_MAX_SPREAD_KM) continue;
-
-    const summary = text.replace(/\s+/g, " ").trim().slice(0, 90);
-    zones.push({
-      id: `navwarn_${warning.navArea}_${warning.msgYear}_${warning.msgNumber}`.toLowerCase(),
-      label: `NAVAREA ${warning.navArea} warning — ${summary}`,
-      security: 35,
-      access: "hazard",
-      surchargeUsdPerKm: 3,
-      tollUsd: 0,
-      hazardKind: "navwarning",
-      modes: ["sea"],
-      detectedAt: (parseDtg(warning.issueDate) ?? new Date()).toISOString(),
-      center: [Number(center.lon.toFixed(3)), Number(center.lat.toFixed(3))],
-      radiusKm: Math.round(
-        Math.min(NGA_RADIUS_RANGE_KM[1], Math.max(NGA_RADIUS_RANGE_KM[0], spreadKm + 25)),
-      ),
-    });
-  }
-  return zones;
-}
 
 // --- History ------------------------------------------------------------------
 
 // Each run overwrites the live files, so without this the past is simply gone.
 // One compact row per run keeps a trace of what the world looked like — enough
 // to answer "how often is this corridor disrupted in August" once a season of
-// rows has accumulated, without retaining thousands of wildfire polygons.
+// rows has accumulated, without retaining thousands of wildfire footprints.
 const HISTORY_FILE = "hazardHistory.json";
 const HISTORY_MAX_ROWS = 1460; // ~1 year at the 4-runs-a-day schedule
 const HISTORY_NOTABLE_MAX = 40;
@@ -474,10 +65,9 @@ function appendHistory(zones, counts) {
     .slice(0, HISTORY_NOTABLE_MAX)
     .map((z) => ({ id: z.id, kind: z.hazardKind, label: z.label, center: z.center, radiusKm: z.radiusKm }));
 
-  const row = { at: new Date().toISOString(), total: zones.length, counts, notable };
   const file = path.join(ROOT, "src/data", HISTORY_FILE);
   const rows = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : [];
-  rows.push(row);
+  rows.push({ at: new Date().toISOString(), total: zones.length, counts, notable });
 
   const trimmed = rows.slice(-HISTORY_MAX_ROWS);
   fs.writeFileSync(file, `[\n${trimmed.map((r) => JSON.stringify(r)).join(",\n")}\n]\n`, "utf8");
@@ -493,15 +83,8 @@ if (retagOnly) {
   hazardZones = read("hazardZones.json");
   console.log(`Re-tagging ${hazardZones.length} committed hazard zones without fetching.`);
 } else {
-  const sources = [
-    ["earthquake", fetchEarthquakeZones],
-    ["wildfire", fetchWildfireZones],
-    ["GDACS", fetchGdacsZones],
-    ["storm", fetchStormZones],
-    ["nav warning", fetchNavWarningZones],
-  ];
   const results = await Promise.all(
-    sources.map(([name, fetchZones]) =>
+    SOURCES.map(([name, fetchZones]) =>
       fetchZones().catch((err) => {
         // One dead upstream must not wipe the other sources' zones for this run.
         console.error(`${name} fetch failed, keeping no ${name} zones this run: ${err.message}`);

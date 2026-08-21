@@ -38,6 +38,8 @@ function App() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [preferSafety, setPreferSafety] = useState(false);
   const [showHazards, setShowHazards] = useState(true);
+  // Wildfires outnumber the other hazards by orders of magnitude, so they start hidden and get their own switch.
+  const [showWildfires, setShowWildfires] = useState(false);
 
   // A location can only hold one role at a time, so claiming a new role clears any other it was previously assigned.
   const setOriginId = (id: string | null) => {
@@ -165,7 +167,9 @@ function App() {
         waypointIds={waypointIds}
         route={selectedRoute}
         showHazards={showHazards}
+        showWildfires={showWildfires}
         onToggleHazards={() => setShowHazards((prev) => !prev)}
+        onToggleWildfires={() => setShowWildfires((prev) => !prev)}
         onSelectNode={setSelectedNodeId}
       />
       <MapLegend />

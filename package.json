@@ -13,6 +13,7 @@
     "generate:edge-zones": "node tools/tagEdgeZones.mjs",
     "fetch:hazards": "node tools/fetchHazards.mjs",
     "retag:hazards": "node tools/fetchHazards.mjs --retag",
+    "fetch:country-risk": "node tools/fetchCountryRisk.mjs",
     "fetch:military-bases": "node tools/fetchMilitaryBases.mjs",
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "validate:data": "node tools/validateData.mjs",
