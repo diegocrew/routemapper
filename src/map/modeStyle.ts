@@ -32,3 +32,12 @@ export const KIND_COLORS: Record<string, string> = {
 
 /** Distinct from KIND_COLORS.military — hazard zones are a temporary condition, not a permanent restricted site. */
 export const HAZARD_COLOR = "#dc2626";
+
+/** Per-hazard colours, so a cyclone track doesn't read as a wildfire at a glance. */
+export const HAZARD_KIND_COLORS: Record<string, string> = {
+  earthquake: "#dc2626",
+  wildfire: "#f97316",
+  cyclone: "#38bdf8",
+  flood: "#3b82f6",
+  volcano: "#a855f7",
+};

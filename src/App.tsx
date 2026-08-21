@@ -7,11 +7,13 @@ import { resolveCargo } from "./engine/cargo";
 import { SECURITY_ALERT_THRESHOLD } from "./engine/indices";
 import type { CargoClass, CargoHandlingConfig, CostsConfig, GeoNode, BaseEdge, Mode, RouteOption } from "./engine/types";
 import nodesData from "./data/nodes.json";
+import militaryBasesData from "./data/militaryBases.json";
 import edgesData from "./data/edges.json";
 import costsData from "./data/costs.config.json";
 import "./App.css";
 
-const nodes = nodesData as GeoNode[];
+// Hand-curated hubs plus every military installation imported from Wikidata by tools/fetchMilitaryBases.mjs.
+const nodes = [...(nodesData as GeoNode[]), ...(militaryBasesData as GeoNode[])];
 const edges = edgesData as BaseEdge[];
 const costs = costsData as CostsConfig;
 const ALL_MODES: Mode[] = ["sea", "air", "rail", "truck"];
@@ -33,6 +35,7 @@ function App() {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [preferSafety, setPreferSafety] = useState(false);
+  const [showHazards, setShowHazards] = useState(true);
 
   // A location can only hold one role at a time, so claiming a new role clears any other it was previously assigned.
   const setOriginId = (id: string | null) => {
@@ -157,6 +160,8 @@ function App() {
         destinationId={destinationId}
         waypointIds={waypointIds}
         route={selectedRoute}
+        showHazards={showHazards}
+        onToggleHazards={() => setShowHazards((prev) => !prev)}
         onSelectNode={setSelectedNodeId}
       />
       <MapLegend />

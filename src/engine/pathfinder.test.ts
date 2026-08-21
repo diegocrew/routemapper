@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createRouteEngine } from "./pathfinder";
 import type { BaseEdge, CostsConfig, GeoNode, Mode } from "./types";
 import nodesData from "../data/nodes.json";
+import militaryBasesData from "../data/militaryBases.json";
 import edgesData from "../data/edges.json";
 import costsData from "../data/costs.config.json";
 
@@ -98,7 +99,8 @@ describe("routing engine (synthetic graph)", () => {
 });
 
 describe("routing engine (real dataset smoke test)", () => {
-  const nodes = nodesData as GeoNode[];
+  // The same set the app routes on: curated hubs plus the imported installations.
+  const nodes = [...(nodesData as GeoNode[]), ...(militaryBasesData as GeoNode[])];
   const edges = edgesData as BaseEdge[];
 
   it("has routed geometry for every sea edge", () => {

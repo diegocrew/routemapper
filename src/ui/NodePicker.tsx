@@ -6,6 +6,7 @@ const KIND_LABELS: Record<string, string> = {
   seaport: "Seaports",
   airport: "Airports",
   railhub: "Rail Hubs",
+  military: "Military Installations",
 };
 
 interface NodePickerProps {

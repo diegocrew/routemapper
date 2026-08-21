@@ -9,6 +9,15 @@ import { blockedZoneIds, closedInMonth, edgeKey, getZone, hazardEdgeZones, hazar
 import { borderCheck } from "./restrictions";
 import { resolveCargo } from "./cargo";
 
+/** What crossing each hazard actually means for the shipment, shown on the route card. */
+const HAZARD_NOTES: Record<string, string> = {
+  earthquake: "active hazard, military transit only",
+  volcano: "erupting — site closed to civilian cargo",
+  wildfire: "active wildfire on this leg, expect disruption",
+  cyclone: "tropical cyclone on this leg, expect port closures and delay",
+  flood: "flooding on this leg, expect road and rail disruption",
+};
+
 type Weight = (edge: AdjEdge) => number;
 
 /** Binary min-heap keyed on tentative distance; lazily deleted, so entries can be stale. */
@@ -292,7 +301,10 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
         const zoneLabels = crossed.map((id) => getZone(id)?.label ?? id);
         const hazardWarnings = crossed
           .filter((id) => hazardZoneIds.has(id))
-          .map((id) => `${getZone(id)?.label ?? id} — active hazard, military transit only`);
+          .map((id) => {
+            const zone = getZone(id);
+            return `${zone?.label ?? id} — ${HAZARD_NOTES[zone?.hazardKind ?? ""] ?? "active hazard on this leg"}`;
+          });
         const option = combineLegs(legs, run.key, run.label, score, zoneLabels, hazardWarnings);
         if (!options.some((o) => routesEqual(o, option))) {
           options.push(option);

@@ -11,12 +11,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { zonesOnEdge } from "./lib/geo.mjs";
+import { readNodes } from "./lib/nodes.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => JSON.parse(fs.readFileSync(path.join(ROOT, "src/data", file), "utf8"));
 
 const zones = read("zones.json");
-const nodes = read("nodes.json");
+const nodes = readNodes(ROOT);
 const edges = read("edges.json");
 const truckEdges = read("truckEdges.json");
 const nodeById = new Map(nodes.map((n) => [n.id, n]));

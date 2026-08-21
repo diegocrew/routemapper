@@ -10,10 +10,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { readNodes } from "./lib/nodes.mjs";
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => JSON.parse(fs.readFileSync(path.join(ROOT, "src/data", file), "utf8"));
 
-const nodes = read("nodes.json");
+const nodes = readNodes(ROOT);
 const edges = read("edges.json");
 const truckEdges = read("truckEdges.json");
 const zones = read("zones.json");
@@ -90,12 +92,19 @@ for (const zone of zones) {
 // hazardZones.json/hazardEdgeZones.json are refreshed by the scheduled
 // tools/fetchHazards.mjs run rather than hand-curated, but still need to stay
 // internally consistent and in sync with the current edges.
+const HAZARD_KINDS = new Set(["earthquake", "wildfire", "cyclone", "flood", "volcano"]);
 const hazardZoneIds = new Set();
 for (const zone of hazardZones) {
   if (hazardZoneIds.has(zone.id)) fail(`duplicate hazard zone id: ${zone.id}`);
   hazardZoneIds.add(zone.id);
   if (zone.access !== "hazard") fail(`hazard zone ${zone.id} must have access "hazard"`);
-  if (zone.polygon.length < 3) fail(`hazard zone ${zone.id} has fewer than 3 polygon points`);
+  if (!HAZARD_KINDS.has(zone.hazardKind)) fail(`hazard zone ${zone.id} has unknown hazardKind ${zone.hazardKind}`);
+  if (!Array.isArray(zone.center) || zone.center.length !== 2 || !(zone.radiusKm > 0)) {
+    fail(`hazard zone ${zone.id} must have a [lon, lat] center and a positive radiusKm`);
+  }
+  for (const mode of zone.modes ?? []) {
+    if (!modes.has(mode)) fail(`hazard zone ${zone.id} lists unknown mode ${mode}`);
+  }
 }
 const edgeKeys = new Set([...edges, ...truckEdges].map((e) => `${e.from}|${e.to}|${e.mode ?? "truck"}`));
 for (const [key, tags] of Object.entries(hazardEdgeZones)) {

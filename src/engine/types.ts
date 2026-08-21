@@ -26,7 +26,7 @@ export interface Zone {
   label: string;
   /** 0-100, folded into a route's security score like any stop. */
   security: number;
-  /** "hazard" zones are generated offline (earthquakes/wildfires) and are blocked exactly like military-only ones, but flagged separately so military transit can carry a warning instead of being treated as a restricted site. */
+  /** "hazard" zones are generated offline from live feeds and are blocked exactly like military-only ones, but flagged separately so military transit can carry a warning instead of being treated as a restricted site. */
   access: "open" | "military-only" | "hazard";
   /** War-risk insurance and escort costs, charged per km actually spent inside. */
   surchargeUsdPerKm: number;
@@ -39,11 +39,18 @@ export interface Zone {
   /** Months when transit is slowed rather than stopped, and by how much. */
   delayMonths?: number[];
   delayFactor?: number;
-  /** Set only on generated hazard zones. */
-  hazardKind?: "earthquake" | "wildfire";
+  /** Set only on generated hazard zones. Earthquakes and volcanoes close a site outright; the rest only make it expensive to cross. */
+  hazardKind?: "earthquake" | "wildfire" | "cyclone" | "flood" | "volcano";
   /** ISO timestamp the hazard was detected/generated, set only on generated hazard zones. */
   detectedAt?: string;
-  polygon: [number, number][];
+  /**
+   * Hand-drawn zones are rings; generated hazard zones are circles stored as
+   * `center` + `radiusKm`, which is both far smaller on disk and much cheaper
+   * to test against than a sampled ring. Exactly one of the two is set.
+   */
+  polygon?: [number, number][];
+  center?: [number, number];
+  radiusKm?: number;
 }
 
 export interface Restriction {

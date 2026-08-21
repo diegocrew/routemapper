@@ -12,6 +12,8 @@
     "generate:truck-edges": "node tools/generateTruckEdges.mjs",
     "generate:edge-zones": "node tools/tagEdgeZones.mjs",
     "fetch:hazards": "node tools/fetchHazards.mjs",
+    "retag:hazards": "node tools/fetchHazards.mjs --retag",
+    "fetch:military-bases": "node tools/fetchMilitaryBases.mjs",
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "validate:data": "node tools/validateData.mjs",
     "audit:geography": "node tools/auditGeography.mjs",

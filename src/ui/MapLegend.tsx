@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HAZARD_COLOR, KIND_COLORS } from "../map/modeStyle";
+import { HAZARD_KIND_COLORS, KIND_COLORS } from "../map/modeStyle";
 import type { NodeKind } from "../engine/types";
 
 const KIND_LABELS: Record<NodeKind, string> = {
@@ -17,6 +17,14 @@ const ROLE_ROWS: { label: string; color: string }[] = [
   { label: "Origin", color: "#4ade80" },
   { label: "Destination", color: "#f87171" },
   { label: "Via point", color: "#a78bfa" },
+];
+
+const HAZARD_ROWS: { kind: string; label: string }[] = [
+  { kind: "earthquake", label: "Earthquake (closed)" },
+  { kind: "volcano", label: "Eruption (closed)" },
+  { kind: "cyclone", label: "Tropical cyclone" },
+  { kind: "flood", label: "Flooding" },
+  { kind: "wildfire", label: "Wildfire" },
 ];
 
 export function MapLegend() {
@@ -51,10 +59,12 @@ export function MapLegend() {
             </div>
           ))}
           <div className="map-legend-divider" />
-          <div className="map-legend-row">
-            <span className="map-legend-dot" style={{ background: HAZARD_COLOR }} />
-            Active hazard (earthquake/wildfire)
-          </div>
+          {HAZARD_ROWS.map((r) => (
+            <div key={r.label} className="map-legend-row">
+              <span className="map-legend-dot" style={{ background: HAZARD_KIND_COLORS[r.kind] }} />
+              {r.label}
+            </div>
+          ))}
         </div>
       )}
     </div>

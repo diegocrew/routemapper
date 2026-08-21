@@ -73,6 +73,45 @@
   margin: 2px 0;
 }
 
+.rm-hazard-toggle {
+  font-size: 15px;
+  line-height: 1;
+  color: #94a3b8;
+}
+
+.rm-hazard-toggle-on {
+  color: #dc2626;
+}
+
+/* MapLibre's default popup is white-on-white against this dark basemap. */
+.maplibregl-popup-content {
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: #e2e8f0;
+  font-size: 12px;
+  line-height: 1.35;
+  max-width: 260px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: rgba(15, 23, 42, 0.94);
+}
+
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-top-color: rgba(15, 23, 42, 0.94);
+}
+
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: rgba(15, 23, 42, 0.94);
+}
+
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: rgba(15, 23, 42, 0.94);
+}
+
 .panel {
   position: absolute;
   top: 16px;

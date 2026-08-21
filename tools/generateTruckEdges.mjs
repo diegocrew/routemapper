@@ -26,14 +26,22 @@ import {
   snapToLand,
 } from "./landGrid.mjs";
 
+import { readNodes } from "./lib/nodes.mjs";
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const nodes = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/nodes.json"), "utf8"));
+const nodes = readNodes(ROOT);
 const costs = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/costs.config.json"), "utf8"));
 const landPath = await ensureLandGeojson(process.argv[2]);
 
 const { maxLegKm, maxNeighbors } = costs.truck;
 const STRAIGHT_WATER_TOLERANCE_KM = 25; // bridges, causeways and coast-hugging roads, not sea crossings
 const MAX_DETOUR_RATIO = 2.5;
+// Only the nearest few neighbours can survive the maxNeighbors cut anyway, and
+// overland routing is by far the most expensive step here — with thousands of
+// nodes, A*-ing every pair inside maxLegKm is hours of work for edges that are
+// then thrown away. Some slack over maxNeighbors covers candidates whose road
+// distance is much worse than their straight-line rank suggests.
+const CANDIDATES_PER_NODE = maxNeighbors * 2;
 
 console.log("rasterizing land…");
 const grid = buildLandGrid(landPath);
@@ -50,32 +58,47 @@ for (const node of nodes) {
 const stranded = nodes.filter((n) => !placed.has(n.id));
 if (stranded.length > 0) console.log(`no land cell within range for: ${stranded.map((n) => n.id).join(", ")}`);
 
-console.log("routing candidate legs…");
-const viable = new Map(); // pairKey -> { from, to, roadKm, via }
-for (let i = 0; i < nodes.length; i++) {
-  for (let j = i + 1; j < nodes.length; j++) {
-    const a = placed.get(nodes[i].id);
-    const b = placed.get(nodes[j].id);
-    if (!a || !b) continue;
-    if (a.landmass !== b.landmass) continue;
-
+console.log("picking candidate pairs…");
+const candidates = new Set();
+for (const node of nodes) {
+  const a = placed.get(node.id);
+  if (!a) continue;
+  const nearby = [];
+  for (const other of nodes) {
+    if (other.id === node.id) continue;
+    const b = placed.get(other.id);
+    if (!b || a.landmass !== b.landmass) continue;
     const straightKm = haversineKm(a.node, b.node);
     if (straightKm > maxLegKm) continue;
-
-    const found = overlandPath(grid, a.cell, b.cell, Math.min(maxLegKm, straightKm * MAX_DETOUR_RATIO));
-    if (!found) continue;
-
-    const endpoints = [
-      { lat: a.node.lat, lon: a.node.lon },
-      { lat: b.node.lat, lon: b.node.lon },
-    ];
-    const entry = { from: a.node.id, to: b.node.id, roadKm: Math.max(found.km, straightKm) };
-    if (longestWaterRunKm(isLand, endpoints) > STRAIGHT_WATER_TOLERANCE_KM) {
-      const via = corridorVia(isLand, endpoints[0], endpoints[1], found.cells, STRAIGHT_WATER_TOLERANCE_KM);
-      if (via.length > 0) entry.via = via;
-    }
-    viable.set(`${a.node.id}|${b.node.id}`, entry);
+    nearby.push({ id: other.id, straightKm });
   }
+  nearby.sort((x, y) => x.straightKm - y.straightKm);
+  for (const { id } of nearby.slice(0, CANDIDATES_PER_NODE)) {
+    candidates.add([node.id, id].sort().join("|"));
+  }
+}
+
+console.log(`routing ${candidates.size} candidate legs…`);
+const viable = new Map(); // pairKey -> { from, to, roadKm, via }
+for (const key of candidates) {
+  const [fromId, toId] = key.split("|");
+  const a = placed.get(fromId);
+  const b = placed.get(toId);
+  const straightKm = haversineKm(a.node, b.node);
+
+  const found = overlandPath(grid, a.cell, b.cell, Math.min(maxLegKm, straightKm * MAX_DETOUR_RATIO));
+  if (!found) continue;
+
+  const endpoints = [
+    { lat: a.node.lat, lon: a.node.lon },
+    { lat: b.node.lat, lon: b.node.lon },
+  ];
+  const entry = { from: a.node.id, to: b.node.id, roadKm: Math.max(found.km, straightKm) };
+  if (longestWaterRunKm(isLand, endpoints) > STRAIGHT_WATER_TOLERANCE_KM) {
+    const via = corridorVia(isLand, endpoints[0], endpoints[1], found.cells, STRAIGHT_WATER_TOLERANCE_KM);
+    if (via.length > 0) entry.via = via;
+  }
+  viable.set(`${a.node.id}|${b.node.id}`, entry);
 }
 
 // Same "nearest N neighbours" cap as before, but ranked by road distance.
