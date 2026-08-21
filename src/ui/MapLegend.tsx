@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { HAZARD_KIND_COLORS, KIND_COLORS } from "../map/modeStyle";
+import { hazardZones } from "../engine/zones";
 import type { NodeKind } from "../engine/types";
 
 const KIND_LABELS: Record<NodeKind, string> = {
@@ -19,16 +20,22 @@ const ROLE_ROWS: { label: string; color: string }[] = [
   { label: "Via point", color: "#a78bfa" },
 ];
 
-const HAZARD_ROWS: { kind: string; label: string }[] = [
-  { kind: "earthquake", label: "Earthquake (closed)" },
-  { kind: "volcano", label: "Eruption (closed)" },
-  { kind: "cyclone", label: "Tropical cyclone" },
-  { kind: "flood", label: "Flooding" },
-  { kind: "wildfire", label: "Wildfire" },
+const HAZARD_ROWS: { kind: string; label: string; effect: string }[] = [
+  { kind: "earthquake", label: "Earthquake", effect: "no civilian transit" },
+  { kind: "volcano", label: "Eruption", effect: "no civilian transit" },
+  { kind: "cyclone", label: "Tropical cyclone", effect: "sea legs avoid" },
+  { kind: "flood", label: "Flooding", effect: "road/rail legs avoid" },
+  { kind: "wildfire", label: "Wildfire", effect: "legs avoid" },
 ];
 
 export function MapLegend() {
   const [open, setOpen] = useState(true);
+  // A hazard kind with nothing live right now is still worth listing, so the map reading "all wildfire" is visibly the feed's doing rather than a missing layer.
+  const hazardCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const zone of hazardZones) counts[zone.hazardKind ?? ""] = (counts[zone.hazardKind ?? ""] ?? 0) + 1;
+    return counts;
+  }, []);
 
   return (
     <div className="map-legend">
@@ -59,12 +66,22 @@ export function MapLegend() {
             </div>
           ))}
           <div className="map-legend-divider" />
-          {HAZARD_ROWS.map((r) => (
-            <div key={r.label} className="map-legend-row">
-              <span className="map-legend-dot" style={{ background: HAZARD_KIND_COLORS[r.kind] }} />
-              {r.label}
-            </div>
-          ))}
+          <div className="map-legend-heading">Active hazards</div>
+          {HAZARD_ROWS.map((r) => {
+            const count = hazardCounts[r.kind] ?? 0;
+            return (
+              <div
+                key={r.kind}
+                className={count === 0 ? "map-legend-row map-legend-row-empty" : "map-legend-row"}
+                title={`${r.label} — ${r.effect}`}
+              >
+                <span className="map-legend-dot" style={{ background: HAZARD_KIND_COLORS[r.kind] }} />
+                <span className="map-legend-label">{r.label}</span>
+                <span className="map-legend-effect">{r.effect}</span>
+                <span className="map-legend-count">{count}</span>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

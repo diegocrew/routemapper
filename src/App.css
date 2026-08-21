@@ -73,6 +73,40 @@
   margin: 2px 0;
 }
 
+.map-legend-heading {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.map-legend-label {
+  flex: none;
+}
+
+.map-legend-effect {
+  flex: 1;
+  color: #94a3b8;
+  font-size: 10.5px;
+}
+
+.map-legend-count {
+  min-width: 22px;
+  padding: 0 5px;
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.16);
+  color: #cbd5e1;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Kept visible rather than hidden, so an absent hazard type reads as "none right now". */
+.map-legend-row-empty {
+  opacity: 0.4;
+}
+
 .rm-hazard-toggle {
   font-size: 15px;
   line-height: 1;
