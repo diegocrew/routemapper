@@ -104,6 +104,7 @@ if (retagOnly) {
 
 const nodes = readNodes(ROOT);
 const edges = read("edges.json");
+const seaEdges = read("seaEdges.json");
 const truckEdges = read("truckEdges.json");
 const nodeById = new Map(nodes.map((n) => [n.id, n]));
 const grid = createZoneGrid(hazardZones);
@@ -117,6 +118,7 @@ const tagList = (list, fallbackMode) => {
   }
 };
 tagList(edges);
+tagList(seaEdges, "sea");
 tagList(truckEdges, "truck");
 write("hazardEdgeZones.json", hazardEdgeZones);
 

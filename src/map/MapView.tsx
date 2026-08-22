@@ -38,9 +38,14 @@ const FIRES_POINT_LAYER = "rm-fires-point";
 // Wildfires outnumber every other hazard about two hundred to one, so they get their own switch rather than burying the rest of the layer.
 const HAZARD_LAYERS = [HAZARDS_FILL_LAYER, HAZARDS_OUTLINE_LAYER, HAZARDS_POINT_LAYER];
 const FIRE_LAYERS = [FIRES_FILL_LAYER, FIRES_OUTLINE_LAYER, FIRES_POINT_LAYER];
+const NODE_LAYERS = [NODES_LAYER, NODES_LABEL_LAYER];
 
 const IS_WILDFIRE: maplibregl.ExpressionSpecification = ["==", ["get", "kind"], "wildfire"];
 const NOT_WILDFIRE: maplibregl.ExpressionSpecification = ["!=", ["get", "kind"], "wildfire"];
+// Installations outnumber every other kind roughly ten to one, and civilian
+// cargo can't route to one at all — so for a civilian load they are noise, and
+// come off the map entirely rather than just fading at low zoom.
+const NOT_MILITARY: maplibregl.ExpressionSpecification = ["!=", ["get", "kind"], "military"];
 const isPolygon: maplibregl.ExpressionSpecification = ["==", ["geometry-type"], "Polygon"];
 const isPoint: maplibregl.ExpressionSpecification = ["==", ["geometry-type"], "Point"];
 
@@ -68,8 +73,10 @@ interface MapViewProps {
   route: RouteOption | null;
   showHazards: boolean;
   showWildfires: boolean;
+  showMilitary: boolean;
   onToggleHazards: () => void;
   onToggleWildfires: () => void;
+  onToggleMilitary: () => void;
   onSelectNode: (id: string) => void;
 }
 
@@ -344,7 +351,7 @@ function routeToGeoJSON(nodes: GeoNode[], route: RouteOption | null) {
   return { type: "FeatureCollection" as const, features };
 }
 
-export function MapView({ nodes, originId, destinationId, waypointIds, route, showHazards, showWildfires, onToggleHazards, onToggleWildfires, onSelectNode }: MapViewProps) {
+export function MapView({ nodes, originId, destinationId, waypointIds, route, showHazards, showWildfires, showMilitary, onToggleHazards, onToggleWildfires, onToggleMilitary, onSelectNode }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MLMap | null>(null);
   const loadedRef = useRef(false);
@@ -354,12 +361,16 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
   onToggleHazardsRef.current = onToggleHazards;
   const onToggleWildfiresRef = useRef(onToggleWildfires);
   onToggleWildfiresRef.current = onToggleWildfires;
+  const onToggleMilitaryRef = useRef(onToggleMilitary);
+  onToggleMilitaryRef.current = onToggleMilitary;
   const layerControlRef = useRef<LayerToggleControl | null>(null);
   // The map finishes loading after the first render, so the layers need the toggles' current values when they are created.
   const showHazardsRef = useRef(showHazards);
   showHazardsRef.current = showHazards;
   const showWildfiresRef = useRef(showWildfires);
   showWildfiresRef.current = showWildfires;
+  const showMilitaryRef = useRef(showMilitary);
+  showMilitaryRef.current = showMilitary;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -396,10 +407,18 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
           labelOff: "Show wildfires",
           onToggle: () => onToggleWildfiresRef.current(),
         },
+        {
+          glyph: "●",
+          className: "rm-military-toggle",
+          labelOn: "Hide military installations",
+          labelOff: "Show military installations",
+          onToggle: () => onToggleMilitaryRef.current(),
+        },
       ]);
       map.addControl(layerControl, "top-right");
       layerControl.setActive(0, showHazardsRef.current);
       layerControl.setActive(1, showWildfiresRef.current);
+      layerControl.setActive(2, showMilitaryRef.current);
       layerControlRef.current = layerControl;
 
       map.addSource(NODES_SOURCE, { type: "geojson", data: nodesToGeoJSON(nodes) });
@@ -461,10 +480,13 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
         layout: { "line-cap": "round", "line-join": "round" },
       });
 
+      const nodeFilter = showMilitaryRef.current ? undefined : NOT_MILITARY;
+
       map.addLayer({
         id: NODES_LAYER,
         type: "circle",
         source: NODES_SOURCE,
+        filter: nodeFilter,
         paint: {
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 2.5, 4, 4.5, 8, 7],
           "circle-color": [
@@ -513,6 +535,7 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
         id: NODES_LABEL_LAYER,
         type: "symbol",
         source: NODES_SOURCE,
+        filter: nodeFilter,
         minzoom: 3,
         layout: {
           "text-field": ["get", "name"],
@@ -646,6 +669,15 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
     }
     layerControlRef.current?.setActive(1, showWildfires);
   }, [showWildfires]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current) return;
+    for (const layer of NODE_LAYERS) {
+      map.setFilter(layer, showMilitary ? null : NOT_MILITARY);
+    }
+    layerControlRef.current?.setActive(2, showMilitary);
+  }, [showMilitary]);
 
   return <div ref={containerRef} style={{ position: "absolute", inset: 0 }} />;
 }

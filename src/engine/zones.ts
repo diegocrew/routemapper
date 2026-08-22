@@ -2,6 +2,7 @@ import zonesData from "../data/zones.json";
 import hazardZonesData from "../data/hazardZones.json";
 import hazardEdgeZonesData from "../data/hazardEdgeZones.json";
 import { haversineKm } from "./geo";
+import { airspaceZones } from "./airspace";
 import type { CargoRule, Mode, Zone } from "./types";
 
 export const edgeKey = (from: string, to: string, mode: Mode): string => `${from}|${to}|${mode}`;
@@ -142,7 +143,11 @@ export const zoneActiveAt = (zone: Zone, atMs: number): boolean => zoneActiveBet
 
 export const hazardZones = hazardZonesData as Zone[];
 
-const index = createZoneIndex([...(zonesData as Zone[]), ...hazardZones]);
+// Airspace zones join the index so their labels, security scores and
+// closedToCountries lists resolve like any other. They carry no outline, which
+// keeps them out of the point-in-zone grid — deliberately: an airport under
+// closed airspace is still a perfectly good place to send a truck.
+const index = createZoneIndex([...(zonesData as Zone[]), ...airspaceZones, ...hazardZones]);
 
 export const zones = index.zones;
 export const getZone = index.getZone;

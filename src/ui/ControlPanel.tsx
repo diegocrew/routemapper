@@ -52,6 +52,8 @@ interface HandlingOption {
 
 interface ControlPanelProps {
   nodes: GeoNode[];
+  /** What the From/To pickers offer — `nodes` minus anything the current cargo can't be routed to. Lookups still use `nodes`, so an existing stop keeps its name. */
+  pickerNodes: GeoNode[];
   originId: string | null;
   destinationId: string | null;
   onSetOrigin: (id: string | null) => void;
@@ -92,6 +94,7 @@ interface ControlPanelProps {
 
 export function ControlPanel({
   nodes,
+  pickerNodes,
   originId,
   destinationId,
   onSetOrigin,
@@ -139,8 +142,8 @@ export function ControlPanel({
         <p className="subtitle">Multi-modal cargo route planning</p>
       </div>
 
-      <NodePicker label="From" nodes={nodes} value={originId} onChange={onSetOrigin} disabledId={destinationId} />
-      <NodePicker label="To" nodes={nodes} value={destinationId} onChange={onSetDestination} disabledId={originId} />
+      <NodePicker label="From" nodes={pickerNodes} value={originId} onChange={onSetOrigin} disabledId={destinationId} />
+      <NodePicker label="To" nodes={pickerNodes} value={destinationId} onChange={onSetDestination} disabledId={originId} />
 
       {waypointIds.length > 0 && (
         <div className="field">

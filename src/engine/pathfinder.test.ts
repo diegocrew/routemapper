@@ -120,13 +120,17 @@ describe("routing engine (real dataset smoke test)", () => {
   });
 
   it("uses a single direct flight for 'fastest' between two distant airports with no curated air route between them", () => {
-    // N'Djamena and Yekaterinburg aren't on any hand-curated air trunk line —
-    // air must be a fully-connected mode (any airport to any airport), or the
+    // Nairobi and Chongqing aren't on any hand-curated air trunk line — air
+    // must be a fully-connected mode (any airport to any airport), or the
     // router is forced through unrealistic multi-hop layovers just to fly.
+    // The pair also has to be one no restricted airspace lies across, or the
+    // detour makes a one-stop genuinely competitive and this stops testing
+    // connectivity: N'Djamena–Yekaterinburg used to serve here until the
+    // Libyan FIR started bending it.
     const engine = createRouteEngine(nodes, edges, costs);
     const options = engine.computeRoutes({
-      originId: "ndjamena",
-      destinationId: "yekaterinburg",
+      originId: "nairobi",
+      destinationId: "chongqing",
       allowedModes: ["sea", "air", "rail", "truck"],
     });
     const fastest = options.find((o) => o.key === "fastest");
@@ -229,6 +233,55 @@ describe("routing engine (real dataset smoke test)", () => {
       ["jeddah", "salalah"],
       ["salalah", "dubai"],
     ]);
+    expect(route.legs.every((leg) => (leg.via?.length ?? 0) > 0)).toBe(true);
+  });
+
+  it("charges the China-to-Europe land bridge for its break of gauge", () => {
+    // Every container on this corridor is craned onto different bogies where
+    // 1435 mm track meets Russian-gauge 1520 mm, at Khorgos or Brest depending
+    // on which way the route goes. Rail-only, so the corridor can't sidestep it.
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [route] = engine.computeRoutes({
+      originId: "chongqing",
+      destinationId: "duisburg",
+      allowedModes: ["rail", "truck"],
+    });
+
+    expect(route).toBeDefined();
+    expect(route.transshipments.length).toBeGreaterThan(0);
+    const broken = route.legs.filter((leg) => leg.breakOfGauge);
+    expect(broken.length).toBeGreaterThan(0);
+    for (const leg of broken) {
+      expect(leg.mode).toBe("rail");
+      expect(leg.breakOfGauge![0]).not.toBe(leg.breakOfGauge![1]);
+    }
+  });
+
+  it("leaves a same-gauge rail crossing unpenalised", () => {
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [route] = engine.computeRoutes({
+      originId: "warsaw",
+      destinationId: "berlin",
+      allowedModes: ["rail"],
+    });
+
+    expect(route).toBeDefined();
+    expect(route.transshipments).toEqual([]);
+  });
+
+  it("ships between ports no curated lane connects, by chaining generated hops", () => {
+    // Chennai has no hand-curated lane at all: before seaEdges.json filled in
+    // each port's nearest neighbours, cargo had to leave by road.
+    const engine = createRouteEngine(nodes, edges, costs);
+    const [route] = engine.computeRoutes({
+      originId: "chennai",
+      destinationId: "singapore",
+      allowedModes: ["sea"],
+    });
+
+    expect(route).toBeDefined();
+    expect(route.legs.length).toBeGreaterThan(0);
+    expect(route.legs.every((leg) => leg.mode === "sea")).toBe(true);
     expect(route.legs.every((leg) => (leg.via?.length ?? 0) > 0)).toBe(true);
   });
 

@@ -1,0 +1,118 @@
+{
+  "_methodology": "Hand-curated, and the file in this repo most likely to be out of date: airspace opens and closes on a timescale of weeks. Restricted airspace lengthens a flight rather than cancelling it — an aircraft routes around — so each zone carries a `detourFactor` applied to any leg whose great circle would have crossed it, not a block. The factors are estimates of how much further the diversion runs on a typical affected leg; a single number per zone is a simplification, since the real penalty depends on where the leg clips the airspace. `closedToCountries` marks a reciprocal ban, which turns on the operator's nationality rather than on the corridor: Russian airspace is closed to Western carriers and entirely open to Chinese, Gulf and Turkish ones, so an Emirati flight over Siberia is correct where a German one detours. Operator nationality isn't modelled, so the countries at the ends of the leg stand in for it. Security scores split the two cases: a reciprocal ban is a political fact and no danger to the aircraft, so those score 100 and leave the route's security untouched, while a war zone scores low. Outlines are not stored here — see AirspaceZone in engine/types.ts. The obvious upgrade is to drive this from NOTAMs rather than by hand.",
+  "zones": [
+    {
+      "id": "russia_airspace",
+      "country": "Russia",
+      "label": "Russian airspace (closed to Western operators)",
+      "security": 100,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.18,
+      "modes": ["air"],
+      "closedToCountries": [
+        "Germany", "France", "Netherlands", "Belgium", "Poland", "Finland", "Sweden", "Denmark",
+        "Norway", "Estonia", "Latvia", "Lithuania", "Czechia", "Austria", "Italy", "Spain",
+        "Portugal", "Ireland", "Greece", "Romania", "Bulgaria", "Hungary", "Slovakia", "Slovenia",
+        "Croatia", "Luxembourg", "Malta", "Cyprus", "Iceland", "United Kingdom", "United States",
+        "Canada", "Japan", "South Korea", "Australia", "New Zealand", "Switzerland"
+      ]
+    },
+    {
+      "id": "belarus_airspace",
+      "country": "Belarus",
+      "label": "Belarusian airspace (closed to Western operators)",
+      "security": 100,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.03,
+      "modes": ["air"],
+      "closedToCountries": [
+        "Germany", "France", "Netherlands", "Belgium", "Poland", "Finland", "Sweden", "Denmark",
+        "Norway", "Estonia", "Latvia", "Lithuania", "Czechia", "Austria", "Italy", "Spain",
+        "Portugal", "Ireland", "Greece", "Romania", "Bulgaria", "Hungary", "Slovakia", "Slovenia",
+        "Croatia", "Luxembourg", "Malta", "Cyprus", "Iceland", "United Kingdom", "United States",
+        "Canada", "Switzerland"
+      ]
+    },
+    {
+      "id": "ukraine_airspace",
+      "country": "Ukraine",
+      "label": "Ukrainian airspace (closed to civil traffic)",
+      "security": 5,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.06,
+      "modes": ["air"]
+    },
+    {
+      "id": "sudan_airspace",
+      "country": "Sudan",
+      "label": "Khartoum FIR (closed)",
+      "security": 15,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.05,
+      "modes": ["air"]
+    },
+    {
+      "id": "yemen_airspace",
+      "country": "Yemen",
+      "label": "Sanaa FIR (closed to civil traffic)",
+      "security": 15,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.04,
+      "modes": ["air"]
+    },
+    {
+      "id": "syria_airspace",
+      "country": "Syria",
+      "label": "Damascus FIR (avoided by civil traffic)",
+      "security": 15,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.03,
+      "modes": ["air"]
+    },
+    {
+      "id": "libya_airspace",
+      "country": "Libya",
+      "label": "Tripoli FIR (avoided by civil traffic)",
+      "security": 20,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.05,
+      "modes": ["air"]
+    },
+    {
+      "id": "afghanistan_airspace",
+      "country": "Afghanistan",
+      "label": "Kabul FIR (uncontrolled, avoided by civil traffic)",
+      "security": 20,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.05,
+      "modes": ["air"]
+    },
+    {
+      "id": "north_korea_airspace",
+      "country": "North Korea",
+      "label": "Pyongyang FIR (avoided by civil traffic)",
+      "security": 25,
+      "access": "open",
+      "surchargeUsdPerKm": 0,
+      "tollUsd": 0,
+      "detourFactor": 1.03,
+      "modes": ["air"]
+    }
+  ]
+}

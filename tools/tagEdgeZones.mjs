@@ -19,6 +19,7 @@ const read = (file) => JSON.parse(fs.readFileSync(path.join(ROOT, "src/data", fi
 const zones = read("zones.json");
 const nodes = readNodes(ROOT);
 const edges = read("edges.json");
+const seaEdges = read("seaEdges.json");
 const truckEdges = read("truckEdges.json");
 const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
@@ -35,6 +36,7 @@ const apply = (list, fallbackMode) => {
   }
 };
 apply(edges);
+apply(seaEdges, "sea");
 apply(truckEdges, "truck");
 
 const field = (edge, key) => `"${key}": ${JSON.stringify(edge[key])}`;
@@ -52,13 +54,18 @@ fs.writeFileSync(
   "utf8",
 );
 fs.writeFileSync(
+  path.join(ROOT, "src/data/seaEdges.json"),
+  `[\n${seaEdges.map((e) => `  ${formatEdge(e)}`).join(",\n")}\n]\n`,
+  "utf8",
+);
+fs.writeFileSync(
   path.join(ROOT, "src/data/truckEdges.json"),
   `[\n${truckEdges.map((e) => `  ${formatEdge(e)}`).join(",\n")}\n]\n`,
   "utf8",
 );
 
 const counts = {};
-for (const edge of [...edges, ...truckEdges]) {
+for (const edge of [...edges, ...seaEdges, ...truckEdges]) {
   for (const id of Object.keys(edge.zones ?? {})) counts[id] = (counts[id] ?? 0) + 1;
 }
 for (const zone of zones) console.log(`${(counts[zone.id] ?? 0).toString().padStart(4)} legs  ${zone.id}`);

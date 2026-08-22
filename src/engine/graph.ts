@@ -2,6 +2,7 @@ import type { BaseEdge, CostsConfig, DistanceTier, GeoNode, Mode } from "./types
 import { haversineKm } from "./geo";
 import { economicIndex } from "./indices";
 import { getZone, seasonalDelay } from "./zones";
+import { breakOfGauge } from "./railGauge";
 
 export const HUB = "HUB";
 
@@ -27,6 +28,10 @@ export interface LegInfo {
   distanceKm: number;
   via?: [number, number][];
   zones?: Record<string, number>;
+  /** `[from, to]` gauge in mm when this rail leg crosses a break of gauge. */
+  breakOfGauge?: [number, number];
+  /** Label of the live border congestion slowing this leg down, if any. */
+  borderDelay?: string;
 }
 
 export interface AdjEdge {
@@ -60,6 +65,10 @@ export interface AccessRules {
   month?: number;
   /** Zones outside their validity window for this journey, ignored for blocking, surcharge and delay. */
   isZoneInEffect?: (id: string) => boolean;
+  /** Whether reciprocal closures (`Zone.closedToCountries`) bite. Defense cargo ignores them, like closed borders. */
+  respectOverflightBans?: boolean;
+  /** Live congestion at a border, which slows a leg down without ever closing it. */
+  borderDelay?: (fromCountry: string, toCountry: string, mode: Mode) => { label: string; delayHours: number } | undefined;
 }
 
 const OPEN: AccessRules = { blockedZones: new Set(), isBorderClosed: () => undefined };
@@ -110,19 +119,54 @@ export function buildGraph(
     if (!a || !b) continue;
     if (access.isBorderClosed(a.country, b.country, e.mode)) continue;
 
+    // Restricted airspace lengthens a flight rather than deleting it: the
+    // aircraft routes around. Blocking the leg instead left whole city pairs
+    // unreachable — every great circle from the Gulf to Tokyo clips somewhere
+    // restricted — when what really happens is simply a longer flight.
+    //
+    // A reciprocal ban only bites when *both* ends are on its list. Carriers
+    // on a lane are generally from one end or the other, and a shipper buys
+    // the cheapest capacity going: Frankfurt–Delhi is flown straight over
+    // Russia by the Indian operator even though the German one must divert,
+    // while Helsinki–Tokyo has no such option because both ends are banned.
+    // Defense cargo ignores the lot, as it does closed borders.
+    let airspaceDetour = 1;
+    if (access.respectOverflightBans !== false) {
+      for (const [id] of zoneEntries) {
+        const zone = getZone(id);
+        if (!zone?.detourFactor) continue;
+        const closedTo = zone.closedToCountries;
+        if (closedTo && !(closedTo.includes(a.country) && closedTo.includes(b.country))) continue;
+        airspaceDetour *= zone.detourFactor;
+      }
+    }
+
     const modeCfg = costs.modes[e.mode];
     const routePoints = [a, ...(e.via ?? []).map(([lon, lat]) => ({ lon, lat })), b];
     const routeDistanceKm = routePoints.slice(1).reduce(
       (sum, point, index) => sum + haversineKm(routePoints[index], point),
       0,
     );
-    const distanceKm = routeDistanceKm * modeCfg.detourFactor;
+    const distanceKm = routeDistanceKm * modeCfg.detourFactor * airspaceDetour;
     const zoneUsd = zoneEntries.reduce((sum, [id, km]) => {
       const zone = getZone(id);
       return zone ? sum + km * zone.surchargeUsdPerKm + zone.tollUsd : sum;
     }, 0);
-    const usd = taperedUsd(distanceKm, modeCfg.usdPerKm, costs.distanceTiers) + zoneUsd;
-    const hours = (distanceKm / modeCfg.kmPerHour) * seasonalDelay(zoneEntries.map(([id]) => id), access.month);
+    // Track gauge is fixed infrastructure, so a rail leg between incompatible
+    // networks isn't just a border crossing: every container comes off one
+    // train and onto another before it goes on.
+    const gauge = e.mode === "rail" ? breakOfGauge(a, b) : null;
+    const gaugeUsd = gauge ? costs.rail.breakOfGaugeUsd : 0;
+    const gaugeHours = gauge ? costs.rail.breakOfGaugeHours : 0;
+
+    // Queueing at a congested border costs time, not money: the driver waits.
+    const congestion = access.borderDelay?.(a.country, b.country, e.mode);
+
+    const usd = taperedUsd(distanceKm, modeCfg.usdPerKm, costs.distanceTiers) + zoneUsd + gaugeUsd;
+    const hours =
+      (distanceKm / modeCfg.kmPerHour) * seasonalDelay(zoneEntries.map(([id]) => id), access.month) +
+      gaugeHours +
+      (congestion?.delayHours ?? 0);
 
     registerMode(a.id, e.mode);
     registerMode(b.id, e.mode);
@@ -132,14 +176,32 @@ export function buildGraph(
       usd,
       hours,
       isLoad: false,
-      leg: { from: a.id, to: b.id, mode: e.mode, distanceKm, via: e.via, zones: e.zones },
+      leg: {
+        from: a.id,
+        to: b.id,
+        mode: e.mode,
+        distanceKm,
+        via: e.via,
+        zones: e.zones,
+        breakOfGauge: gauge ?? undefined,
+        borderDelay: congestion?.label,
+      },
     });
     addEdge(stateKey(b.id, e.mode), {
       to: stateKey(a.id, e.mode),
       usd,
       hours,
       isLoad: false,
-      leg: { from: b.id, to: a.id, mode: e.mode, distanceKm, via: e.via?.toReversed(), zones: e.zones },
+      leg: {
+        from: b.id,
+        to: a.id,
+        mode: e.mode,
+        distanceKm,
+        via: e.via?.toReversed(),
+        zones: e.zones,
+        breakOfGauge: gauge ? [gauge[1], gauge[0]] : undefined,
+        borderDelay: congestion?.label,
+      },
     });
   }
 

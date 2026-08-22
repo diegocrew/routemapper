@@ -34,6 +34,22 @@ export interface Zone {
   tollUsd: number;
   /** Modes the zone applies to; all of them when omitted. */
   modes?: Mode[];
+  /**
+   * Countries whose operators may not cross this zone, for closures that turn
+   * on who is travelling rather than on the corridor itself: Russian airspace
+   * is shut to Western carriers and open to everyone else. A leg pays
+   * `detourFactor` only when *both* ends are listed, since a lane with one
+   * unbanned end still has an operator who can fly it straight, and a shipper
+   * buys the cheapest capacity going.
+   */
+  closedToCountries?: string[];
+  /**
+   * How much longer a leg gets when it has to route around this zone. Closed
+   * airspace doesn't cancel a flight, it lengthens it — Helsinki–Tokyo runs a
+   * couple of hours longer for a European carrier and is untouched for an
+   * Emirati one, which is the whole competitive story of that lane.
+   */
+  detourFactor?: number;
   /** Months (1-12) the zone is unnavigable — ice, not politics. */
   closedMonths?: number[];
   /** Months when transit is slowed rather than stopped, and by how much. */
@@ -60,6 +76,18 @@ export interface Zone {
   polygon?: [number, number][];
   center?: [number, number];
   radiusKm?: number;
+}
+
+/**
+ * A restricted national airspace. Its outline deliberately isn't here: which
+ * flights cross it is resolved offline by tools/generateAirspaceZones.mjs into
+ * airEdgeZones.json, so the browser never carries a country polygon and never
+ * tests one. That also keeps these out of the point-in-zone lookup, which is
+ * right — an airport inside closed airspace is still a fine place to truck to.
+ */
+export interface AirspaceZone extends Zone {
+  /** Country whose airspace this is; the offline tagger uses it to find the outline. */
+  country: string;
 }
 
 export interface Restriction {
@@ -132,6 +160,10 @@ export interface HubEfficiencyConfig {
 export interface CostsConfig {
   modes: Record<Mode, CostModeConfig>;
   truck: { maxLegKm: number; maxNeighbors: number };
+  /** Read by tools/generate_sea_routes.py, not by the engine: how many nearest-port hops each port gets in seaEdges.json. */
+  sea: { maxNeighbors: number };
+  /** What a break of gauge costs on top of the leg itself: craning every container across, or swapping bogies, before the train goes on. */
+  rail: { breakOfGaugeUsd: number; breakOfGaugeHours: number };
   hub: HubEfficiencyConfig;
   cargo: CargoSizingConfig;
   distanceTiers: DistanceTier[];
@@ -150,6 +182,10 @@ export interface RouteLeg {
   zones?: Record<string, number>;
   /** Hours from departure to arriving at the end of this leg, so a leg can be checked against a hazard's validity window. */
   etaHours?: number;
+  /** `[from, to]` track gauge in mm, set only on a rail leg whose ends are on incompatible track — the cargo is transshipped at the border. */
+  breakOfGauge?: [number, number];
+  /** Label of the live border congestion slowing this leg down, if any. */
+  borderDelay?: string;
 }
 
 export type RouteOptionKey = "cheapest" | "fastest" | "most-direct" | "safest";
@@ -165,6 +201,10 @@ export interface RouteOption {
   securityScore: number;
   /** Labels of the risk zones this route passes through. */
   zoneLabels: string[];
+  /** Break-of-gauge transshipments along this route, e.g. "Warsaw · 1520→1435 mm". */
+  transshipments: string[];
+  /** Live border congestion on this route, from the fetched feeds rather than the curated closures. */
+  borderDelays: string[];
   /** Set when this route crosses an active hazard zone — only possible at all for cargo with allowMilitaryNodes, since civilian cargo is blocked from hazard zones outright. */
   hazardWarnings: string[];
   /** Hazards on this route that the shipment outruns: forecast to have expired by the time it reaches them. */

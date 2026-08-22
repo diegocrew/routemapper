@@ -5,6 +5,7 @@
  */
 import nodes from "../src/data/nodes.json" with { type: "json" };
 import edges from "../src/data/edges.json" with { type: "json" };
+import seaEdgeData from "../src/data/seaEdges.json" with { type: "json" };
 import truckEdgeData from "../src/data/truckEdges.json" with { type: "json" };
 import {
   buildLandGrid,
@@ -85,7 +86,7 @@ const fmt = (p) => (p ? `${p.lat.toFixed(2)},${p.lon.toFixed(2)}` : "-");
 
 // --- inputs ----------------------------------------------------------------
 const nodeById = new Map(nodes.map((n) => [n.id, n]));
-const seaEdges = edges.filter((e) => e.mode === "sea");
+const seaEdges = [...edges.filter((e) => e.mode === "sea"), ...seaEdgeData.map((e) => ({ ...e, mode: "sea" }))];
 const railEdges = edges.filter((e) => e.mode === "rail");
 
 function truckEdges() {
@@ -153,7 +154,7 @@ for (const e of seaEdges) {
 }
 
 console.log("\n=== ANTIMERIDIAN JUMPS (renders as a line across the whole map) ===");
-for (const e of edges) {
+for (const e of [...edges, ...seaEdgeData.map((e) => ({ ...e, mode: "sea" }))]) {
   const pts = edgePoints(e);
   if (!pts) continue;
   for (let i = 0; i < pts.length - 1; i++) {

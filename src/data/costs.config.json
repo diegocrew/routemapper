@@ -9,6 +9,13 @@
     "maxLegKm": 700,
     "maxNeighbors": 6
   },
+  "sea": {
+    "maxNeighbors": 6
+  },
+  "rail": {
+    "breakOfGaugeUsd": 220,
+    "breakOfGaugeHours": 18
+  },
   "cargo": {
     "defaultTonnes": 20,
     "tonnesPerUnit": 20,

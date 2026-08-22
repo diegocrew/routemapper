@@ -40,6 +40,13 @@ function App() {
   const [showHazards, setShowHazards] = useState(true);
   // Wildfires outnumber the other hazards by orders of magnitude, so they start hidden and get their own switch.
   const [showWildfires, setShowWildfires] = useState(false);
+  // Civilian cargo can't be routed to a military site at all, so for the
+  // default load the installations are a thousand-odd red dots over the trunk
+  // network that nothing can use. Switching cargo class resets this to what
+  // that class can actually reach; the map's own switch overrides it after.
+  const [showMilitary, setShowMilitary] = useState(
+    () => resolveCargo(costs, "civilian", []).allowMilitaryNodes === true,
+  );
 
   // A location can only hold one role at a time, so claiming a new role clears any other it was previously assigned.
   const setOriginId = (id: string | null) => {
@@ -65,6 +72,15 @@ function App() {
   };
 
   const cargoRule = resolveCargo(costs, cargoClass, handling);
+
+  // The pickers follow the map: hidden installations aren't offered either.
+  // A site already holding a role stays listed, or the select would show an
+  // empty selection for a stop that is still very much set.
+  const pickerNodes = useMemo(() => {
+    if (showMilitary) return nodes;
+    const inUse = new Set([originId, destinationId, ...waypointIds].filter((id) => id !== null));
+    return nodes.filter((n) => n.kind !== "military" || inUse.has(n.id));
+  }, [showMilitary, originId, destinationId, waypointIds]);
 
   // A safer routing is worked out up front so the offer is only made when one
   // actually exists — when the risk is the origin or destination itself, no
@@ -168,13 +184,16 @@ function App() {
         route={selectedRoute}
         showHazards={showHazards}
         showWildfires={showWildfires}
+        showMilitary={showMilitary}
         onToggleHazards={() => setShowHazards((prev) => !prev)}
         onToggleWildfires={() => setShowWildfires((prev) => !prev)}
+        onToggleMilitary={() => setShowMilitary((prev) => !prev)}
         onSelectNode={setSelectedNodeId}
       />
-      <MapLegend />
+      <MapLegend showMilitary={showMilitary} />
       <ControlPanel
         nodes={nodes}
+        pickerNodes={pickerNodes}
         originId={originId}
         destinationId={destinationId}
         onSetOrigin={setOriginId}
@@ -200,6 +219,7 @@ function App() {
         cargoClassLabels={cargoClassLabels}
         onCargoClassChange={(next) => {
           setCargoClass(next);
+          setShowMilitary(resolveCargo(costs, next, handling).allowMilitaryNodes === true);
           setPreferSafety(false);
           setSelectedKey(null);
         }}

@@ -29,7 +29,12 @@ const HAZARD_ROWS: { kind: string; label: string; effect: string }[] = [
   { kind: "wildfire", label: "Wildfire", effect: "legs avoid" },
 ];
 
-export function MapLegend() {
+interface MapLegendProps {
+  /** Military installations are hidden for civilian cargo, and a key for dots that aren't drawn only invites the question of where they are. */
+  showMilitary: boolean;
+}
+
+export function MapLegend({ showMilitary }: MapLegendProps) {
   const [open, setOpen] = useState(true);
   // A hazard kind with nothing live right now is still worth listing, so the map reading "all wildfire" is visibly the feed's doing rather than a missing layer.
   const hazardCounts = useMemo(() => {
@@ -53,7 +58,7 @@ export function MapLegend() {
       </button>
       {open && (
         <div className="map-legend-body">
-          {ORDER.map((kind) => (
+          {ORDER.filter((kind) => kind !== "military" || showMilitary).map((kind) => (
             <div key={kind} className="map-legend-row">
               <span className="map-legend-dot" style={{ background: KIND_COLORS[kind] }} />
               {KIND_LABELS[kind]}

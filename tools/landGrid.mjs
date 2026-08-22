@@ -18,6 +18,8 @@ const RIVERS_URL =
   "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_rivers_lake_centerlines.geojson";
 const LAKES_URL =
   "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_lakes.geojson";
+const COUNTRIES_URL =
+  "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
 
 /** Natural Earth vectors are megabytes each, so they're cached outside the repo rather than committed. */
 async function ensureGeojson(name, url, explicitPath) {
@@ -37,6 +39,9 @@ export const ensureLandGeojson = (explicitPath) => ensureGeojson("ne_10m_land.ge
 export const ensureRiversGeojson = (explicitPath) =>
   ensureGeojson("ne_10m_rivers.geojson", RIVERS_URL, explicitPath);
 export const ensureLakesGeojson = (explicitPath) => ensureGeojson("ne_10m_lakes.geojson", LAKES_URL, explicitPath);
+/** 110m rather than 10m: airspace only needs to know which country a flight is over, and the coarse outlines are a tenth of the size. */
+export const ensureCountriesGeojson = (explicitPath) =>
+  ensureGeojson("ne_110m_admin_0_countries.geojson", COUNTRIES_URL, explicitPath);
 
 export function haversineKm(a, b) {
   const dLat = rad(b.lat - a.lat);
@@ -402,6 +407,34 @@ export function mercatorPoint(a, b, f) {
     lon: a.lon + (b.lon - a.lon) * f,
     lat: ((2 * Math.atan(Math.exp(merc)) - Math.PI / 2) * 180) / Math.PI,
   };
+}
+
+/**
+ * Point a fraction `f` along the great circle from `a` to `b` — the path an
+ * aircraft actually flies. Deliberately not `mercatorPoint`: the two diverge by
+ * thousands of km at high latitudes, which is exactly where the question
+ * "does this flight cross Russia" is decided.
+ */
+export function greatCirclePoint(a, b, f) {
+  const deg = (r) => (r * 180) / Math.PI;
+  const lat1 = rad(a.lat);
+  const lon1 = rad(a.lon);
+  const lat2 = rad(b.lat);
+  const lon2 = rad(b.lon);
+  const d =
+    2 *
+    Math.asin(
+      Math.sqrt(
+        Math.sin((lat2 - lat1) / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1) / 2) ** 2,
+      ),
+    );
+  if (d === 0) return { lon: a.lon, lat: a.lat };
+  const u = Math.sin((1 - f) * d) / Math.sin(d);
+  const v = Math.sin(f * d) / Math.sin(d);
+  const x = u * Math.cos(lat1) * Math.cos(lon1) + v * Math.cos(lat2) * Math.cos(lon2);
+  const y = u * Math.cos(lat1) * Math.sin(lon1) + v * Math.cos(lat2) * Math.sin(lon2);
+  const z = u * Math.sin(lat1) + v * Math.sin(lat2);
+  return { lat: deg(Math.atan2(z, Math.hypot(x, y))), lon: deg(Math.atan2(y, x)) };
 }
 
 /** Longest contiguous stretch of open water along a polyline, in km. */

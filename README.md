@@ -40,12 +40,14 @@ Sea edges include committed water-following polylines. After adding or changing
 a sea edge, install [uv](https://docs.astral.sh/uv/) and regenerate them:
 
 ```bash
-npm run generate:sea-routes      # ocean lanes, via searoute
+npm run generate:sea-routes      # ocean lanes, via searoute; rebuilds seaEdges.json
 npm run generate:inland-routes   # river/canal legs, routed on real waterways
 npm run generate:rail-routes     # keeps rail off open water
 npm run generate:truck-edges     # rebuild after changing nodes.json
 npm run generate:edge-zones      # re-tag legs after changing zones.json
+npm run generate:airspace        # re-tag air legs after changing airspace.json or nodes
 npm run retag:hazards            # re-tag hazard crossings after nodes/edges change
+npm run fetch:border-status      # live border waits and reported closures
 npm run check:sea-routes
 npm run audit:geography          # report any leg crossing the wrong medium
 ```
@@ -56,6 +58,10 @@ browser build. The sea-route generator runs `searoute` in an isolated Python
 environment. Curated `via` points are preserved for inland rivers and canals
 that are not covered by the ocean network.
 
+Changing `nodes.json` means re-running `generate:sea-routes` as well as
+`generate:truck-edges`: both files are keyed on node ids and both pick each
+node's nearest neighbours.
+
 > Note: `vite.config.ts` sets `base: '/routemapper/'` to match this repo's
 > GitHub Pages URL. If you fork this under a different repo name, update
 > that base path (or set it to `/` for a custom domain / user/org page).
@@ -64,7 +70,9 @@ that are not covered by the ocean network.
 
 ```
 src/
-  data/            nodes.json, edges.json (hand-curated), costs.config.json
+  data/            nodes.json, edges.json (hand-curated), costs.config.json,
+                   railGauge.json, airspace.json, restrictions.json,
+                   seaEdges.json / truckEdges.json / airEdgeZones.json (generated)
   engine/          graph construction, Dijkstra pathfinder, cost model, tests
   map/             MapLibre map view + per-mode line/marker styling
   ui/              control panel, node picker, route results list
@@ -94,7 +102,20 @@ src/
   Re-running the import means re-running `generate:truck-edges`,
   `generate:edge-zones` and `retag:hazards`.
 - **Edges** (`src/data/edges.json`): hand-curated trunk sea/air/rail routes
-  covering major global trade lanes. Not exhaustive — MVP scope.
+  covering major global trade lanes, plus the river and canal corridors. Not
+  exhaustive — MVP scope.
+- **Sea legs** (`src/data/seaEdges.json`) fill in around those trunk lanes,
+  generated offline by `npm run generate:sea-routes`: each port's `sea.maxNeighbors`
+  nearest other ports, every pair routed through `searoute` so the leg follows
+  real water. The curated lanes on their own averaged 2.5 per port, which left
+  the network hop-starved — a ship would sail past its actual port of call
+  because the next port over happened to be the one with a curated onward link.
+  A pair already in `edges.json` is never generated, so hand-drawn corridors
+  win. Two things are dropped: a port whose end snaps onto searoute's network
+  more than 75 km away isn't on that network at all (Vienna, Memphis and
+  Asunción are river cities, and their legs stay curated), and a pair whose sea
+  route runs over 3x its straight line is a neighbour on paper only — the far
+  side of an isthmus, reached by chaining hops instead.
 - **Truck legs** (`src/data/truckEdges.json`) are generated offline by
   `npm run generate:truck-edges`: a pair only becomes a road leg if both hubs
   sit on the same landmass and an overland path exists within road range, and
@@ -132,6 +153,34 @@ src/
   bans and airspace closures, matched on the countries at each end of a leg for
   the listed modes. `pairsWith` makes a rule one-sided — the EU haulier ban
   applies between the EU states and Russia/Belarus, not within either group.
+- **Track gauge** (`src/data/railGauge.json`): a rail leg between two
+  incompatible networks isn't just a border crossing — a 1520 mm wagon cannot
+  run on 1435 mm rail, so every container is craned across at Brest, Khorgos,
+  Erenhot or Irun before the train goes on. Legs that cross one pay
+  `rail.breakOfGauge*` from `costs.config.json` on top of the distance, and say
+  where. Gauge is per country with per-node overrides for dual-gauge railheads;
+  `interoperable` keeps 1520 and 1524 mm as one network, since Finnish and
+  Russian wagons run through and comparing the numbers alone would invent a
+  transshipment that never happens.
+- **Restricted airspace** (`src/data/airspace.json`): overflight bans used to be
+  matched on the countries at the ends of a flight, which got the common cases
+  wrong both ways — Helsinki–Tokyo was banned outright though neither end is
+  Russia, and Dubai–Tokyo was scored as if it never went near Siberia. Now the
+  geometry decides: `npm run generate:airspace` samples every air leg's great
+  circle against country outlines and commits the crossings to
+  `airEdgeZones.json`. A closure lengthens the flight rather than cancelling it,
+  since aircraft route around, and a reciprocal ban only bites when both ends
+  are on its list — a lane with one unbanned end still has an operator who flies
+  it straight.
+- **Live border conditions** (`src/data/borderStatus.json`): fetched by
+  `npm run fetch:border-status` from CBP's commercial wait times (keyless, and
+  measured rather than inferred, but only US–Canada and US–Mexico) and from
+  ReliefWeb reporting for the rest, which needs a free approved appname in
+  `RELIEFWEB_APPNAME`. Unlike `restrictions.json`, nothing fetched here can
+  close a border: a feed reports a crossing shutting far more reliably than it
+  reports one reopening, so letting one delete a corridor would reroute the
+  world off a noisy news week and quietly keep it that way. These only add
+  delay and a warning; closing a border stays a curated decision.
 - **Cargo types** exclude certain modes (e.g. hazardous goods can't fly) —
   also configurable in `costs.config.json`. Defense cargo ignores security
   scoring, closed borders and closed zones.
@@ -172,6 +221,29 @@ at a time. Mode scoping is what makes the rest realistic — a cyclone should pu
 a ship off a lane without touching the road network behind the port, and a
 wildfire should stop trucks and trains without surcharging aircraft overflying
 it or ships passing tens of km offshore.
+
+## Border conditions (live)
+
+`npm run fetch:border-status` (`tools/fetchBorderStatus.mjs`) writes
+`src/data/borderStatus.json` on the same schedule.
+
+| Source | Signal | Key |
+| --- | --- | --- |
+| CBP border wait times | Measured commercial-vehicle queues, median across a border's open crossings | none |
+| ReliefWeb | Reported disruption on a watchlist of borders, 21-day window | `RELIEFWEB_APPNAME` |
+
+The hard rule here is that **nothing fetched can close a border**. Feeds report a
+crossing shutting far more reliably than they report one reopening, so a feed
+allowed to delete a corridor would reroute the world off a noisy news week and
+then quietly keep it that way. Entries only ever add delay to a leg and a line
+on the route card; closing a border is a curated decision in
+`restrictions.json`, and `validate:data` fails the build on any generated entry
+big enough to act like one.
+
+CBP is the only genuinely measured source of the two, and it covers exactly the
+US–Canada and US–Mexico borders — precision over reach. An empty file is the
+normal state and the correct answer on an ordinary day; a queue only counts once
+it exceeds half an hour, since queueing at a border is what borders do.
 
 ## Country risk (sanctions & conflict)
 
@@ -276,7 +348,8 @@ publish automatically.
 - Zones are tagged on sea, rail and truck legs only; air legs are generated at
   runtime, so overflight bans aren't modelled — airspace closures only apply
   between the endpoint countries of a flight.
-- ~150 nodes and hand-picked trunk routes, not exhaustive global coverage.
+- ~150 nodes; air and sea are filled in from those nodes, but rail is still
+  hand-picked trunk routes rather than exhaustive coverage.
 - Truck legs use great-circle distance with a road detour factor, not real
   road-network routing; drivability is checked against coastlines, so a road
   leg never crosses open water, but it doesn't follow actual highways.
@@ -284,30 +357,24 @@ publish automatically.
   are hand-curated approximations of the river course.
 - No accounts, saved routes, or mobile app.
 
-## TODO: denser, less hop-starved sea and rail networks
+## TODO: a denser, less hop-starved rail network
 
-Sea and rail edges today are a small hand-picked set of trunk routes (see
-`edges.json` above), so a route can be forced through an odd detour just
-because the curated network happens to have an edge there and not somewhere
-more direct — e.g. a ship continuing past its actual port of call because the
-next port over is the only one with a good onward rail link, when a more
-sensible rail link from the first port simply hasn't been curated yet.
+Rail edges are still a small hand-picked set of trunk routes (see `edges.json`
+above), so a route can be forced through an odd detour just because the curated
+network happens to have an edge there and not somewhere more direct — a ship
+continuing past its actual port of call because the next port over is the only
+one with a good onward rail link, when a more sensible rail link from the first
+port simply hasn't been curated yet.
 
-- **Sea**: open water has effectively no obstacles (coastlines, canals and ice
-  aside — already modelled), so this is the easy half. `generate:sea-routes`
-  already calls `searoute` to compute a real coastline-respecting path between
-  *any* two coastal points; it's just only wired up for ~20 hand-picked pairs.
-  Fix: generate each seaport's edges to its K nearest other seaports (same
-  shape as truck's `maxNeighbors` cap, or the military-installation "3 nearest
-  curated hubs" spoke pattern), run each through `searoute`, and let Dijkstra
-  chain hops for long hauls — the same way real shipping and the truck network
-  here both work already (nobody sails great-circle for 8,000 km either).
-- **Rail**: harder, because unlike roads or open water, rail track is fixed
-  physical infrastructure with real gaps that have nothing to do with distance
-  (gauge breaks, no track across oceans, missing links). A proximity-based
-  "K nearest rail hubs" generator would happily invent edges that don't
-  physically exist. Doing this properly needs a real rail network dataset —
-  OpenStreetMap's `railway=rail` ways via Overpass, or a regional extract —
-  and computing connectivity over the *actual* track graph, the way `searoute`
-  already gives the real water graph for sea. Treat as a separate, later phase
-  from the sea fix.
+The sea half of this is done: `seaEdges.json` now generates each port's nearest
+few ports through `searoute` and lets Dijkstra chain hops for long hauls, which
+took the maritime network from 2.5 lanes per port to 9.
+
+Rail can't be done the same way. Unlike roads or open water, rail track is
+fixed physical infrastructure with real gaps that have nothing to do with
+distance (gauge breaks, no track across oceans, missing links), so a
+proximity-based "K nearest rail hubs" generator would happily invent edges that
+don't physically exist. Doing this properly needs a real rail network dataset —
+OpenStreetMap's `railway=rail` ways via Overpass, or a regional extract — and
+computing connectivity over the *actual* track graph, the way `searoute`
+already gives the real water graph for sea.

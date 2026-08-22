@@ -27,12 +27,18 @@ jobs:
       # day here leaves the previous file in place rather than failing the run.
       - run: npm run fetch:country-risk
         continue-on-error: true
+      # Border conditions are advisory: nothing here can close a corridor, so a
+      # failed fetch costs a warning label, not a routing decision.
+      - run: npm run fetch:border-status
+        continue-on-error: true
+        env:
+          RELIEFWEB_APPNAME: ${{ secrets.RELIEFWEB_APPNAME }}
       - run: npm run validate:data
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/hazardZones.json src/data/hazardEdgeZones.json src/data/hazardHistory.json src/data/countryRisk.json
+          git add src/data/hazardZones.json src/data/hazardEdgeZones.json src/data/hazardHistory.json src/data/countryRisk.json src/data/borderStatus.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh hazard zones"
             git push

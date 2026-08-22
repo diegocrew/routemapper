@@ -129,6 +129,17 @@
   opacity: 1;
 }
 
+/* Deliberately the dot's own colour: the button is the red dots it controls. */
+.rm-military-toggle {
+  font-size: 11px;
+  line-height: 1;
+  color: #64748b;
+}
+
+.rm-military-toggle-on {
+  color: #ef4444;
+}
+
 /* MapLibre's default popup is white-on-white against this dark basemap. */
 .maplibregl-popup-content {
   background: rgba(15, 23, 42, 0.94);
@@ -435,6 +446,13 @@ button {
 .route-card-zones {
   font-size: 11px;
   color: #fca5a5;
+  line-height: 1.35;
+}
+
+/* A cost of the network's shape rather than a risk, so amber rather than red. */
+.route-card-transship {
+  font-size: 11px;
+  color: #fcd34d;
   line-height: 1.35;
 }
 

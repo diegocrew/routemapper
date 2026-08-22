@@ -10,7 +10,7 @@ import truckEdgeData from "../data/truckEdges.json";
  */
 export function buildTruckEdges(nodes: GeoNode[]): BaseEdge[] {
   const nodeIds = new Set(nodes.map((n) => n.id));
-  return (truckEdgeData as { from: string; to: string; via?: [number, number][] }[])
+  return (truckEdgeData as { from: string; to: string; via?: [number, number][]; zones?: Record<string, number> }[])
     .filter((e) => nodeIds.has(e.from) && nodeIds.has(e.to))
-    .map((e) => ({ from: e.from, to: e.to, mode: "truck", via: e.via }));
+    .map((e) => ({ from: e.from, to: e.to, mode: "truck", via: e.via, zones: e.zones }));
 }

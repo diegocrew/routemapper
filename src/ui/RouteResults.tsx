@@ -82,6 +82,14 @@ export function RouteResults({
           {opt.zoneLabels.length > 0 && (
             <div className="route-card-zones">crosses {opt.zoneLabels.join(" · ")}</div>
           )}
+          {opt.transshipments.length > 0 && (
+            <div className="route-card-transship">
+              break of gauge — transship at {opt.transshipments.join(" · ")}
+            </div>
+          )}
+          {opt.borderDelays.length > 0 && (
+            <div className="route-card-transship">{opt.borderDelays.join(" · ")}</div>
+          )}
           {opt.hazardWarnings.length > 0 && (
             <div className="route-card-hazard">⚠ {opt.hazardWarnings.join(" · ")}</div>
           )}
