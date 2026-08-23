@@ -16,6 +16,7 @@
     "retag:hazards": "node tools/fetchHazards.mjs --retag",
     "fetch:country-risk": "node tools/fetchCountryRisk.mjs",
     "fetch:border-status": "node tools/fetchBorderStatus.mjs",
+    "probe:acled": "node tools/probeAcled.mjs",
     "fetch:military-bases": "node tools/fetchMilitaryBases.mjs",
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "validate:data": "node tools/validateData.mjs",

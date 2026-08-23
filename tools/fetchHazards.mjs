@@ -1,7 +1,9 @@
 /**
  * Pulls live natural hazards into temporary "hazard" zones in the same shape
- * as src/data/zones.json, then tags which curated/truck legs cross them. Each
- * source lives in tools/feeds/ and is keyless except FIRMS.
+ * as src/data/zones.json, then tags which curated/sea/truck legs cross them.
+ * Each source lives in tools/feeds/; all are keyless except FIRMS and ACLED.
+ * Air legs are generated at runtime and are not tagged here — the air side of a
+ * hazard is handled as restricted airspace in src/data/airspace.json instead.
  *
  * Run on a schedule by .github/workflows/hazards.yml — each run re-fetches the
  * current upstream window and overwrites the output files wholesale, so an
@@ -25,6 +27,7 @@ import { fetchWildfireZones } from "./feeds/firms.mjs";
 import { fetchGdacsZones } from "./feeds/gdacs.mjs";
 import { fetchStormZones } from "./feeds/nhc.mjs";
 import { fetchNavWarningZones } from "./feeds/nga.mjs";
+import { fetchConflictZones } from "./feeds/acled.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => JSON.parse(fs.readFileSync(path.join(ROOT, "src/data", file), "utf8"));
@@ -47,6 +50,7 @@ const SOURCES = [
   ["GDACS", fetchGdacsZones],
   ["storm", fetchStormZones],
   ["nav warning", fetchNavWarningZones],
+  ["conflict", fetchConflictZones],
 ];
 
 // --- History ------------------------------------------------------------------

@@ -56,7 +56,7 @@ export interface Zone {
   delayMonths?: number[];
   delayFactor?: number;
   /** Set only on generated hazard zones. Earthquakes and volcanoes close a site outright; the rest only make it expensive to cross. */
-  hazardKind?: "earthquake" | "wildfire" | "cyclone" | "flood" | "volcano" | "navwarning";
+  hazardKind?: "earthquake" | "wildfire" | "cyclone" | "flood" | "volcano" | "navwarning" | "conflict";
   /** ISO timestamp the hazard was detected/generated, set only on generated hazard zones. */
   detectedAt?: string;
   /**

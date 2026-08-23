@@ -23,6 +23,8 @@ jobs:
       - run: npm run fetch:hazards
         env:
           FIRMS_API_KEY: ${{ secrets.NASA }}
+          ACLED_USERNAME: ${{ secrets.ACLEDUSER }}
+          ACLED_PASSWORD: ${{ secrets.ACLEDPWD }}
       # Sanctions and conflict move slowly and both sources fail soft, so a bad
       # day here leaves the previous file in place rather than failing the run.
       - run: npm run fetch:country-risk

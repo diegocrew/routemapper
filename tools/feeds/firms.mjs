@@ -12,7 +12,8 @@
  * passing tens of km offshore.
  */
 import { fetchText } from "../lib/http.mjs";
-import { haversineKm, round3 } from "../lib/sphere.mjs";
+import { round3 } from "../lib/sphere.mjs";
+import { clusterPoints, clusterSpreadKm } from "../lib/cluster.mjs";
 
 const SOURCE = "VIIRS_SNPP_NRT";
 const DAY_RANGE = 4;
@@ -57,55 +58,6 @@ function parseCsv(csv) {
   return points;
 }
 
-/**
- * Greedy single-pass clustering: a point joins the nearest cluster within
- * CLUSTER_LINK_KM of its centroid, else starts a new one. Candidate clusters
- * come from a coarse lon/lat grid keyed on the link distance, so a global feed
- * of hundreds of thousands of detections stays linear instead of comparing
- * every point against every cluster found so far. Good enough for turning a
- * hotspot smear into a handful of zones — not a real spatial index.
- */
-function clusterPoints(points) {
-  const cellDeg = CLUSTER_LINK_KM / 111.32;
-  const clusters = [];
-  const grid = new Map();
-  const keyOf = (x, y) => `${x}|${y}`;
-
-  for (const point of points) {
-    const cx = Math.floor(point.lon / cellDeg);
-    const cy = Math.floor(point.lat / cellDeg);
-    let best = null;
-    let bestKm = Infinity;
-    for (let dx = -1; dx <= 1; dx++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        for (const cluster of grid.get(keyOf(cx + dx, cy + dy)) ?? []) {
-          const km = haversineKm(point, cluster.centroid);
-          if (km <= CLUSTER_LINK_KM && km < bestKm) {
-            best = cluster;
-            bestKm = km;
-          }
-        }
-      }
-    }
-    if (best) {
-      best.points.push(point);
-      const n = best.points.length;
-      best.centroid = {
-        lat: best.centroid.lat + (point.lat - best.centroid.lat) / n,
-        lon: best.centroid.lon + (point.lon - best.centroid.lon) / n,
-      };
-    } else {
-      const cluster = { centroid: { lat: point.lat, lon: point.lon }, points: [point] };
-      clusters.push(cluster);
-      const key = keyOf(cx, cy);
-      const bucket = grid.get(key);
-      if (bucket) bucket.push(cluster);
-      else grid.set(key, [cluster]);
-    }
-  }
-  return clusters;
-}
-
 export async function fetchWildfireZones() {
   const mapKey = process.env.FIRMS_API_KEY;
   if (!mapKey) {
@@ -116,11 +68,11 @@ export async function fetchWildfireZones() {
   const csv = await fetchText(
     `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${mapKey}/${SOURCE}/world/${DAY_RANGE}`,
   );
-  const clusters = clusterPoints(parseCsv(csv)).filter((c) => c.points.length >= MIN_CLUSTER_POINTS);
+  const clusters = clusterPoints(parseCsv(csv), CLUSTER_LINK_KM).filter((c) => c.points.length >= MIN_CLUSTER_POINTS);
   const now = new Date().toISOString();
 
   return clusters.map((cluster, i) => {
-    const spreadKm = Math.max(0, ...cluster.points.map((p) => haversineKm(p, cluster.centroid)));
+    const spreadKm = clusterSpreadKm(cluster);
     const radiusKm = Math.min(RADIUS_RANGE_KM[1], Math.max(RADIUS_RANGE_KM[0], spreadKm + BUFFER_KM));
     return {
       id: `fire_${cluster.centroid.lat.toFixed(2)}_${cluster.centroid.lon.toFixed(2)}_${i}`,

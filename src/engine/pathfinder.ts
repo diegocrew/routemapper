@@ -24,6 +24,7 @@ const HAZARD_NOTES: Record<string, string> = {
   cyclone: "tropical cyclone on this leg, expect port closures and delay",
   flood: "flooding on this leg, expect road and rail disruption",
   navwarning: "navigational warning in force on this leg",
+  conflict: "armed conflict on this leg, expect closures and war-risk premiums",
 };
 
 type Weight = (edge: AdjEdge) => number;

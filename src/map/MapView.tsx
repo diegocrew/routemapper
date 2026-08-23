@@ -62,6 +62,8 @@ const hazardColorByKind: maplibregl.ExpressionSpecification = [
   HAZARD_KIND_COLORS.volcano,
   "navwarning",
   HAZARD_KIND_COLORS.navwarning,
+  "conflict",
+  HAZARD_KIND_COLORS.conflict,
   HAZARD_COLOR,
 ];
 

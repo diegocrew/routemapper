@@ -185,7 +185,7 @@ src/
   also configurable in `costs.config.json`. Defense cargo ignores security
   scoring, closed borders and closed zones.
 
-## Hazard zones (live natural-hazard monitoring)
+## Hazard zones (live monitoring)
 
 `.github/workflows/hazards.yml` runs `npm run fetch:hazards`
 (`tools/fetchHazards.mjs`) four times a day and commits
@@ -198,11 +198,17 @@ src/
 | NOAA NHC | Active named storms + a dead-reckoned +24/48/72 h track | none |
 | NGA | NAVAREA broadcast warnings (firing areas, exercises, wrecks, piracy) | none |
 | NASA FIRMS | Wildfire hotspots, last 4 days, clustered | `NASA` secret |
+| ACLED | Battles and remote violence, last 14 days, clustered | `ACLEDUSER` + `ACLEDPWD` secrets |
 
 Each becomes a temporary `access: "hazard"` zone, and the legs crossing it are
 tagged. Retention is free: each run just re-fetches the current upstream window
 and overwrites these files, so an event disappears on its own once it ages out
 of its source — there's no separate expiry step.
+
+Conflict is the one source that is neither weather nor geology, and it behaves
+differently: a war does not age out of an upstream window the way a storm track
+or a hotspot does. Its 14-day query window is what stands in for expiry — an
+area with no reported violence in a fortnight stops producing a zone.
 
 What a hazard does depends on what it actually stops:
 
@@ -214,6 +220,7 @@ What a hazard does depends on what it actually stops:
 | Navigational warning | sea | Surcharge + low security score |
 | Flood | truck, rail | Surcharge + low security score |
 | Wildfire | truck, rail | Surcharge + low security score |
+| Armed conflict | truck, rail, sea | Surcharge + low security score — the air side is airspace.json, not a circle |
 
 The closure/deterrent split matters: hard-blocking everything severed the
 civilian network, because the global fire feed alone covers thousands of zones
