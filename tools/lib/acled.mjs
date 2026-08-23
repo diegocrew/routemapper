@@ -60,10 +60,27 @@ export async function fetchAccessToken({ username, password }) {
  */
 export async function readEvents(token, filters, { limit = 5000, page = 1 } = {}) {
   const query = new URLSearchParams({ ...filters, _format: "json", limit: String(limit), page: String(page) });
-  const data = await fetchJson(`${READ_URL}?${query}`, {
-    attempts: 2,
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  let data;
+  try {
+    data = await fetchJson(`${READ_URL}?${query}`, {
+      attempts: 2,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (err) {
+    // Worth separating, because the two are answered differently: a token the
+    // server cannot parse comes back 401, while 403 is what an anonymous
+    // request gets — so a 403 here means the credentials were accepted at the
+    // token endpoint but buy nothing on the data endpoint.
+    if (err.message.startsWith("403")) {
+      throw new Error(
+        `${err.message} — the credentials are fine and the token is accepted; the account is refused permission ` +
+          "to read. Verified against both curl and a raw fetch with a valid token, so it is not this client. " +
+          "ACLED's docs describe no step beyond registering, so this needs access@acleddata.com — quote the " +
+          "myACLED user id from the token's `sub` claim (npm run probe:acled prints it).",
+      );
+    }
+    throw err;
+  }
   if (data.error) throw new Error(`ACLED read failed: ${JSON.stringify(data.error)}`);
   return data.data ?? [];
 }

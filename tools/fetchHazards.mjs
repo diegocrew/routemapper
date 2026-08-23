@@ -20,6 +20,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { loadLocalEnv } from "./lib/env.mjs";
 import { createZoneGrid, zonesOnEdge } from "./lib/geo.mjs";
 import { readNodes } from "./lib/nodes.mjs";
 import { fetchEarthquakeZones } from "./feeds/usgs.mjs";
@@ -28,6 +29,8 @@ import { fetchGdacsZones } from "./feeds/gdacs.mjs";
 import { fetchStormZones } from "./feeds/nhc.mjs";
 import { fetchNavWarningZones } from "./feeds/nga.mjs";
 import { fetchConflictZones } from "./feeds/acled.mjs";
+
+loadLocalEnv();
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => JSON.parse(fs.readFileSync(path.join(ROOT, "src/data", file), "utf8"));
