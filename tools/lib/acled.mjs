@@ -51,7 +51,12 @@ export async function fetchAccessToken({ username, password }) {
 
 /**
  * One page of events. `filters` are ACLED's own query parameters — `country`,
- * `event_date`, `event_type`, `fields` and so on.
+ * `event_date`, `event_type`, `fields` and so on. Several values of one field
+ * are OR-ed with `|`; a comparison other than the default `=` needs a
+ * companion `<field>_where` (`BETWEEN`, `>`, `<`, `LIKE`).
+ *
+ * Note: ACLED has announced that offset pagination (`page`) is deprecated from
+ * 1 October 2026 in favour of cursor-based paging, so this will need revisiting.
  */
 export async function readEvents(token, filters, { limit = 5000, page = 1 } = {}) {
   const query = new URLSearchParams({ ...filters, _format: "json", limit: String(limit), page: String(page) });

@@ -18,12 +18,13 @@ console.log(`requesting a token for ${credentials.username}…`);
 const token = await fetchAccessToken(credentials);
 console.log(`got an access token (${token.length} chars, valid 24 h).\n`);
 
-const since = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString().slice(0, 10);
+const day = (offsetDays) => new Date(Date.now() - offsetDays * 24 * 3600 * 1000).toISOString().slice(0, 10);
+const since = day(7);
 const events = await readEvents(
   token,
   {
-    event_date: since,
-    event_date_where: ">=",
+    event_date: `${since}|${day(0)}`,
+    event_date_where: "BETWEEN",
     event_type: "Battles",
     fields: "event_date|event_type|sub_event_type|country|latitude|longitude|fatalities",
   },

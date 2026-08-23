@@ -63,16 +63,21 @@ export async function fetchConflictZones() {
   }
 
   const token = await fetchAccessToken(credentials);
-  const since = new Date(Date.now() - WINDOW_DAYS * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const day = (offsetDays) => new Date(Date.now() - offsetDays * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const since = day(WINDOW_DAYS);
 
   const events = [];
   for (let page = 1; page <= MAX_PAGES; page++) {
     const batch = await readEvents(
       token,
       {
-        event_date: since,
-        event_date_where: ">=",
-        event_type: EVENT_TYPES.join(":OR:event_type="),
+        // Two syntax traps here, both of which fail by returning nothing rather
+        // than erroring. `event_date` defaults to an exact-match `=`, so a range
+        // needs the explicit BETWEEN form; and several values of one field are
+        // OR-ed with `|`, not with `:OR:` — that combines *different* filters.
+        event_date: `${since}|${day(0)}`,
+        event_date_where: "BETWEEN",
+        event_type: EVENT_TYPES.join("|"),
         fields: "event_date|event_type|sub_event_type|country|latitude|longitude|fatalities",
       },
       { limit: PAGE_LIMIT, page },
