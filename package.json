@@ -17,6 +17,7 @@
     "fetch:country-risk": "node tools/fetchCountryRisk.mjs",
     "fetch:border-status": "node tools/fetchBorderStatus.mjs",
     "probe:acled": "node tools/probeAcled.mjs",
+    "probe:ucdp": "node tools/probeUcdp.mjs",
     "fetch:military-bases": "node tools/fetchMilitaryBases.mjs",
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "validate:data": "node tools/validateData.mjs",

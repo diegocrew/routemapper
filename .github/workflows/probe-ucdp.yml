@@ -1,0 +1,39 @@
+name: Probe UCDP API
+
+# Manual only, and read-only: this proves the UCDP token authenticates and
+# reports how fresh the newest release is, without writing or committing
+# anything. Run it after rotating the token, or before relying on the feed.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Probe UCDP
+        env:
+          UCDP_TOKEN: ${{ secrets.UCDP }}
+        run: |
+          {
+            echo '## UCDP API probe'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          # errexit off around the probe so a failure still closes the code
+          # fence and reports the real exit status; PIPESTATUS[0] rather than
+          # $? because the pipeline's status is tee's, not the probe's.
+          set +e
+          npm run --silent probe:ucdp 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+          status=${PIPESTATUS[0]}
+          set -e
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
