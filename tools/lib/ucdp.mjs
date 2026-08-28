@@ -87,15 +87,17 @@ export async function findCandidates(token, { limit = 1, ...options } = {}) {
 }
 
 /**
- * What a release actually covers. Results come back in id order, which tracks
- * ingestion and therefore date closely enough for this — so the first row of
- * the first page and the first row of the last page bracket the release.
+ * What a release actually covers.
+ *
+ * Results are *not* returned in date order — a July release opens on the 31st
+ * and its last page holds the 8th — so bracketing it by the first and last rows
+ * reports nonsense, and reports the lag as worse than it is. A candidate
+ * release is only a couple of thousand events, two pages at full size, so the
+ * dates are taken from the whole thing rather than inferred from its ends.
  */
 export async function releaseSpan(token, version) {
-  const head = await fetchGedPage(token, version, { pagesize: 1, page: 0 });
-  const total = head.TotalCount ?? 0;
-  if (total === 0) return { total, oldest: null, newest: null };
-  const tail = await fetchGedPage(token, version, { pagesize: 1, page: Math.max(0, (head.TotalPages ?? 1) - 1) });
-  const dateOf = (event) => (event ? (event.date_end ?? event.date_start) : null);
-  return { total, oldest: dateOf(head.Result?.[0]), newest: dateOf(tail.Result?.[0]) };
+  const { events } = await readGedEvents(token, version, {}, { pagesize: 1000, maxPages: 6 });
+  if (events.length === 0) return { total: 0, oldest: null, newest: null, events };
+  const dates = events.map((e) => e.date_end ?? e.date_start).filter(Boolean).sort();
+  return { total: events.length, oldest: dates[0], newest: dates.at(-1), events };
 }

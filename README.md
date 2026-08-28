@@ -220,17 +220,23 @@ would count every front twice:
   and a personal address does not reach it: the token mints fine and
   `/api/acled/read` then returns `403 Access denied`.
 - **UCDP** is the fallback, and what most deployments will actually use — the
-  token is free on request. Three things about it shape the feed. Its stable
-  release runs a year behind, so only the monthly *candidate* releases are
-  usable, and even those sit ~50 days back; a candidate release is an increment
-  rather than a rolling window, so several are unioned and their version
-  strings are discovered rather than hardcoded, since they move monthly; and
-  UCDP geocodes an event it cannot place to a region or country centroid, so
-  events above `where_prec` 3 are dropped. Clustering those unfiltered invents
-  a dense conflict precisely at the middle of Burkina Faso.
+  token is free on request. Three measured facts shape the feed:
+  - Its stable release runs a **year** behind, so only the monthly *candidate*
+    releases are usable. Those land about four weeks after the month they
+    cover.
+  - A candidate release is an **increment**, not a rolling window: roughly one
+    calendar month and ~1,800 events each. Several are unioned to cover the
+    90-day window, deduplicated on event id, and their version strings are
+    discovered rather than hardcoded because they move monthly.
+  - UCDP geocodes an event it cannot place to a region or country centroid,
+    flagged in `where_prec`, and that is ~14% of a release. It is also where
+    the aggregates hide — one row in the July 2026 file is 2,236 deaths at
+    precision 6, located simply at "Lebanon". Cluster that and the map grows a
+    catastrophe in the middle of the country that no single incident supports.
+    Events above precision 3 are dropped, leaving ~86%.
 
-The lag makes this a slowly-varying layer rather than a live one, which is the
-honest framing anyway: wars move on a scale of months, and a corridor that was
+Either way this is a slowly-varying layer rather than a live one, which is the
+honest framing: wars move on a scale of months, and a corridor that was
 dangerous in June is a fair guide to August.
 
 What a hazard does depends on what it actually stops:

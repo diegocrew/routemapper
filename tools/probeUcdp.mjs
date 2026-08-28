@@ -20,7 +20,7 @@
  *        UCDP_TOKEN comes from .env (gitignored) or the environment.
  */
 import { loadLocalEnv } from "./lib/env.mjs";
-import { fetchGedPage, findCandidates, releaseSpan, ucdpToken } from "./lib/ucdp.mjs";
+import { findCandidates, releaseSpan, ucdpToken } from "./lib/ucdp.mjs";
 
 loadLocalEnv();
 
@@ -73,8 +73,7 @@ try {
   // Geoprecision decides whether clustering produces corridors or fictions.
   const newest = spans[0].version;
   console.log(`\ngeoprecision in ${newest}:`);
-  const sample = await fetchGedPage(token, newest, { pagesize: 1000, page: 0 });
-  const rows = sample.Result ?? [];
+  const rows = spans[0].events;
   const byPrecision = {};
   for (const event of rows) byPrecision[event.where_prec] = (byPrecision[event.where_prec] ?? 0) + 1;
   for (const [prec, count] of Object.entries(byPrecision).sort()) {

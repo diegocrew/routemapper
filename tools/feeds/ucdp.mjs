@@ -19,17 +19,26 @@
  *    discovered rather than hardcoded.
  *
  * 3. UCDP geocodes an event it cannot place precisely to the centroid of a
- *    region or country, flagged in `where_prec`. Clustering those unfiltered
- *    invents a dense conflict exactly at the middle of Burkina Faso, Nigeria
- *    and Syria — plausible-looking and entirely fictional. Only events located
- *    to an actual site or district are kept.
+ *    region or country, flagged in `where_prec`, and about 14% of a release is
+ *    that. Those rows are also where the aggregates hide: one row in the July
+ *    file is 2,236 deaths at precision 6, located simply at "Lebanon". Cluster
+ *    it and the map grows a catastrophe in the middle of the country that no
+ *    single incident supports. Only events placed to a site or district are
+ *    kept, which still leaves ~86% of them.
  */
 import { clusterPoints, clusterSpreadKm } from "../lib/cluster.mjs";
 import { round3 } from "../lib/sphere.mjs";
 import { findCandidates, readGedEvents, ucdpToken } from "../lib/ucdp.mjs";
 
-const WINDOW_DAYS = 90; // wide enough to be useful given the ~50-day lag
-const MAX_RELEASES = 6; // candidate releases unioned to cover the window
+const WINDOW_DAYS = 90; // wide enough to be useful given the ~4-week lag
+/**
+ * Candidate releases run about one per calendar month (26.0.7 is July 2026), so
+ * a window needs roughly one release per month it spans — plus one, because
+ * they are not strictly month-bounded: a late-coded March incident turns up in
+ * the July file. Deriving this from the window beats a fixed count, which would
+ * silently under-cover the moment the window widened.
+ */
+const MAX_RELEASES = Math.ceil(WINDOW_DAYS / 28) + 1;
 /** UCDP's `where_prec`: 1 exact site, 2 within 25 km, 3 ADM2. 4+ is a region or country centroid. */
 const MAX_LOCATION_PRECISION = 3;
 
