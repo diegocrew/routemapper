@@ -1,7 +1,8 @@
 /**
  * Pulls live natural hazards into temporary "hazard" zones in the same shape
  * as src/data/zones.json, then tags which curated/sea/truck legs cross them.
- * Each source lives in tools/feeds/; all are keyless except FIRMS and ACLED.
+ * Each source lives in tools/feeds/; all are keyless except FIRMS and the
+ * conflict providers (ACLED, UCDP).
  * Air legs are generated at runtime and are not tagged here — the air side of a
  * hazard is handled as restricted airspace in src/data/airspace.json instead.
  *
@@ -28,7 +29,7 @@ import { fetchWildfireZones } from "./feeds/firms.mjs";
 import { fetchGdacsZones } from "./feeds/gdacs.mjs";
 import { fetchStormZones } from "./feeds/nhc.mjs";
 import { fetchNavWarningZones } from "./feeds/nga.mjs";
-import { fetchConflictZones } from "./feeds/acled.mjs";
+import { fetchConflictZones } from "./feeds/conflict.mjs";
 
 loadLocalEnv();
 

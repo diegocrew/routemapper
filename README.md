@@ -198,7 +198,7 @@ src/
 | NOAA NHC | Active named storms + a dead-reckoned +24/48/72 h track | none |
 | NGA | NAVAREA broadcast warnings (firing areas, exercises, wrecks, piracy) | none |
 | NASA FIRMS | Wildfire hotspots, last 4 days, clustered | `NASA` secret |
-| ACLED | Battles and remote violence, last 14 days, clustered | `ACLEDUSER` + `ACLEDPWD` secrets |
+| ACLED *or* UCDP | Armed conflict, clustered — see below | `ACLEDUSER` + `ACLEDPWD`, or `UCDP` |
 
 Each becomes a temporary `access: "hazard"` zone, and the legs crossing it are
 tagged. Retention is free: each run just re-fetches the current upstream window
@@ -207,8 +207,31 @@ of its source — there's no separate expiry step.
 
 Conflict is the one source that is neither weather nor geology, and it behaves
 differently: a war does not age out of an upstream window the way a storm track
-or a hotspot does. Its 14-day query window is what stands in for expiry — an
-area with no reported violence in a fortnight stops producing a zone.
+or a hotspot does. The query window is what stands in for expiry — an area with
+no reported violence in it stops producing a zone.
+
+Two providers can supply it, and `tools/feeds/conflict.mjs` uses whichever is
+reachable rather than both, since they describe the same wars and running both
+would count every front twice:
+
+- **ACLED** is preferred when its credentials work — weekly updates and a lower
+  evidentiary bar, so it sees a corridor turn dangerous sooner. Its API sits
+  behind an access tier assigned from your registered email *domain*, though,
+  and a personal address does not reach it: the token mints fine and
+  `/api/acled/read` then returns `403 Access denied`.
+- **UCDP** is the fallback, and what most deployments will actually use — the
+  token is free on request. Three things about it shape the feed. Its stable
+  release runs a year behind, so only the monthly *candidate* releases are
+  usable, and even those sit ~50 days back; a candidate release is an increment
+  rather than a rolling window, so several are unioned and their version
+  strings are discovered rather than hardcoded, since they move monthly; and
+  UCDP geocodes an event it cannot place to a region or country centroid, so
+  events above `where_prec` 3 are dropped. Clustering those unfiltered invents
+  a dense conflict precisely at the middle of Burkina Faso.
+
+The lag makes this a slowly-varying layer rather than a live one, which is the
+honest framing anyway: wars move on a scale of months, and a corridor that was
+dangerous in June is a fair guide to August.
 
 What a hazard does depends on what it actually stops:
 
@@ -340,6 +363,37 @@ by kind plus the non-wildfire events — capped at ~a year of the 4-a-day
 schedule. The live files are overwritten wholesale on every run, so without
 this the past is simply gone; with it, a season of rows is enough to answer
 "how often is this corridor disrupted in August".
+
+## Data sources & attribution
+
+Every upstream this project draws on, and the terms it comes under. Two of these
+are attribution licences rather than courtesies — **OpenSanctions** and **UCDP**
+are CC-BY, and crediting them is the condition their data is here under. The
+same list is shown in the app itself, in the map's attribution control
+(`src/map/attribution.ts`), and anything added under `tools/feeds/` belongs in
+both places.
+
+| Source | What it provides | Terms |
+| --- | --- | --- |
+| [Natural Earth](https://www.naturalearthdata.com/) | Coastlines, rivers, lakes and country outlines — used offline to route legs and tag airspace; not bundled | Public domain |
+| [searoute](https://github.com/genthalili/searoute-py) | Water-following geometry for every sea lane | Apache-2.0 |
+| [Wikidata](https://www.wikidata.org/) | The imported military installations | CC0 |
+| [USGS](https://earthquake.usgs.gov/) | Earthquakes | Public domain |
+| [GDACS](https://www.gdacs.org/) | Cyclones, floods, volcanic eruptions | Free use with attribution |
+| [NOAA NHC](https://www.nhc.noaa.gov/) | Named storms and forecast tracks | Public domain |
+| [NGA](https://msi.nga.mil/) | NAVAREA broadcast warnings | Public domain |
+| [NASA FIRMS](https://firms.modaps.eosdis.nasa.gov/) | Wildfire hotspots | Free use with attribution |
+| [UCDP](https://ucdp.uu.se/) | Georeferenced armed-conflict events | CC-BY 4.0 |
+| [ACLED](https://acleddata.com/) | Armed-conflict events, where an account can reach the API | Per ACLED's terms of use |
+| [OpenSanctions](https://www.opensanctions.org/) | Sanctions programmes, folded into country risk | CC-BY 4.0 |
+| [GDELT](https://www.gdeltproject.org/) | Conflict coverage volume, folded into country risk | Free use |
+| [US CBP](https://bwt.cbp.gov/) | Commercial border wait times | Public domain |
+| [ReliefWeb](https://reliefweb.int/) | Reported border disruption, with an approved appname | Per OCHA's terms |
+| [CARTO](https://github.com/CartoDB/basemap-styles) | Dark-matter basemap | Free, no key |
+| [Tilezen Joerd](https://github.com/tilezen/joerd) | Terrain tiles for shaded relief | Various open, see their attribution |
+
+Costs, indices and zone geometry are this project's own estimates, not sourced
+data — see [Data & cost model](#data--cost-model).
 
 ## Deployment
 

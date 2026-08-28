@@ -55,26 +55,47 @@ export async function readGedEvents(token, version, filters, { pagesize = 1000, 
 }
 
 /**
- * The newest candidate release that answers, tried newest-first.
+ * Candidate release version strings, newest first, as they would be named.
  *
- * UCDP publishes candidate data monthly as a new version string, so a
- * hardcoded one quietly goes stale and starts serving month-old data forever.
- * Probing costs one request per miss — negligible against 5,000/day, and far
- * cheaper than not noticing. Returns null when none of them answer.
+ * UCDP publishes candidate data monthly under a new version, so a hardcoded one
+ * quietly goes stale and serves month-old data forever. These are probed rather
+ * than assumed; a miss 404s, which costs one request out of 5,000.
  */
-export async function findLatestCandidate(token, { year = new Date().getUTCFullYear() % 100, month = new Date().getUTCMonth() + 1 } = {}) {
-  const candidates = [];
-  // Walk back through this year's monthly releases, then last year's tail.
-  for (let m = month; m >= 1; m--) candidates.push(`${year}.0.${m}`);
-  for (let m = 12; m >= month; m--) candidates.push(`${year - 1}.0.${m}`);
+export function candidateVersions({
+  year = new Date().getUTCFullYear() % 100,
+  month = new Date().getUTCMonth() + 1,
+} = {}) {
+  const versions = [];
+  for (let m = month; m >= 1; m--) versions.push(`${year}.0.${m}`);
+  for (let m = 12; m >= 1; m--) versions.push(`${year - 1}.0.${m}`);
+  return versions;
+}
 
-  for (const version of candidates) {
+/** The candidate releases that actually answer, newest first, at most `limit`. */
+export async function findCandidates(token, { limit = 1, ...options } = {}) {
+  const found = [];
+  for (const version of candidateVersions(options)) {
+    if (found.length >= limit) break;
     try {
       const body = await fetchGedPage(token, version, { pagesize: 1, page: 0 });
-      if (Array.isArray(body.Result)) return { version, totalCount: body.TotalCount };
+      if (Array.isArray(body.Result)) found.push({ version, totalCount: body.TotalCount ?? 0 });
     } catch {
-      // A version that does not exist 404s; that is the probe working, not failing.
+      // A version that does not exist 404s: that is the probe working, not failing.
     }
   }
-  return null;
+  return found;
+}
+
+/**
+ * What a release actually covers. Results come back in id order, which tracks
+ * ingestion and therefore date closely enough for this — so the first row of
+ * the first page and the first row of the last page bracket the release.
+ */
+export async function releaseSpan(token, version) {
+  const head = await fetchGedPage(token, version, { pagesize: 1, page: 0 });
+  const total = head.TotalCount ?? 0;
+  if (total === 0) return { total, oldest: null, newest: null };
+  const tail = await fetchGedPage(token, version, { pagesize: 1, page: Math.max(0, (head.TotalPages ?? 1) - 1) });
+  const dateOf = (event) => (event ? (event.date_end ?? event.date_start) : null);
+  return { total, oldest: dateOf(head.Result?.[0]), newest: dateOf(tail.Result?.[0]) };
 }

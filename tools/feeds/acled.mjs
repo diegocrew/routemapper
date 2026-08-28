@@ -55,7 +55,7 @@ function securityScore(events) {
   return 25;
 }
 
-export async function fetchConflictZones() {
+export async function fetchAcledConflictZones() {
   const credentials = acledCredentials();
   if (!credentials) {
     console.log("ACLED_USERNAME/ACLED_PASSWORD not set — skipping conflict zones.");

@@ -5,6 +5,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { GeoNode, Zone } from "../engine/types";
 import type { RouteOption } from "../engine/types";
 import { HAZARD_COLOR, HAZARD_KIND_COLORS, KIND_COLORS, MODE_COLORS } from "./modeStyle";
+import { DATA_ATTRIBUTION } from "./attribution";
 import { hazardZones } from "../engine/zones";
 
 // MapLibre resolves its worker script relative to its own module's runtime
@@ -423,7 +424,14 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
       layerControl.setActive(2, showMilitaryRef.current);
       layerControlRef.current = layerControl;
 
-      map.addSource(NODES_SOURCE, { type: "geojson", data: nodesToGeoJSON(nodes) });
+      // MapLibre gathers `attribution` from every source into one control, so
+      // hanging the project's own credits on its own data source puts them
+      // beside the basemap's rather than needing a control of their own.
+      map.addSource(NODES_SOURCE, {
+        type: "geojson",
+        data: nodesToGeoJSON(nodes),
+        attribution: DATA_ATTRIBUTION,
+      });
       map.addSource(SELECTED_SOURCE, { type: "geojson", data: selectedToGeoJSON(nodes, null, null, []) });
       map.addSource(ROUTE_SOURCE, { type: "geojson", data: routeToGeoJSON(nodes, null) });
       map.addSource(HAZARDS_SOURCE, { type: "geojson", data: hazardsToGeoJSON() });
