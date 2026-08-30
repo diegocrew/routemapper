@@ -1,0 +1,46 @@
+name: Refresh conflict zones
+
+# Once a day, and offset from the six-hourly hazard run (00/06/12/18 UTC) so the
+# two never race to push. UCDP publishes monthly and lands about four weeks
+# after the month it covers, so daily is already thirty times more often than
+# the data changes — it is here to catch the new release promptly, not to poll.
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - run: npm run fetch:conflict
+        env:
+          ACLED_USERNAME: ${{ secrets.ACLEDUSER }}
+          ACLED_PASSWORD: ${{ secrets.ACLEDPWD }}
+          UCDP_TOKEN: ${{ secrets.UCDP }}
+
+      - run: npm run validate:data
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/conflictZones.json src/data/conflictEdgeZones.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh conflict zones"
+            git push
+          else
+            echo "No conflict changes this run."
+          fi

@@ -1,5 +1,8 @@
 name: Refresh live conditions
 
+# Natural hazards and border waits, which go stale within hours. Armed conflict
+# runs separately in conflict.yml on a daily schedule: it moves monthly, and the
+# two must not share a file since each rewrites its zones wholesale.
 on:
   schedule:
     - cron: "0 */6 * * *"
@@ -23,9 +26,6 @@ jobs:
       - run: npm run fetch:hazards
         env:
           FIRMS_API_KEY: ${{ secrets.NASA }}
-          ACLED_USERNAME: ${{ secrets.ACLEDUSER }}
-          ACLED_PASSWORD: ${{ secrets.ACLEDPWD }}
-          UCDP_TOKEN: ${{ secrets.UCDP }}
       # Sanctions and conflict move slowly and both sources fail soft, so a bad
       # day here leaves the previous file in place rather than failing the run.
       - run: npm run fetch:country-risk

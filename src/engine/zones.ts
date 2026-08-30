@@ -1,13 +1,38 @@
 import zonesData from "../data/zones.json";
 import hazardZonesData from "../data/hazardZones.json";
 import hazardEdgeZonesData from "../data/hazardEdgeZones.json";
+import conflictZonesData from "../data/conflictZones.json";
+import conflictEdgeZonesData from "../data/conflictEdgeZones.json";
 import { haversineKm } from "./geo";
 import { airspaceZones } from "./airspace";
 import type { CargoRule, Mode, Zone } from "./types";
 
 export const edgeKey = (from: string, to: string, mode: Mode): string => `${from}|${to}|${mode}`;
 
-export const hazardEdgeZones = hazardEdgeZonesData as Record<string, Record<string, number>>;
+type EdgeZoneTags = Record<string, Record<string, number>>;
+
+/**
+ * Natural hazards refresh every six hours and armed conflict once a day, in
+ * separate pipelines writing separate files — neither can rewrite the other's
+ * work. Downstream nothing cares which pipeline produced a zone, so the two are
+ * merged back into one map here.
+ *
+ * Per leg rather than per file: a road through Sudan can be crossing a wildfire
+ * *and* a front, and a plain spread would let whichever file came second drop
+ * the other's tag on that leg.
+ */
+function mergeEdgeZones(...maps: EdgeZoneTags[]): EdgeZoneTags {
+  const merged: EdgeZoneTags = {};
+  for (const map of maps) {
+    for (const [leg, tags] of Object.entries(map)) merged[leg] = { ...merged[leg], ...tags };
+  }
+  return merged;
+}
+
+export const hazardEdgeZones = mergeEdgeZones(
+  hazardEdgeZonesData as EdgeZoneTags,
+  conflictEdgeZonesData as EdgeZoneTags,
+);
 
 /** Degrees of latitude per km, used to turn a circular zone's radius into a bounding box. */
 const KM_PER_DEG_LAT = 111.32;
@@ -141,7 +166,12 @@ export function zoneActiveBetween(zone: Zone, fromMs: number, toMs: number): boo
 
 export const zoneActiveAt = (zone: Zone, atMs: number): boolean => zoneActiveBetween(zone, atMs, atMs);
 
-export const hazardZones = hazardZonesData as Zone[];
+/**
+ * Both pipelines' zones. Conflict is a hazard like any other downstream — same
+ * `access: "hazard"`, same blocking and surcharge rules, drawn on the same map
+ * layer — it just arrives on a slower schedule from a different file.
+ */
+export const hazardZones = [...(hazardZonesData as Zone[]), ...(conflictZonesData as Zone[])];
 
 // Airspace zones join the index so their labels, security scores and
 // closedToCountries lists resolve like any other. They carry no outline, which

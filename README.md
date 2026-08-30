@@ -47,6 +47,7 @@ npm run generate:truck-edges     # rebuild after changing nodes.json
 npm run generate:edge-zones      # re-tag legs after changing zones.json
 npm run generate:airspace        # re-tag air legs after changing airspace.json or nodes
 npm run retag:hazards            # re-tag hazard crossings after nodes/edges change
+npm run retag:conflict           # the same, for the conflict zones
 npm run fetch:border-status      # live border waits and reported closures
 npm run check:sea-routes
 npm run audit:geography          # report any leg crossing the wrong medium
@@ -184,6 +185,23 @@ src/
 - **Cargo types** exclude certain modes (e.g. hazardous goods can't fly) —
   also configurable in `costs.config.json`. Defense cargo ignores security
   scoring, closed borders and closed zones.
+
+## Live data pipelines
+
+Two scheduled workflows, split by how fast their data actually moves. Each
+rewrites its own zone file wholesale, which is why they cannot share one — the
+later run would erase the earlier one's zones, and the two schedules would take
+turns deleting each other's work.
+
+| Workflow | Cadence | Writes | Why that cadence |
+| --- | --- | --- | --- |
+| `hazards.yml` | every 6 h | `hazardZones.json`, `hazardEdgeZones.json`, `borderStatus.json`, `countryRisk.json` | A cyclone track is stale within hours |
+| `conflict.yml` | daily, 03:30 UTC | `conflictZones.json`, `conflictEdgeZones.json` | UCDP publishes monthly, ~4 weeks in arrears — daily already outpaces it thirty-fold |
+
+The daily run is offset from the six-hourly one (00/06/12/18 UTC) so the two
+never race to push. Downstream nothing distinguishes them: `engine/zones.ts`
+merges both zone lists and both leg-tag maps, per leg rather than per file, so a
+road crossing both a wildfire and a front keeps both tags.
 
 ## Hazard zones (live monitoring)
 

@@ -1,10 +1,14 @@
 /**
  * Pulls live natural hazards into temporary "hazard" zones in the same shape
  * as src/data/zones.json, then tags which curated/sea/truck legs cross them.
- * Each source lives in tools/feeds/; all are keyless except FIRMS and the
- * conflict providers (ACLED, UCDP).
+ * Each source lives in tools/feeds/; all are keyless except FIRMS.
  * Air legs are generated at runtime and are not tagged here — the air side of a
  * hazard is handled as restricted airspace in src/data/airspace.json instead.
+ *
+ * Armed conflict is deliberately *not* here. It moves monthly rather than
+ * hourly, so it runs on its own daily schedule in tools/fetchConflict.mjs and
+ * writes its own files — this one rewrites hazardZones.json wholesale on every
+ * run, and two pipelines sharing that file would overwrite each other's work.
  *
  * Run on a schedule by .github/workflows/hazards.yml — each run re-fetches the
  * current upstream window and overwrites the output files wholesale, so an
@@ -22,14 +26,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { loadLocalEnv } from "./lib/env.mjs";
-import { createZoneGrid, zonesOnEdge } from "./lib/geo.mjs";
-import { readNodes } from "./lib/nodes.mjs";
+import { tagEdgesWithZones } from "./lib/tagEdges.mjs";
 import { fetchEarthquakeZones } from "./feeds/usgs.mjs";
 import { fetchWildfireZones } from "./feeds/firms.mjs";
 import { fetchGdacsZones } from "./feeds/gdacs.mjs";
 import { fetchStormZones } from "./feeds/nhc.mjs";
 import { fetchNavWarningZones } from "./feeds/nga.mjs";
-import { fetchConflictZones } from "./feeds/conflict.mjs";
 
 loadLocalEnv();
 
@@ -54,7 +56,6 @@ const SOURCES = [
   ["GDACS", fetchGdacsZones],
   ["storm", fetchStormZones],
   ["nav warning", fetchNavWarningZones],
-  ["conflict", fetchConflictZones],
 ];
 
 // --- History ------------------------------------------------------------------
@@ -110,24 +111,7 @@ if (retagOnly) {
   appendHistory(hazardZones, counts);
 }
 
-const nodes = readNodes(ROOT);
-const edges = read("edges.json");
-const seaEdges = read("seaEdges.json");
-const truckEdges = read("truckEdges.json");
-const nodeById = new Map(nodes.map((n) => [n.id, n]));
-const grid = createZoneGrid(hazardZones);
-
-const hazardEdgeZones = {};
-const tagList = (list, fallbackMode) => {
-  for (const edge of list) {
-    const mode = edge.mode ?? fallbackMode;
-    const hit = zonesOnEdge(edge, mode, hazardZones, nodeById, { grid });
-    if (hit) hazardEdgeZones[`${edge.from}|${edge.to}|${mode}`] = hit;
-  }
-};
-tagList(edges);
-tagList(seaEdges, "sea");
-tagList(truckEdges, "truck");
+const hazardEdgeZones = tagEdgesWithZones(ROOT, hazardZones);
 write("hazardEdgeZones.json", hazardEdgeZones);
 
 console.log(`Tagged ${Object.keys(hazardEdgeZones).length} legs.`);

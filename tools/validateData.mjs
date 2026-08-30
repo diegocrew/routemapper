@@ -20,8 +20,10 @@ const edges = read("edges.json");
 const seaEdges = read("seaEdges.json").map((e) => ({ ...e, mode: "sea" }));
 const truckEdges = read("truckEdges.json");
 const zones = read("zones.json");
-const hazardZones = read("hazardZones.json");
-const hazardEdgeZones = read("hazardEdgeZones.json");
+// Two pipelines on two schedules, two pairs of files; every check below treats
+// them as one set, since nothing downstream distinguishes them either.
+const hazardZones = [...read("hazardZones.json"), ...read("conflictZones.json")];
+const hazardEdgeZones = { ...read("hazardEdgeZones.json"), ...read("conflictEdgeZones.json") };
 const restrictions = read("restrictions.json");
 const railGauge = read("railGauge.json");
 const airspace = read("airspace.json");
