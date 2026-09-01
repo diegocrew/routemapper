@@ -216,7 +216,7 @@ road crossing both a wildfire and a front keeps both tags.
 | NOAA NHC | Active named storms + a dead-reckoned +24/48/72 h track | none |
 | NGA | NAVAREA broadcast warnings (firing areas, exercises, wrecks, piracy) | none |
 | NASA FIRMS | Wildfire hotspots, last 4 days, clustered | `NASA` secret |
-| ACLED *or* UCDP | Armed conflict, clustered — see below | `ACLEDUSER` + `ACLEDPWD`, or `UCDP` |
+| UCDP | Armed conflict, clustered — see below | `UCDP` secret |
 
 Each becomes a temporary `access: "hazard"` zone, and the legs crossing it are
 tagged. Retention is free: each run just re-fetches the current upstream window
@@ -228,34 +228,35 @@ differently: a war does not age out of an upstream window the way a storm track
 or a hotspot does. The query window is what stands in for expiry — an area with
 no reported violence in it stops producing a zone.
 
-Two providers can supply it, and `tools/feeds/conflict.mjs` uses whichever is
-reachable rather than both, since they describe the same wars and running both
-would count every front twice:
+The source is **UCDP**, whose API token is free on request. Three measured
+facts shape the feed:
 
-- **ACLED** is preferred when its credentials work — weekly updates and a lower
-  evidentiary bar, so it sees a corridor turn dangerous sooner. Its API sits
-  behind an access tier assigned from your registered email *domain*, though,
-  and a personal address does not reach it: the token mints fine and
-  `/api/acled/read` then returns `403 Access denied`.
-- **UCDP** is the fallback, and what most deployments will actually use — the
-  token is free on request. Three measured facts shape the feed:
-  - Its stable release runs a **year** behind, so only the monthly *candidate*
-    releases are usable. Those land about four weeks after the month they
-    cover.
-  - A candidate release is an **increment**, not a rolling window: roughly one
-    calendar month and ~1,800 events each. Several are unioned to cover the
-    90-day window, deduplicated on event id, and their version strings are
-    discovered rather than hardcoded because they move monthly.
-  - UCDP geocodes an event it cannot place to a region or country centroid,
-    flagged in `where_prec`, and that is ~14% of a release. It is also where
-    the aggregates hide — one row in the July 2026 file is 2,236 deaths at
-    precision 6, located simply at "Lebanon". Cluster that and the map grows a
-    catastrophe in the middle of the country that no single incident supports.
-    Events above precision 3 are dropped, leaving ~86%.
+- Its stable release runs a **year** behind, so only the monthly *candidate*
+  releases are usable. Those land about four weeks after the month they cover.
+- A candidate release is an **increment**, not a rolling window: roughly one
+  calendar month and ~1,800 events each. Several are unioned to cover the
+  90-day window, deduplicated on event id, and their version strings are
+  discovered rather than hardcoded because they move monthly.
+- UCDP geocodes an event it cannot place to a region or country centroid,
+  flagged in `where_prec`, and that is ~14% of a release. It is also where the
+  aggregates hide — one row in the July 2026 file is 2,236 deaths at precision
+  6, located simply at "Lebanon". Cluster that and the map grows a catastrophe
+  in the middle of the country that no single incident supports. Events above
+  precision 3 are dropped, leaving ~86%.
 
-Either way this is a slowly-varying layer rather than a live one, which is the
-honest framing: wars move on a scale of months, and a corridor that was
-dangerous in June is a fair guide to August.
+> **Why not ACLED?** It looks like the better source — weekly rather than
+> monthly, and no four-week arrears — and it was wired up first. It isn't
+> usable on a free account. A myACLED login authenticates and mints a valid
+> token, but every data request returns `403 Access denied`, identically to an
+> unauthenticated one. ACLED support confirmed the cause: free accounts sit on
+> an "Open access level, which does not include API access", available only
+> under a paid data licence. None of that is visible in their documentation,
+> which describes no step beyond registering — so it is recorded here rather
+> than left for the next person to rediscover.
+
+This is a slowly-varying layer rather than a live one, which is the honest
+framing: wars move on a scale of months, and a corridor that was dangerous in
+June is a fair guide to August.
 
 What a hazard does depends on what it actually stops:
 
@@ -408,7 +409,6 @@ both places.
 | [NGA](https://msi.nga.mil/) | NAVAREA broadcast warnings | Public domain |
 | [NASA FIRMS](https://firms.modaps.eosdis.nasa.gov/) | Wildfire hotspots | Free use with attribution |
 | [UCDP](https://ucdp.uu.se/) | Georeferenced armed-conflict events | CC-BY 4.0 |
-| [ACLED](https://acleddata.com/) | Armed-conflict events, where an account can reach the API | Per ACLED's terms of use |
 | [OpenSanctions](https://www.opensanctions.org/) | Sanctions programmes, folded into country risk | CC-BY 4.0 |
 | [GDELT](https://www.gdeltproject.org/) | Conflict coverage volume, folded into country risk | Free use |
 | [US CBP](https://bwt.cbp.gov/) | Commercial border wait times | Public domain |

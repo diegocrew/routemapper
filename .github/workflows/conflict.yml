@@ -27,8 +27,6 @@ jobs:
 
       - run: npm run fetch:conflict
         env:
-          ACLED_USERNAME: ${{ secrets.ACLEDUSER }}
-          ACLED_PASSWORD: ${{ secrets.ACLEDPWD }}
           UCDP_TOKEN: ${{ secrets.UCDP }}
 
       - run: npm run validate:data

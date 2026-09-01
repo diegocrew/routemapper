@@ -26,9 +26,9 @@ export async function fetchWithRetry(url, { timeoutMs = DEFAULT_TIMEOUT_MS, atte
     if (response.ok) return response;
 
     // These upstreams nearly always explain a refusal in the body, and throwing
-    // it away leaves a bare status code that several different causes share:
-    // ACLED alone answers 403 both for a request that arrived with no
-    // credentials and for an account without data access.
+    // it away leaves a bare status code that several different causes share —
+    // "403 Forbidden" reads the same whether credentials never arrived, or
+    // arrived and bought nothing.
     const detail = (await response.text().catch(() => "")).trim().slice(0, 300);
     lastError = new Error(`${response.status} ${response.statusText}${detail ? ` — ${detail}` : ""}`);
 

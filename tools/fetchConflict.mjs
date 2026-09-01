@@ -23,7 +23,7 @@ import { fileURLToPath } from "node:url";
 
 import { loadLocalEnv } from "./lib/env.mjs";
 import { tagEdgesWithZones } from "./lib/tagEdges.mjs";
-import { fetchConflictZones } from "./feeds/conflict.mjs";
+import { fetchUcdpConflictZones } from "./feeds/ucdp.mjs";
 
 loadLocalEnv();
 
@@ -47,7 +47,7 @@ if (retagOnly) {
   console.log(`Re-tagging ${conflictZones.length} committed conflict zones without fetching.`);
 } else {
   try {
-    conflictZones = await fetchConflictZones();
+    conflictZones = await fetchUcdpConflictZones();
   } catch (error) {
     // Keeping yesterday's zones beats publishing none: the data describes wars
     // that are still going on, and a provider having a bad morning is not

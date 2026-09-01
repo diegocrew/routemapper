@@ -1,8 +1,15 @@
 /**
  * Armed-conflict zones from UCDP's Georeferenced Event Dataset.
  *
- * Needs UCDP_TOKEN. Missing token skips conflict zones for the run rather than
- * failing everything, the same as FIRMS and ACLED.
+ * Needs UCDP_TOKEN, free on request from the API maintainer. A missing token
+ * skips conflict zones for the run rather than failing everything, like FIRMS.
+ *
+ * ACLED was the obvious alternative and is not usable here: a myACLED account
+ * authenticates and mints a valid token, but the data endpoint returns
+ * 403 "Access denied" because API access is not part of their free Open tier —
+ * confirmed by ACLED support, who direct you to a paid licence. Nothing about
+ * that is detectable from their documentation, so it is recorded here to save
+ * the next person the investigation.
  *
  * Three things the probe (npm run probe:ucdp) established, each of which this
  * file is shaped around:
