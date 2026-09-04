@@ -29,6 +29,7 @@ const railGauge = read("railGauge.json");
 const airspace = read("airspace.json");
 const airEdgeZones = read("airEdgeZones.json");
 const borderStatus = read("borderStatus.json");
+const zoneConditions = read("zoneConditions.json");
 const indices = read("indices.json");
 const costs = read("costs.config.json");
 
@@ -161,6 +162,18 @@ for (const zone of zones) {
   }
 }
 
+// zoneConditions.json is fetched. It can only slow a corridor down, never open
+// or close one, so the checks are about it naming something real and staying
+// within a sane multiplier.
+for (const condition of zoneConditions) {
+  if (!zoneIds.has(condition.zoneId)) {
+    fail(`zoneConditions.json names unknown zone ${condition.zoneId}`);
+  }
+  if (!(condition.delayFactor >= 1) || condition.delayFactor > 3) {
+    fail(`zoneConditions.json gives ${condition.zoneId} a delayFactor of ${condition.delayFactor} — expected 1 to 3`);
+  }
+}
+
 // borderStatus.json is fetched, so it is checked for the mistakes a feed can
 // make rather than the ones a person can. The load-bearing one is the last: a
 // generated entry that could close a border would let a noisy news week delete
@@ -274,5 +287,5 @@ if (errors.length > 0) {
   console.error(`\n${errors.length} data problem(s).`);
   process.exitCode = 1;
 } else {
-  console.log(`Data OK: ${nodes.length} nodes, ${edges.length} curated edges, ${seaEdges.length} generated sea edges, ${truckEdges.length} truck edges, ${zones.length} zones, ${hazardZones.length} hazard zones, ${restrictions.length} restrictions, ${borderStatus.length} live border alerts.`);
+  console.log(`Data OK: ${nodes.length} nodes, ${edges.length} curated edges, ${seaEdges.length} generated sea edges, ${truckEdges.length} truck edges, ${zones.length} zones, ${hazardZones.length} hazard zones, ${restrictions.length} restrictions, ${borderStatus.length} live border alerts, ${zoneConditions.length} zone conditions.`);
 }

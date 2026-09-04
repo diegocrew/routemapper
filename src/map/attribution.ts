@@ -22,5 +22,7 @@ export const DATA_ATTRIBUTION = [
   source("UCDP", "https://ucdp.uu.se/"),
   `| Risk: ${source("OpenSanctions", "https://www.opensanctions.org/")}`,
   source("GDELT", "https://www.gdeltproject.org/"),
+  `| Conditions: ${source("IMF PortWatch", "https://portwatch.imf.org/")}`,
+  source("PEGELONLINE", "https://pegelonline.wsv.de/"),
   `| Borders: ${source("US CBP", "https://bwt.cbp.gov/")}`,
 ].join(", ").replace(/, \|/g, " |");

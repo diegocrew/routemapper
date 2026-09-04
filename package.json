@@ -18,6 +18,7 @@
     "retag:conflict": "node tools/fetchConflict.mjs --retag",
     "fetch:country-risk": "node tools/fetchCountryRisk.mjs",
     "fetch:border-status": "node tools/fetchBorderStatus.mjs",
+    "fetch:conditions": "node tools/fetchConditions.mjs",
     "probe:ucdp": "node tools/probeUcdp.mjs",
     "fetch:military-bases": "node tools/fetchMilitaryBases.mjs",
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",

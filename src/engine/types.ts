@@ -205,6 +205,8 @@ export interface RouteOption {
   transshipments: string[];
   /** Live border congestion on this route, from the fetched feeds rather than the curated closures. */
   borderDelays: string[];
+  /** Measured conditions on the corridors this route crosses — a chokepoint below its normal throughput, a river too low to load barges fully. */
+  conditions: string[];
   /** Set when this route crosses an active hazard zone — only possible at all for cargo with allowMilitaryNodes, since civilian cargo is blocked from hazard zones outright. */
   hazardWarnings: string[];
   /** Hazards on this route that the shipment outruns: forecast to have expired by the time it reaches them. */

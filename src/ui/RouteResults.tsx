@@ -90,6 +90,9 @@ export function RouteResults({
           {opt.borderDelays.length > 0 && (
             <div className="route-card-transship">{opt.borderDelays.join(" · ")}</div>
           )}
+          {opt.conditions.length > 0 && (
+            <div className="route-card-transship">{opt.conditions.join(" · ")}</div>
+          )}
           {opt.hazardWarnings.length > 0 && (
             <div className="route-card-hazard">⚠ {opt.hazardWarnings.join(" · ")}</div>
           )}

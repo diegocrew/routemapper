@@ -8,10 +8,16 @@ Pick an origin and destination, set constraints (which transport modes are
 allowed, cargo type), and the app computes ranked route options (cheapest,
 fastest, most direct) across a multi-modal graph, entirely client-side.
 
-**MVP status:** synthetic cost model (no live freight pricing/schedule data —
-see [Data & cost model](#data--cost-model) below), curated dataset of ~150
-nodes, real-world geographic map (MapLibre GL JS) with an isometric-styled
-tilt, not a hand-drawn game map.
+Routing runs over ~2,000 real places on a real map (MapLibre GL JS, isometric
+tilt, not a hand-drawn game board), and the graph is shaped by conditions rather
+than distance alone: live natural hazards, armed conflict, restricted airspace,
+canal tolls, closed borders, seasonal ice, and the break of gauge where 1520 mm
+track meets 1435 mm. Six upstream feeds refresh on two schedules.
+
+What it is not is a freight quote. Real pricing and schedule data aren't
+publicly available, so costs come from a tuned per-mode model rather than a
+carrier — see [Data & cost model](#data--cost-model) and
+[Known limitations](#known-limitations).
 
 ## Stack
 
@@ -104,7 +110,8 @@ src/
   `generate:edge-zones` and `retag:hazards`.
 - **Edges** (`src/data/edges.json`): hand-curated trunk sea/air/rail routes
   covering major global trade lanes, plus the river and canal corridors. Not
-  exhaustive — MVP scope.
+  exhaustive: the sea network is filled in around these by `seaEdges.json`,
+  but the rail network is only what is curated here.
 - **Sea legs** (`src/data/seaEdges.json`) fill in around those trunk lanes,
   generated offline by `npm run generate:sea-routes`: each port's `sea.maxNeighbors`
   nearest other ports, every pair routed through `searoute` so the leg follows
@@ -197,6 +204,7 @@ turns deleting each other's work.
 | --- | --- | --- | --- |
 | `hazards.yml` | every 6 h | `hazardZones.json`, `hazardEdgeZones.json`, `borderStatus.json`, `countryRisk.json` | A cyclone track is stale within hours |
 | `conflict.yml` | daily, 03:30 UTC | `conflictZones.json`, `conflictEdgeZones.json` | UCDP publishes monthly, ~4 weeks in arrears — daily already outpaces it thirty-fold |
+| `conditions.yml` | daily, 05:15 UTC | `zoneConditions.json` | Sits between its sources: PortWatch republishes weekly, river gauges every 15 minutes |
 
 The daily run is offset from the six-hourly one (00/06/12/18 UTC) so the two
 never race to push. Downstream nothing distinguishes them: `engine/zones.ts`
@@ -299,6 +307,46 @@ CBP is the only genuinely measured source of the two, and it covers exactly the
 US–Canada and US–Mexico borders — precision over reach. An empty file is the
 normal state and the correct answer on an ordinary day; a queue only counts once
 it exceeds half an hour, since queueing at a border is what borders do.
+
+## Corridor conditions (live)
+
+`npm run fetch:conditions` (`tools/fetchConditions.mjs`) writes
+`src/data/zoneConditions.json`: how the corridors in `zones.json` are running
+*now*, as against how they usually run.
+
+| Source | Signal | Key |
+| --- | --- | --- |
+| [IMF PortWatch](https://portwatch.imf.org/) | Daily transits through 7 of the chokepoint zones, from the AIS signals of ~90,000 ships | none |
+| [PEGELONLINE](https://pegelonline.wsv.de/) | Inland waterway gauge readings, classified against each gauge's own long-run statistics | none |
+
+A zone's own definition is static — Suez charges its toll whether the canal is
+running normally or at half rate, and `danube_low_water` knows only which months
+the river is *usually* low. This is the measured overlay on top, and it can only
+make crossing a zone slower: nothing here opens or closes a corridor, so a dead
+feed costs accuracy rather than correctness. It multiplies with the seasonal
+factor, so a low reading in a normally-low month is worse than either alone.
+
+Two things worth knowing about how the chokepoint signal is read:
+
+- **It compares a chokepoint against its own history**, not against other
+  chokepoints — the last week's median transits against a 180-day baseline. No
+  cross-chokepoint calibration is implied, and a months-long diversion doesn't
+  quietly become the new normal.
+- **"Below normal" is ambiguous, deliberately.** Panama in the 2023–24 drought
+  was a capacity restriction and ships queued; Suez after 2023 is avoidance and
+  ships went round the Cape. Throughput alone cannot tell those apart. Both are
+  reasons to prefer another routing, so the model treats a chokepoint well below
+  its own baseline as friction without claiming to know which kind.
+
+A chokepoint whose baseline is under ten transits a day is skipped as too quiet
+to read a ratio from — at three a day, one ship either way looks like a 33%
+collapse.
+
+The gauge side has a coverage caveat: PEGELONLINE is a German service, but
+publishes upper-Danube gauges past the border — Korneuburg at Vienna and
+Thebnerstrassl at Bratislava, which is the reach this project's Danube legs run
+through. Downstream of Budapest there is no coverage, so a Hungarian or
+Romanian low the upper river doesn't share will be missed.
 
 ## Country risk (sanctions & conflict)
 
@@ -411,6 +459,8 @@ both places.
 | [UCDP](https://ucdp.uu.se/) | Georeferenced armed-conflict events | CC-BY 4.0 |
 | [OpenSanctions](https://www.opensanctions.org/) | Sanctions programmes, folded into country risk | CC-BY 4.0 |
 | [GDELT](https://www.gdeltproject.org/) | Conflict coverage volume, folded into country risk | Free use |
+| [IMF PortWatch](https://portwatch.imf.org/) | Chokepoint and port transit volumes, AIS-derived | Free use with attribution |
+| [PEGELONLINE](https://pegelonline.wsv.de/) | German and upper-Danube waterway gauge levels | Free use (WSV open data) |
 | [US CBP](https://bwt.cbp.gov/) | Commercial border wait times | Public domain |
 | [ReliefWeb](https://reliefweb.int/) | Reported border disruption, with an approved appname | Per OCHA's terms |
 | [CARTO](https://github.com/CartoDB/basemap-styles) | Dark-matter basemap | Free, no key |
@@ -426,21 +476,60 @@ data — see [Data & cost model](#data--cost-model).
 Pages, set the source to **GitHub Actions** once, and pushes to `main` will
 publish automatically.
 
-## Known MVP limitations
+## Known limitations
 
-- No live freight pricing/schedule data — costs are estimates, and the
-  economic/security scores are curated estimation rather than sourced data.
-- Zones are tagged on sea, rail and truck legs only; air legs are generated at
-  runtime, so overflight bans aren't modelled — airspace closures only apply
-  between the endpoint countries of a flight.
-- ~150 nodes; air and sea are filled in from those nodes, but rail is still
-  hand-picked trunk routes rather than exhaustive coverage.
-- Truck legs use great-circle distance with a road detour factor, not real
-  road-network routing; drivability is checked against coastlines, so a road
-  leg never crosses open water, but it doesn't follow actual highways.
-- A few inland waterway legs (Dnipro, lower Yangtze, St. Lawrence, Mekong)
-  are hand-curated approximations of the river course.
-- No accounts, saved routes, or mobile app.
+**The cost model is synthetic.** No live freight pricing or schedule data is
+publicly available, so routes are ranked on tuned per-mode constants. The
+economic and security indices, the zone surcharges and the break-of-gauge
+penalty are all curated estimates rather than sourced figures.
+
+**Hazards don't reach air legs.** Zones are tagged on sea, rail and truck legs
+only — air legs are generated at runtime and there are ~109k of them, far too
+many to sample against thousands of moving hazard circles. Restricted airspace
+*is* modelled, via its own offline pass (`airEdgeZones.json`), but a cyclone
+closing an airport or a wildfire under a flight path does not affect it.
+
+**The air network is a full mesh, O(n²).** 457 curated hubs produce ~104k air
+edges; 2,000 would produce ~2M, rebuilt on every graph build. Adding curated
+nodes is cheap for every other mode and quadratic for this one. Imported
+installations already avoid it by attaching as spokes; scaling the curated set
+much further would need the same treatment.
+
+**Conflict data runs about four weeks behind.** UCDP publishes monthly, in
+arrears. That suits a layer describing where wars are — they move on a scale of
+months — but it is not a live feed in the way the storm and earthquake ones are,
+and ~14% of events are dropped as too imprecisely located to cluster honestly.
+
+**Rail is only what is curated.** Sea and air are filled in from the node list;
+rail is a hand-picked set of trunk routes, for the reasons in the section below.
+
+**Truck legs don't follow real roads.** They use great-circle distance with a
+detour factor. Drivability is checked against coastlines, so a road leg never
+crosses open water, but it doesn't follow actual highways — and `maxLegKm` is a
+straight-line cap rather than a drive time.
+
+**A few inland waterway legs** (Dnipro, lower Yangtze, St. Lawrence, Mekong) are
+hand-curated approximations of the river course.
+
+**The restricted-airspace list is hand-maintained** and dates fastest of
+anything here — airspace opens and closes on a timescale of weeks. Driving it
+from NOTAMs looks like the obvious fix and was investigated; it isn't. The FAA
+NOTAM Search site is edge-blocked to anything but a browser, and its API is on a
+separate developer portal behind per-application credentials. Even with those,
+the fit is poor: FAA coverage is US-centric, while the closures that actually
+bend legs here are issued by Russian, Libyan, Sudanese and Syrian authorities —
+and a NOTAM is abbreviated prose, with no field that says "closed to Western
+operators but open to Gulf ones", which is exactly what `airspace.json` encodes.
+The realistic prize is a staleness watcher, not an automated file. Reviewing the
+nine zones by hand every month or two gets most of the same benefit.
+
+**Everything ships to the browser.** Around 4.5 MB, ~800 kB gzipped, and every
+data layer adds to first load — the hazard feeds alone grow it a little every
+day. That is the price of having no backend, and the ceiling here is payload
+rather than compute: Dijkstra over this graph costs milliseconds, while the
+JSON behind it is most of a megabyte on the wire.
+
+**No accounts, saved routes, or mobile app.**
 
 ## TODO: a denser, less hop-starved rail network
 

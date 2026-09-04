@@ -2,6 +2,7 @@ import type { BaseEdge, CostsConfig, DistanceTier, GeoNode, Mode } from "./types
 import { haversineKm } from "./geo";
 import { economicIndex } from "./indices";
 import { getZone, seasonalDelay } from "./zones";
+import { liveDelay } from "./zoneConditions";
 import { breakOfGauge } from "./railGauge";
 
 export const HUB = "HUB";
@@ -162,11 +163,14 @@ export function buildGraph(
     // Queueing at a congested border costs time, not money: the driver waits.
     const congestion = access.borderDelay?.(a.country, b.country, e.mode);
 
+    // Two independent slowdowns on the zones a leg crosses: what the corridor
+    // is normally like this month, and what it measurably is right now.
+    const crossedZones = zoneEntries.map(([id]) => id);
+    const conditions = seasonalDelay(crossedZones, access.month) * liveDelay(crossedZones);
+
     const usd = taperedUsd(distanceKm, modeCfg.usdPerKm, costs.distanceTiers) + zoneUsd + gaugeUsd;
     const hours =
-      (distanceKm / modeCfg.kmPerHour) * seasonalDelay(zoneEntries.map(([id]) => id), access.month) +
-      gaugeHours +
-      (congestion?.delayHours ?? 0);
+      (distanceKm / modeCfg.kmPerHour) * conditions + gaugeHours + (congestion?.delayHours ?? 0);
 
     registerMode(a.id, e.mode);
     registerMode(b.id, e.mode);

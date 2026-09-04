@@ -63,6 +63,24 @@ const SURCHARGE_USD_PER_KM = 4; // war-risk premium, above the wildfire rate
  */
 const MODES = ["truck", "rail", "sea"];
 
+/**
+ * UCDP carries historical names alongside current ones — "DR Congo (Zaire)",
+ * "Myanmar (Burma)" — which read oddly on a route card and don't match the
+ * country names the rest of this dataset uses. The parenthetical covers most of
+ * them; the rest are spelled differently enough to need naming.
+ */
+const COUNTRY_ALIASES = {
+  "Ivory Coast": "Côte d'Ivoire",
+  "United States of America": "United States",
+  "Bosnia-Herzegovina": "Bosnia and Herzegovina",
+  "Macedonia, FYR": "North Macedonia",
+};
+
+const countryName = (raw) => {
+  const trimmed = String(raw ?? "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return COUNTRY_ALIASES[trimmed] ?? trimmed;
+};
+
 /** Deaths are the intensity signal that needs no interpretation. */
 function securityScore(deaths) {
   if (deaths >= 100) return 5;
@@ -106,7 +124,7 @@ export async function fetchUcdpConflictZones() {
     const lat = Number(event.latitude);
     const lon = Number(event.longitude);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-    points.push({ lat, lon, deaths: Number(event.best) || 0, country: event.country });
+    points.push({ lat, lon, deaths: Number(event.best) || 0, country: countryName(event.country) });
   }
 
   const clusters = clusterPoints(points, CLUSTER_LINK_KM).filter((c) => c.points.length >= MIN_CLUSTER_EVENTS);

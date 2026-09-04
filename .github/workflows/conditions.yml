@@ -1,0 +1,50 @@
+name: Refresh zone conditions
+
+# How the corridors are running, as opposed to how they usually run: chokepoint
+# throughput from IMF PortWatch and inland waterway gauges from PEGELONLINE.
+#
+# Daily, and offset from both the six-hourly hazard run (00/06/12/18 UTC) and
+# the conflict run (03:30) so no two race to push. Daily sits between the two
+# upstreams: PortWatch republishes weekly, the river gauges every fifteen
+# minutes — often enough to catch a river dropping, rare enough not to hammer a
+# weekly dataset.
+on:
+  schedule:
+    - cron: "15 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Both sources are keyless. Either failing costs accuracy, not
+      # correctness — a missing condition just means the corridor is priced as
+      # if it were running normally.
+      - run: npm run fetch:conditions
+        continue-on-error: true
+
+      - run: npm run validate:data
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/zoneConditions.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh zone conditions"
+            git push
+          else
+            echo "No condition changes this run."
+          fi

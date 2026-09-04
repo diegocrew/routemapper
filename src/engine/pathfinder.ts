@@ -11,6 +11,7 @@ import { economicIndex, routeSecurityIndex, securityIndex, transitIndex } from "
 import { blockedZoneIds, closedInMonth, edgeKey, getZone, hazardEdgeZones, hazardZoneIds, zoneActiveAt, zoneActiveBetween, zonesAt } from "./zones";
 import { borderCheck } from "./restrictions";
 import { borderDelay } from "./borderStatus";
+import { conditionNotes } from "./zoneConditions";
 import { resolveCargo } from "./cargo";
 
 /** How far ahead a departure looks for hazards. Beyond this a forecast is noise, and nothing in the feeds forecasts further. */
@@ -155,6 +156,7 @@ function combineLegs(
   zoneLabels: string[],
   transshipments: string[],
   borderDelays: string[],
+  conditions: string[],
   hazardWarnings: string[],
   clearedHazards: string[],
 ): RouteOption {
@@ -162,7 +164,7 @@ function combineLegs(
   const totalHours = legs.reduce((sum, l) => sum + l.hours, 0);
   const transferCount = legs.slice(1).filter((l, i) => l.mode !== legs[i].mode).length;
 
-  return { key, label, legs, totalUsd, totalHours, transferCount, securityScore, zoneLabels, transshipments, borderDelays, hazardWarnings, clearedHazards };
+  return { key, label, legs, totalUsd, totalHours, transferCount, securityScore, zoneLabels, transshipments, borderDelays, conditions, hazardWarnings, clearedHazards };
 }
 
 function routesEqual(a: RouteOption, b: RouteOption): boolean {
@@ -348,6 +350,7 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
           .filter((leg) => leg.breakOfGauge)
           .map((leg) => `${nodeById.get(leg.to)?.name ?? leg.to} · ${gaugeLabel(leg.breakOfGauge!)}`);
         const borderDelays = [...new Set(legs.map((leg) => leg.borderDelay).filter((l) => l !== undefined))];
+        const conditions = conditionNotes(crossed);
 
         const hazardWarnings: string[] = [];
         const clearedHazards: string[] = [];
@@ -366,7 +369,7 @@ export function createRouteEngine(nodes: GeoNode[], curatedEdges: BaseEdge[], co
           }
         }
 
-        const option = combineLegs(legs, run.key, run.label, score, zoneLabels, transshipments, borderDelays, hazardWarnings, clearedHazards);
+        const option = combineLegs(legs, run.key, run.label, score, zoneLabels, transshipments, borderDelays, conditions, hazardWarnings, clearedHazards);
         if (!options.some((o) => routesEqual(o, option))) {
           options.push(option);
         }
