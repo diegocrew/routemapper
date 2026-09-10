@@ -2,7 +2,7 @@ import type { GeoNode } from "../engine/types";
 import type { NodeInfo } from "../engine/pathfinder";
 import { MODE_COLORS, MODE_LABELS } from "../map/modeStyle";
 
-export const KIND_LABELS: Record<string, string> = {
+const KIND_LABELS: Record<string, string> = {
   capital: "Capital",
   city: "Major City",
   seaport: "Seaport",

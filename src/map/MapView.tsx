@@ -623,6 +623,9 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
       }
 
       loadedRef.current = true;
+      if (window.matchMedia("(max-width: 760px)").matches) {
+        containerRef.current?.querySelector<HTMLElement>(".maplibregl-compact-show .maplibregl-ctrl-attrib-button")?.click();
+      }
     });
 
     // Steep pitch at world-scale zoom leaves most of the flat map plane
@@ -689,5 +692,5 @@ export function MapView({ nodes, originId, destinationId, waypointIds, route, sh
     layerControlRef.current?.setActive(2, showMilitary);
   }, [showMilitary]);
 
-  return <div ref={containerRef} style={{ position: "absolute", inset: 0 }} />;
+  return <div ref={containerRef} className="map-view" />;
 }

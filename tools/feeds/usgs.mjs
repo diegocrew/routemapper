@@ -24,6 +24,7 @@ const radiusFor = (magnitude) =>
 
 export async function fetchEarthquakeZones() {
   const geojson = await fetchJson(FEED);
+  if (!Array.isArray(geojson?.features)) throw new Error("Invalid USGS response");
 
   const zones = [];
   for (const feature of geojson.features ?? []) {

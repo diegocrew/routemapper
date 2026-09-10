@@ -212,6 +212,7 @@ function App() {
         }}
         waypointIds={waypointIds}
         onRemoveWaypoint={removeWaypoint}
+        onAddWaypoint={addWaypoint}
         allowedModes={allowedModes}
         onToggleMode={handleToggleMode}
         onSetModes={(modes) => setAllowedModes(new Set(modes))}

@@ -24,6 +24,7 @@ export const TYPES = {
 
 export async function fetchGdacsZones() {
   const geojson = await fetchJson(FEED);
+  if (!Array.isArray(geojson?.features)) throw new Error("Invalid GDACS response");
 
   const zones = [];
   for (const feature of geojson.features ?? []) {

@@ -5,6 +5,7 @@ import { NodePicker } from "./NodePicker";
 import { RouteResults } from "./RouteResults";
 import { RouteStopsDetail } from "./RouteStopsDetail";
 import { CityDetails } from "./CityDetails";
+import { FeedStatus } from "./FeedStatus";
 import { MODE_COLORS, MODE_LABELS } from "../map/modeStyle";
 
 const ALL_MODES: Mode[] = ["sea", "air", "rail", "truck"];
@@ -62,6 +63,7 @@ interface ControlPanelProps {
   onClear: () => void;
   waypointIds: string[];
   onRemoveWaypoint: (id: string) => void;
+  onAddWaypoint: (id: string) => void;
   allowedModes: Set<Mode>;
   onToggleMode: (mode: Mode) => void;
   onSetModes: (modes: Mode[]) => void;
@@ -103,6 +105,7 @@ export function ControlPanel({
   onClear,
   waypointIds,
   onRemoveWaypoint,
+  onAddWaypoint,
   allowedModes,
   onToggleMode,
   onSetModes,
@@ -141,9 +144,16 @@ export function ControlPanel({
         <h1>Route Mapper</h1>
         <p className="subtitle">Multi-modal cargo route planning</p>
       </div>
+      <FeedStatus />
 
       <NodePicker label="From" nodes={pickerNodes} value={originId} onChange={onSetOrigin} disabledId={destinationId} />
       <NodePicker label="To" nodes={pickerNodes} value={destinationId} onChange={onSetDestination} disabledId={originId} />
+      <NodePicker
+        label="Add Via"
+        nodes={pickerNodes.filter((node) => node.id !== originId && node.id !== destinationId && !waypointIds.includes(node.id))}
+        value={null}
+        onChange={(id) => { if (id) onAddWaypoint(id); }}
+      />
 
       {waypointIds.length > 0 && (
         <div className="field">
@@ -171,6 +181,7 @@ export function ControlPanel({
             <button
               key={m}
               className={`mode-toggle ${allowedModes.has(m) ? "on" : ""}`}
+              aria-pressed={allowedModes.has(m)}
               style={{ "--mode-color": MODE_COLORS[m] } as CSSProperties}
               onClick={() => onToggleMode(m)}
             >

@@ -36,7 +36,7 @@ interface MapLegendProps {
 }
 
 export function MapLegend({ showMilitary }: MapLegendProps) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => !window.matchMedia("(max-width: 760px)").matches);
   // A hazard kind with nothing live right now is still worth listing, so the map reading "all wildfire" is visibly the feed's doing rather than a missing layer.
   const hazardCounts = useMemo(() => {
     const counts: Record<string, number> = {};

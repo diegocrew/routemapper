@@ -3,8 +3,8 @@
  *
  * Needs FIRMS_API_KEY (a free MAP_KEY). Confirmed against the live API: unlike
  * some NASA APIs, FIRMS's Area endpoint has no working keyless/demo tier, it
- * just 400s without a real key. A missing key skips wildfires for the run
- * rather than failing everything.
+ * just 400s without a real key. A missing key reports an unavailable source;
+ * the orchestrator applies bounded retention without failing other sources.
  *
  * Wildfires are scoped to `truck` and `rail`: aircraft overfly them, ships are
  * unaffected, and the forest a fire is burning through has no road or track
@@ -39,12 +39,12 @@ function normalizeConfidence(raw) {
 
 function parseCsv(csv) {
   const lines = csv.trim().split("\n");
-  if (lines.length < 2) return [];
   const header = lines[0].split(",").map((h) => h.trim());
   const latIdx = header.indexOf("latitude");
   const lonIdx = header.indexOf("longitude");
   const confIdx = header.indexOf("confidence");
   const frpIdx = header.indexOf("frp");
+  if ([latIdx, lonIdx, confIdx].some((index) => index < 0)) throw new Error("Invalid FIRMS response");
 
   const points = [];
   for (const line of lines.slice(1)) {
@@ -61,8 +61,7 @@ function parseCsv(csv) {
 export async function fetchWildfireZones() {
   const mapKey = process.env.FIRMS_API_KEY;
   if (!mapKey) {
-    console.log("FIRMS_API_KEY not set — skipping wildfire fetch (FIRMS has no working keyless tier).");
-    return [];
+    throw new Error("FIRMS_API_KEY not set; wildfire feed unavailable.");
   }
 
   const csv = await fetchText(

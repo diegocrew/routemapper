@@ -42,7 +42,8 @@ function parsePositions(text) {
 }
 
 export async function fetchNavWarningZones() {
-  const warnings = (await fetchJson(FEED))["broadcast-warn"] ?? [];
+  const warnings = (await fetchJson(FEED))["broadcast-warn"];
+  if (!Array.isArray(warnings)) throw new Error("Invalid NGA response");
 
   const zones = [];
   for (const warning of warnings) {

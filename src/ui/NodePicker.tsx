@@ -28,7 +28,7 @@ export function NodePicker({ label, nodes, value, onChange, disabledId }: NodePi
   return (
     <label className="field">
       <span className="field-label">{label}</span>
-      <select value={value ?? ""} onChange={(e) => onChange(e.target.value || null)}>
+      <select aria-label={label} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)}>
         <option value="">Select a location…</option>
         {[...groups.entries()].map(([kind, list]) => (
           <optgroup key={kind} label={KIND_LABELS[kind] ?? kind}>

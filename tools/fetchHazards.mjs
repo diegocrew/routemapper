@@ -10,11 +10,10 @@
  * writes its own files — this one rewrites hazardZones.json wholesale on every
  * run, and two pipelines sharing that file would overwrite each other's work.
  *
- * Run on a schedule by .github/workflows/hazards.yml — each run re-fetches the
- * current upstream window and overwrites the output files wholesale, so an
- * event "expires" simply by aging out of its source's own time bucket; there
- * is no separate delete/expiry step. src/data/hazardHistory.json keeps a
- * compact trace of what each run saw, since the live files are overwritten.
+ * Run on a schedule by .github/workflows/hazards.yml. Successful sources
+ * replace their observations; failed sources retain bounded last-known data.
+ * feedStatus.json reports freshness, and hazardHistory.json keeps a compact
+ * trace of each run. Retention and expiry live in lib/refreshSource.mjs.
  *
  * Usage: node tools/fetchHazards.mjs [--retag]
  *        --retag re-tags which legs cross the already-committed hazard zones
@@ -32,6 +31,7 @@ import { fetchWildfireZones } from "./feeds/firms.mjs";
 import { fetchGdacsZones } from "./feeds/gdacs.mjs";
 import { fetchStormZones } from "./feeds/nhc.mjs";
 import { fetchNavWarningZones } from "./feeds/nga.mjs";
+import { refreshSource } from "./lib/refreshSource.mjs";
 
 loadLocalEnv();
 
@@ -51,11 +51,11 @@ const writeCompactList = (file, list) =>
   );
 
 const SOURCES = [
-  ["earthquake", fetchEarthquakeZones],
-  ["wildfire", fetchWildfireZones],
-  ["GDACS", fetchGdacsZones],
-  ["storm", fetchStormZones],
-  ["nav warning", fetchNavWarningZones],
+  ["usgs", "USGS", "quake_", fetchEarthquakeZones],
+  ["firms", "NASA FIRMS", "fire_", fetchWildfireZones],
+  ["gdacs", "GDACS", "gdacs_", fetchGdacsZones],
+  ["nhc", "NOAA NHC", "storm_", fetchStormZones],
+  ["nga", "NGA", "navwarn_", fetchNavWarningZones],
 ];
 
 // --- History ------------------------------------------------------------------
@@ -92,17 +92,23 @@ if (retagOnly) {
   hazardZones = read("hazardZones.json");
   console.log(`Re-tagging ${hazardZones.length} committed hazard zones without fetching.`);
 } else {
+  const previousZones = read("hazardZones.json");
+  const previousStatus = read("feedStatus.json");
+  const now = new Date().toISOString();
   const results = await Promise.all(
-    SOURCES.map(([name, fetchZones]) =>
-      fetchZones().catch((err) => {
-        // One dead upstream must not wipe the other sources' zones for this run.
-        console.error(`${name} fetch failed, keeping no ${name} zones this run: ${err.message}`);
-        return [];
+    SOURCES.map(([id, label, prefix, fetchZones]) =>
+      refreshSource({
+        id, label, prefix, fetchZones, previousZones, now,
+        previousStatus: previousStatus.sources.find((source) => source.id === id),
       }),
     ),
   );
-  hazardZones = results.flat().sort((a, b) => a.id.localeCompare(b.id));
+  hazardZones = results.flatMap((result) => result.zones).sort((a, b) => a.id.localeCompare(b.id));
   writeCompactList("hazardZones.json", hazardZones);
+  write("feedStatus.json", { updatedAt: now, sources: results.map((result) => result.status) });
+  for (const { status } of results) {
+    console.log(`${status.label}: ${status.status}; ${status.retainedZones} retained zones`);
+  }
 
   const counts = {};
   for (const zone of hazardZones) counts[zone.hazardKind] = (counts[zone.hazardKind] ?? 0) + 1;

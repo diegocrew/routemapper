@@ -54,6 +54,7 @@ export function RouteResults({
         <button
           key={opt.key}
           className={`route-card ${opt.key === selectedKey ? "selected" : ""}`}
+          aria-pressed={opt.key === selectedKey}
           onClick={() => onSelect(opt.key)}
         >
           <div className="route-card-header">

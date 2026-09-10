@@ -30,6 +30,7 @@ const airspace = read("airspace.json");
 const airEdgeZones = read("airEdgeZones.json");
 const borderStatus = read("borderStatus.json");
 const zoneConditions = read("zoneConditions.json");
+const feedStatus = read("feedStatus.json");
 const indices = read("indices.json");
 const costs = read("costs.config.json");
 
@@ -37,6 +38,25 @@ const errors = [];
 const warnings = [];
 const fail = (message) => errors.push(message);
 const warn = (message) => warnings.push(message);
+
+const expectedFeeds = new Set(["usgs", "firms", "gdacs", "nhc", "nga"]);
+const seenFeeds = new Set();
+if (feedStatus.updatedAt !== null && !Number.isFinite(Date.parse(feedStatus.updatedAt))) {
+  fail("feedStatus.updatedAt must be null or a valid timestamp");
+}
+for (const source of feedStatus.sources) {
+  if (!expectedFeeds.has(source.id) || seenFeeds.has(source.id)) fail(`invalid or duplicate feed source: ${source.id}`);
+  seenFeeds.add(source.id);
+  if (!["ok", "stale", "unavailable"].includes(source.status)) fail(`invalid status for feed ${source.id}`);
+  if (typeof source.label !== "string" || !source.label.trim()) fail(`missing label for feed ${source.id}`);
+  for (const field of ["lastSuccessAt", "expiresAt"]) {
+    if (source[field] !== null && !Number.isFinite(Date.parse(source[field]))) fail(`invalid ${field} for feed ${source.id}`);
+  }
+  if (!Number.isInteger(source.retainedZones) || source.retainedZones < 0) fail(`invalid retained count for feed ${source.id}`);
+  if (source.status === "ok" && (!source.lastSuccessAt || !source.expiresAt)) fail(`successful feed ${source.id} needs freshness timestamps`);
+  if (source.status === "stale" && (!source.expiresAt || source.retainedZones === 0)) fail(`stale feed ${source.id} needs retained observations`);
+}
+if (feedStatus.updatedAt !== null && seenFeeds.size !== expectedFeeds.size) fail("feedStatus must report all five sources after a refresh");
 
 const nodeIds = new Set();
 for (const node of nodes) {

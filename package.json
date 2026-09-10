@@ -3,7 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "scripts": {
+    "postinstall": "node tools/syncMapWorkers.mjs",
     "dev": "vite",
     "build": "npm run validate:data && npm run check:sea-routes && tsc -b && vite build",
     "generate:sea-routes": "uv run --with searoute==1.6.0 python tools/generate_sea_routes.py",
@@ -24,9 +28,10 @@
     "check:sea-routes": "node tools/checkSeaRoutes.cjs",
     "validate:data": "node tools/validateData.mjs",
     "audit:geography": "node tools/auditGeography.mjs",
-    "lint": "oxlint",
+    "lint": "oxlint --ignore-path .oxlintignore --deny-warnings",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "maplibre-gl": "^6.0.0",
@@ -34,6 +39,7 @@
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

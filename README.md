@@ -5,14 +5,24 @@ planes, freight rail, and trucks — between capitals, major cities, seaports,
 airports, and rail hubs.
 
 Pick an origin and destination, set constraints (which transport modes are
-allowed, cargo type), and the app computes ranked route options (cheapest,
-fastest, most direct) across a multi-modal graph, entirely client-side.
+allowed, cargo class and handling), and the app computes ranked route options
+(cheapest, fastest, most direct, and optionally safest) across a multi-modal
+graph, entirely client-side. Mandatory waypoints can be added from the map or
+the Add Via picker. The departure date controls forecast filtering and seasonal
+closures; shipment weight scales cost and excludes aircraft above 120 tonnes.
+
+Cargo has two classes, Civilian and Military, with combinable handling flags:
+hazmat excludes air, perishables exclude sea, and protected transport requests
+a safer option automatically when it improves on the base routes. Both classes
+receive security scores. On phones, the map stays above a scrollable control
+panel; the legend and attribution can be expanded when needed.
 
 Routing runs over ~2,000 real places on a real map (MapLibre GL JS, isometric
 tilt, not a hand-drawn game board), and the graph is shaped by conditions rather
 than distance alone: live natural hazards, armed conflict, restricted airspace,
 canal tolls, closed borders, seasonal ice, and the break of gauge where 1520 mm
-track meets 1435 mm. Six upstream feeds refresh on two schedules.
+track meets 1435 mm. Three scheduled workflows refresh hazards, conflict and
+corridor conditions at different cadences.
 
 What it is not is a freight quote. Real pricing and schedule data aren't
 publicly available, so costs come from a tuned per-mode model rather than a
@@ -33,14 +43,30 @@ carrier — see [Data & cost model](#data--cost-model) and
 
 ## Development
 
-Requires Node.js 20+.
+Requires Node.js 20.19+ on the 20.x line, or 22.12+ on newer lines. CI uses
+Node.js 22. Use one environment consistently for installation and execution:
+native Windows and WSL need different native dependency binaries.
 
 ```bash
-npm install
+npm ci
 npm run dev       # start the dev server (http://localhost:5173/routemapper/)
-npm test          # run the routing-engine test suite
-npm run build     # type-check + production build to dist/
+npm test          # routing engine and mocked feed tests
+npm run lint      # application/tools lint, warnings fail the check
+npm run build     # data/sea-route validation + type-check + production build
+npx playwright install --with-deps chromium
+npm run test:e2e  # production browser tests; run build first
 ```
+
+Browser tests start and stop their own preview server on port 4174. They cover
+desktop and mobile map rendering, zoom, route selection, dates, waypoints,
+swap and clear. Basemap/terrain requests require internet access. Screenshots,
+startup timing JSON and failure traces are written to ignored `test-results/`
+and `playwright-report/` directories. PR CI runs these checks and keeps browser
+artifacts for seven days.
+
+Installation synchronizes the MapLibre worker and shared module from the
+installed package into `public/`; keep those generated files with dependency
+updates. The two bundled vendor files are excluded from lint, not app code.
 
 Sea edges include committed water-following polylines. After adding or changing
 a sea edge, install [uv](https://docs.astral.sh/uv/) and regenerate them:
@@ -189,25 +215,28 @@ src/
   reports one reopening, so letting one delete a corridor would reroute the
   world off a noisy news week and quietly keep it that way. These only add
   delay and a warning; closing a border stays a curated decision.
-- **Cargo types** exclude certain modes (e.g. hazardous goods can't fly) —
-  also configurable in `costs.config.json`. Defense cargo ignores security
-  scoring, closed borders and closed zones.
+- **Cargo classes and handling** are configured in `costs.config.json`.
+  Military cargo may use restricted military sites and bypasses political
+  closures and overflight bans, but still receives security scores and pays
+  modeled surcharges. Seasonal closures still apply. Handling flags combine
+  mode exclusions; prices scale by shipment weight or API-supplied volume,
+  with a minimum of one 20-tonne / 33 m3 pricing unit.
 
 ## Live data pipelines
 
-Two scheduled workflows, split by how fast their data actually moves. Each
-rewrites its own zone file wholesale, which is why they cannot share one — the
-later run would erase the earlier one's zones, and the two schedules would take
-turns deleting each other's work.
+Three scheduled workflows, split by how fast their data actually moves. Hazard
+and conflict zones use separate files so one pipeline cannot erase the other's
+data. Corridor conditions have their own measured overlay.
 
 | Workflow | Cadence | Writes | Why that cadence |
 | --- | --- | --- | --- |
-| `hazards.yml` | every 6 h | `hazardZones.json`, `hazardEdgeZones.json`, `borderStatus.json`, `countryRisk.json` | A cyclone track is stale within hours |
+| `hazards.yml` | every 6 h | `hazardZones.json`, `hazardEdgeZones.json`, `hazardHistory.json`, `feedStatus.json`, `borderStatus.json`, `countryRisk.json` | A cyclone track is stale within hours |
 | `conflict.yml` | daily, 03:30 UTC | `conflictZones.json`, `conflictEdgeZones.json` | UCDP publishes monthly, ~4 weeks in arrears — daily already outpaces it thirty-fold |
 | `conditions.yml` | daily, 05:15 UTC | `zoneConditions.json` | Sits between its sources: PortWatch republishes weekly, river gauges every 15 minutes |
 
-The daily run is offset from the six-hourly one (00/06/12/18 UTC) so the two
-never race to push. Downstream nothing distinguishes them: `engine/zones.ts`
+The daily runs are offset from the six-hourly one (00/06/12/18 UTC). A shared
+`data-refresh` concurrency group serializes writers even for delayed or manual
+runs; each rebases before pushing. Downstream `engine/zones.ts`
 merges both zone lists and both leg-tag maps, per leg rather than per file, so a
 road crossing both a wildfire and a front keeps both tags.
 
@@ -224,19 +253,30 @@ road crossing both a wildfire and a front keeps both tags.
 | NOAA NHC | Active named storms + a dead-reckoned +24/48/72 h track | none |
 | NGA | NAVAREA broadcast warnings (firing areas, exercises, wrecks, piracy) | none |
 | NASA FIRMS | Wildfire hotspots, last 4 days, clustered | `NASA` secret |
-| UCDP | Armed conflict, clustered — see below | `UCDP` secret |
 
 Each becomes a temporary `access: "hazard"` zone, and the legs crossing it are
-tagged. Retention is free: each run just re-fetches the current upstream window
-and overwrites these files, so an event disappears on its own once it ages out
-of its source — there's no separate expiry step.
+tagged. A successful response replaces only that source's previous observations;
+a successful empty response clears them. A failed fetch, malformed response, or
+missing FIRMS key retains that source's last-known zones for at most 24 hours
+after its last successful refresh, never beyond an existing forecast expiry.
+Repeated failures do not extend retention. Undated legacy data cannot be retained
+without a known successful refresh; migration falls back to `detectedAt`.
+
+New non-forecast observations receive a 24-hour validity window. Forecasts keep
+their published windows. `feedStatus.json` records per-source last-success times
+and current/stale/unavailable status; the panel also checks expiry against the
+current clock. Missing coverage is unavailable, not evidence of safe conditions.
+Freshness starts as unverified until the first run of the updated pipeline.
+This status covers the five natural/navigational hazard sources, not conflict,
+border, country-risk or corridor-condition freshness.
 
 Conflict is the one source that is neither weather nor geology, and it behaves
 differently: a war does not age out of an upstream window the way a storm track
 or a hotspot does. The query window is what stands in for expiry — an area with
 no reported violence in it stops producing a zone.
 
-The source is **UCDP**, whose API token is free on request. Three measured
+The separate daily `conflict.yml` workflow runs `fetch:conflict` using the
+`UCDP` secret. Its source is **UCDP**, whose API token is free on request. Three measured
 facts shape the feed:
 
 - Its stable release runs a **year** behind, so only the monthly *candidate*
@@ -379,8 +419,9 @@ attribution is by the location an article is *about*. GDELT rate-limits hard and
 its endpoints are frequently unreachable — the collector gives up after three
 consecutive failures and contributes nothing rather than stalling the job.
 
-Because this lands on security and economic scores, it is civilian cargo that
-feels it: military cargo already ignores security scoring and closed borders.
+These adjustments affect both cargo classes' security scores and modeled hub
+efficiency. Military cargo bypasses curated political border closures, not
+security scoring.
 
 Hazard zones are drawn on the map whether or not a route has been planned, and
 can be hidden with the ⚠ button in the map's top-right control stack. Each kind
@@ -397,20 +438,21 @@ instead of all of them.
 The magnitude threshold, wildfire clustering distance/confidence, the
 earthquake radius-by-magnitude table, the GDACS alert-level radius buckets and
 the hazard surcharges are all approximations, flagged and kept as tunable
-constants at the top of `tools/fetchHazards.mjs` — in the same spirit as this
+constants in the corresponding `tools/feeds/` modules, in the same spirit as this
 repo's other hand-approximated geography (see below). GDACS's list endpoint
 returns a centroid rather than a footprint, so cyclone and flood radii are
 alert-level buckets, not the real affected area.
 
 Setup required once per repo: add a `NASA` secret (a FIRMS `MAP_KEY`, free from
 https://firms.modaps.eosdis.nasa.gov/api/map_key/) under Settings → Secrets →
-Actions, and enable Settings → Actions → General → Workflow permissions →
-"Read and write permissions" so the scheduled job can push its commit (which
-then triggers the normal `deploy.yml` build/deploy). Earthquakes need no key.
-Wildfires do — unlike some NASA APIs, FIRMS's Area API has no working
-keyless/demo tier (confirmed by testing against the live endpoint), so without
-the secret the workflow still runs and commits earthquake zones, it just skips
-wildfires that run.
+Actions. Also add `UCDP` for the daily conflict job and `RELIEFWEB_APPNAME` for
+reported border disruption. Repository policy must permit the workflows'
+declared `contents: write` permission so refresh jobs can push their commits.
+Successful refresh completion triggers `deploy.yml` through `workflow_run`;
+bot pushes made with `GITHUB_TOKEN` do not themselves trigger push workflows.
+FIRMS has no working keyless tier. Without its secret, other sources still
+refresh, while wildfire coverage becomes stale or unavailable under the bounded
+retention policy above.
 
 ## Forecasting and history
 
@@ -418,8 +460,8 @@ A hazard can carry an `activeFrom`/`activeUntil` window, and a route request
 carries a departure date. Two things follow:
 
 - **Journey filtering.** A hazard whose window doesn't overlap
-  `[departure, departure + 30 days]` is ignored entirely — not blocked, not
-  surcharged, not warned about.
+  `[departure, departure + 30 days]` is ignored for blocking, pricing, security
+  ranking, zone labels and warnings.
 - **Arrival checking.** Each leg records `etaHours` from departure, so a hazard
   is only warned about if it is still in force when the shipment would actually
   reach it. Hazards the shipment outruns are reported separately as
@@ -471,10 +513,34 @@ data — see [Data & cost model](#data--cost-model).
 
 ## Deployment
 
-`.github/workflows/deploy.yml` builds and deploys to GitHub Pages
-(Actions-based deployment) on every push to `main`. In the repo's Settings →
+`.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push
+to `main`, on manual dispatch, and after successful completion of any of the
+three refresh workflows on `main`. It checks out the latest `main`, including
+the refresh commit, and runs lint, tests and the production build before publishing.
+Failed refresh workflows do not trigger a deployment. In the repo's Settings →
 Pages, set the source to **GitHub Actions** once, and pushes to `main` will
 publish automatically.
+
+`.github/workflows/ci.yml` validates pull requests with read-only permissions:
+lint, unit tests, data validation, build, and desktop/mobile browser smoke tests.
+Make its `check` job required in branch protection to enforce validation before
+merge; that repository setting is not configured by these files.
+
+## Startup measurements
+
+The browser smoke test records first contentful paint, map-ready time, long
+tasks and asset transfer sizes in `test-results/*/startup.json`. A local
+production-build run on 2026-09-10 measured roughly 0.7 s first contentful paint,
+2.5-2.9 s map readiness and 1.7-1.8 s total long-task time, with the longest task
+around 0.4 s. This used headless Chromium in WSL with software WebGL and local
+asset delivery. Mobile is viewport/touch emulation, not a throttled physical
+phone. These are observations, not performance budgets or field measurements.
+
+The main bundle is about 4.16 MB minified / 775 kB gzipped, excluding worker
+files and external map tiles. Both payload and main-thread work matter. A next
+profiling pass should isolate engine construction from map initialization before
+moving route computation into a worker or splitting data downloads. No speculative
+startup rewrite is included in the current changes.
 
 ## Known limitations
 
@@ -523,11 +589,10 @@ operators but open to Gulf ones", which is exactly what `airspace.json` encodes.
 The realistic prize is a staleness watcher, not an automated file. Reviewing the
 nine zones by hand every month or two gets most of the same benefit.
 
-**Everything ships to the browser.** Around 4.5 MB, ~800 kB gzipped, and every
-data layer adds to first load — the hazard feeds alone grow it a little every
-day. That is the price of having no backend, and the ceiling here is payload
-rather than compute: Dijkstra over this graph costs milliseconds, while the
-JSON behind it is most of a megabyte on the wire.
+**Everything ships to the browser.** The main JavaScript bundle is around
+4.16 MB, about 775 kB gzipped, plus map workers and external tiles. Every data
+layer adds to first load. Engine construction and map initialization also do
+meaningful main-thread work; see the startup measurements above.
 
 **No accounts, saved routes, or mobile app.**
 

@@ -26,7 +26,8 @@ const radiusFor = (intensityKt) =>
   [...RADIUS_KM].reverse().find((b) => intensityKt >= b.minKt)?.km ?? RADIUS_KM[0].km;
 
 export async function fetchStormZones() {
-  const { activeStorms = [] } = await fetchJson(FEED);
+  const { activeStorms } = await fetchJson(FEED);
+  if (!Array.isArray(activeStorms)) throw new Error("Invalid NHC response");
 
   const zones = [];
   for (const storm of activeStorms) {
