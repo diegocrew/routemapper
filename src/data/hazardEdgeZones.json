@@ -35,16 +35,24 @@
   },
   "dakar|new_york|sea": {
     "storm_al082026_0h": 291,
-    "storm_al082026_24h": 347,
-    "storm_al082026_48h": 379,
-    "storm_al082026_72h": 426
+    "storm_al082026_24h": 359,
+    "storm_al082026_48h": 405,
+    "storm_al082026_72h": 390
   },
   "cape_town|mumbai|sea": {
     "navwarn_p_2023_3497": 43,
     "navwarn_p_2023_3916": 46
   },
   "callao|los_angeles|sea": {
-    "storm_ep182026_24h": 197
+    "storm_ep182026_0h": 304,
+    "storm_ep182026_24h": 451,
+    "storm_ep182026_48h": 521,
+    "storm_ep182026_72h": 490
+  },
+  "manzanillo|los_angeles|sea": {
+    "storm_ep182026_24h": 253,
+    "storm_ep182026_48h": 414,
+    "storm_ep182026_72h": 392
   },
   "panama_city|santos|sea": {
     "navwarn_4_2023_1100": 424
@@ -165,12 +173,13 @@
   },
   "pearl_harbor|kwajalein|sea": {
     "navwarn_12_2023_93": 382,
-    "storm_ep152026_0h": 316
+    "storm_ep152026_24h": 60,
+    "storm_ep152026_48h": 285,
+    "storm_ep152026_72h": 434
   },
   "pearl_harbor|midway_site|sea": {
     "navwarn_12_2023_93": 566,
-    "storm_ep152026_0h": 330,
-    "storm_ep152026_24h": 467
+    "storm_ep152026_0h": 58
   },
   "karwar|masirah_site|sea": {
     "navwarn_p_2023_3497": 40
@@ -202,6 +211,11 @@
   },
   "caracas|port_of_spain|sea": {
     "navwarn_4_2023_1100": 355
+  },
+  "tijuana|manzanillo|sea": {
+    "storm_ep182026_24h": 253,
+    "storm_ep182026_48h": 414,
+    "storm_ep182026_72h": 392
   },
   "port_of_spain|cartagena|sea": {
     "navwarn_4_2023_1100": 424
@@ -400,8 +414,7 @@
   },
   "midway_site|pmrf|sea": {
     "navwarn_12_2023_93": 366,
-    "storm_ep152026_0h": 330,
-    "storm_ep152026_24h": 467
+    "storm_ep152026_0h": 58
   },
   "mumbai|muscat|sea": {
     "navwarn_p_2023_3497": 43,
@@ -428,7 +441,8 @@
   },
   "pearl_harbor|tarawa|sea": {
     "navwarn_12_2023_93": 382,
-    "storm_ep152026_0h": 316
+    "storm_ep152026_24h": 60,
+    "storm_ep152026_48h": 225
   },
   "pearl_harbor|vandenberg|sea": {
     "navwarn_12_2023_93": 11
@@ -438,8 +452,9 @@
   },
   "pmrf|tarawa|sea": {
     "navwarn_12_2023_93": 366,
-    "storm_ep152026_0h": 330,
-    "storm_ep152026_24h": 486
+    "storm_ep152026_0h": 58,
+    "storm_ep152026_24h": 355,
+    "storm_ep152026_48h": 390
   },
   "pmrf|vandenberg|sea": {
     "navwarn_12_2023_93": 257
