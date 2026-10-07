@@ -37,21 +37,34 @@
     "navwarn_p_2023_3497": 43,
     "navwarn_p_2023_3916": 46
   },
+  "callao|los_angeles|sea": {
+    "gdacs_tc_1001335": 979,
+    "storm_ep202026_0h": 237,
+    "storm_ep202026_24h": 375,
+    "storm_ep202026_48h": 433,
+    "storm_ep202026_72h": 429
+  },
+  "manzanillo|los_angeles|sea": {
+    "gdacs_tc_1001335": 330,
+    "storm_ep202026_24h": 252,
+    "storm_ep202026_48h": 231,
+    "storm_ep202026_72h": 136
+  },
   "manzanillo|panama_city|sea": {
-    "quake_us6000tymj": 78
+    "gdacs_tc_1001335": 998,
+    "storm_ep202026_24h": 157
   },
   "panama_city|santos|sea": {
     "navwarn_4_2023_1100": 424
   },
   "houston|rotterdam|sea": {
-    "storm_al092026_72h": 507
+    "storm_al092026_48h": 412,
+    "storm_al092026_72h": 399
   },
   "houston|manzanillo|sea": {
-    "quake_us6000tymj": 78,
-    "storm_al092026_48h": 450
-  },
-  "sao_paulo|mexico_city|air": {
-    "quake_us6000tymj": 60
+    "gdacs_tc_1001335": 998,
+    "storm_al092026_24h": 342,
+    "storm_ep202026_24h": 157
   },
   "los_angeles|denver|rail": {
     "fire_33.95_-118.25_1053": 40
@@ -250,17 +263,14 @@
   "manama|dubai|sea": {
     "navwarn_p_2023_1938": 11
   },
-  "havana|miami|sea": {
-    "storm_al092026_72h": 209
-  },
-  "kingston|havana|sea": {
-    "storm_al092026_72h": 336
-  },
-  "port_au_prince|havana|sea": {
-    "storm_al092026_72h": 107
-  },
   "caracas|port_of_spain|sea": {
     "navwarn_4_2023_1100": 355
+  },
+  "tijuana|manzanillo|sea": {
+    "gdacs_tc_1001335": 330,
+    "storm_ep202026_24h": 252,
+    "storm_ep202026_48h": 231,
+    "storm_ep202026_72h": 136
   },
   "port_of_spain|cartagena|sea": {
     "navwarn_4_2023_1100": 424
@@ -354,9 +364,6 @@
   "beirut|port_sudan|sea": {
     "navwarn_p_2024_241": 38
   },
-  "boston|havana|sea": {
-    "storm_al092026_72h": 212
-  },
   "bridgetown|caracas|sea": {
     "navwarn_4_2023_1100": 354
   },
@@ -441,60 +448,31 @@
   "dubai|muscat|sea": {
     "navwarn_p_2023_1938": 60
   },
-  "guantanamo|havana|sea": {
-    "storm_al092026_72h": 107
-  },
-  "guantanamo|veracruz|sea": {
-    "storm_al092026_24h": 290,
-    "storm_al092026_48h": 284
-  },
   "havana|houston|sea": {
-    "storm_al092026_72h": 499
-  },
-  "havana|nassau|sea": {
-    "storm_al092026_72h": 212
-  },
-  "havana|new_york|sea": {
-    "storm_al092026_72h": 212
-  },
-  "havana|norfolk_naval|sea": {
-    "storm_al092026_72h": 212
-  },
-  "havana|philadelphia|sea": {
-    "storm_al092026_72h": 212
-  },
-  "havana|savannah|sea": {
-    "storm_al092026_72h": 212
-  },
-  "havana|veracruz|sea": {
-    "storm_al092026_24h": 290,
-    "storm_al092026_48h": 284,
-    "storm_al092026_72h": 336
+    "storm_al092026_48h": 412,
+    "storm_al092026_72h": 364
   },
   "houston|miami|sea": {
-    "storm_al092026_72h": 505
+    "storm_al092026_48h": 412,
+    "storm_al092026_72h": 399
   },
   "houston|nassau|sea": {
-    "storm_al092026_72h": 507
+    "storm_al092026_48h": 412,
+    "storm_al092026_72h": 399
   },
   "houston|norfolk_naval|sea": {
-    "storm_al092026_72h": 507
+    "storm_al092026_48h": 412,
+    "storm_al092026_72h": 399
   },
   "houston|savannah|sea": {
-    "storm_al092026_72h": 507
-  },
-  "houston|veracruz|sea": {
-    "storm_al092026_0h": 118
+    "storm_al092026_48h": 412,
+    "storm_al092026_72h": 399
   },
   "jeddah|tel_aviv|sea": {
     "navwarn_p_2024_241": 38
   },
   "karachi|male|sea": {
     "navwarn_p_2024_1423": 39
-  },
-  "kingston|veracruz|sea": {
-    "storm_al092026_24h": 290,
-    "storm_al092026_48h": 284
   },
   "kolkata|mumbai|sea": {
     "navwarn_p_2023_3497": 83,
@@ -518,9 +496,8 @@
     "navwarn_p_2023_3916": 46
   },
   "miami|veracruz|sea": {
-    "storm_al092026_24h": 307,
-    "storm_al092026_48h": 424,
-    "storm_al092026_72h": 527
+    "storm_al092026_48h": 101,
+    "storm_al092026_72h": 129
   },
   "midway_site|pmrf|sea": {
     "navwarn_12_2023_93": 366
@@ -534,9 +511,8 @@
     "navwarn_p_2023_3916": 46
   },
   "nassau|veracruz|sea": {
-    "storm_al092026_24h": 307,
-    "storm_al092026_48h": 424,
-    "storm_al092026_72h": 529
+    "storm_al092026_48h": 101,
+    "storm_al092026_72h": 129
   },
   "odesa|thessaloniki|sea": {
     "navwarn_a_2022_838": 297
