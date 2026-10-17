@@ -39,40 +39,29 @@
   },
   "callao|los_angeles|sea": {
     "gdacs_tc_1001335": 601,
-    "storm_ep202026_0h": 295,
-    "storm_ep202026_24h": 370,
-    "storm_ep202026_48h": 369,
     "storm_ep212026_0h": 434,
-    "storm_ep212026_24h": 375
+    "storm_ep212026_24h": 503,
+    "storm_ep212026_48h": 513,
+    "storm_ep212026_72h": 544
   },
   "manzanillo|los_angeles|sea": {
     "gdacs_tc_1001335": 529,
-    "storm_ep202026_0h": 157,
-    "storm_ep202026_24h": 352,
-    "storm_ep202026_48h": 257,
-    "storm_ep212026_24h": 387,
-    "storm_ep212026_48h": 502
+    "storm_ep212026_24h": 617,
+    "storm_ep212026_48h": 599,
+    "storm_ep212026_72h": 630
   },
   "manzanillo|panama_city|sea": {
-    "quake_us6000u1cf": 283,
     "quake_us6000u1wn": 202,
-    "storm_ep212026_24h": 449,
-    "storm_ep212026_48h": 158
-  },
-  "panama_city|callao|sea": {
-    "quake_us6000u1cf": 150
+    "storm_ep212026_0h": 174,
+    "storm_ep212026_24h": 197
   },
   "panama_city|santos|sea": {
     "navwarn_4_2023_1100": 424
   },
-  "los_angeles|seattle|sea": {
-    "storm_ep202026_72h": 210
-  },
   "houston|manzanillo|sea": {
-    "quake_us6000u1cf": 283,
     "quake_us6000u1wn": 202,
-    "storm_ep212026_24h": 449,
-    "storm_ep212026_48h": 158
+    "storm_ep212026_0h": 174,
+    "storm_ep212026_24h": 197
   },
   "los_angeles|denver|rail": {
     "fire_33.95_-118.27_1283": 40,
@@ -180,6 +169,7 @@
     "fire_41.15_122.95_490": 59
   },
   "pearl_harbor|kwajalein|sea": {
+    "gdacs_tc_1001338": 19,
     "navwarn_12_2023_93": 382
   },
   "pearl_harbor|midway_site|sea": {
@@ -205,9 +195,6 @@
     "quake_us6000u1z5": 258,
     "quake_us6000u214": 258
   },
-  "camp_pendleton|vandenberg|sea": {
-    "storm_ep202026_72h": 120
-  },
   "abu_dhabi|dubai|sea": {
     "navwarn_p_2023_1938": 11
   },
@@ -222,11 +209,9 @@
   },
   "tijuana|manzanillo|sea": {
     "gdacs_tc_1001335": 529,
-    "storm_ep202026_0h": 157,
-    "storm_ep202026_24h": 352,
-    "storm_ep202026_48h": 257,
-    "storm_ep212026_24h": 387,
-    "storm_ep212026_48h": 502
+    "storm_ep212026_24h": 617,
+    "storm_ep212026_48h": 599,
+    "storm_ep212026_72h": 630
   },
   "port_of_spain|cartagena|sea": {
     "navwarn_4_2023_1100": 424
@@ -236,8 +221,7 @@
     "navwarn_p_2023_3916": 46
   },
   "pearl_harbor|los_angeles|sea": {
-    "navwarn_12_2023_93": 11,
-    "storm_ep202026_72h": 532
+    "navwarn_12_2023_93": 11
   },
   "abu_dhabi|bandar_abbas|sea": {
     "navwarn_p_2023_1938": 49
@@ -275,15 +259,6 @@
   "alexandria|constanta|sea": {
     "navwarn_a_2023_1645": 51
   },
-  "anchorage|camp_pendleton|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "anchorage|los_angeles|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "anchorage|vandenberg|sea": {
-    "storm_ep202026_72h": 176
-  },
   "apia|pearl_harbor|sea": {
     "navwarn_12_2023_93": 11
   },
@@ -315,39 +290,17 @@
   "bridgetown|caracas|sea": {
     "navwarn_4_2023_1100": 354
   },
-  "callao|caracas|sea": {
-    "quake_us6000u1cf": 150
-  },
-  "callao|cartagena|sea": {
-    "quake_us6000u1cf": 150
-  },
   "callao|georgetown_guyana|sea": {
-    "navwarn_4_2023_1100": 424,
-    "quake_us6000u1cf": 150
+    "navwarn_4_2023_1100": 424
   },
   "callao|port_of_spain|sea": {
-    "navwarn_4_2023_1100": 424,
-    "quake_us6000u1cf": 150
+    "navwarn_4_2023_1100": 424
   },
   "camp_pendleton|pearl_harbor|sea": {
-    "navwarn_12_2023_93": 11,
-    "storm_ep202026_72h": 532
+    "navwarn_12_2023_93": 11
   },
   "camp_pendleton|pmrf|sea": {
-    "navwarn_12_2023_93": 257,
-    "storm_ep202026_72h": 532
-  },
-  "camp_pendleton|portland_or|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "camp_pendleton|san_francisco|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "camp_pendleton|seattle|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "camp_pendleton|vancouver|sea": {
-    "storm_ep202026_72h": 210
+    "navwarn_12_2023_93": 257
   },
   "caracas|castries|sea": {
     "navwarn_4_2023_1100": 354
@@ -361,20 +314,11 @@
   "caracas|kingstown|sea": {
     "navwarn_4_2023_1100": 354
   },
-  "caracas|lima|sea": {
-    "quake_us6000u1cf": 150
-  },
   "caracas|roseau|sea": {
     "navwarn_4_2023_1100": 354
   },
   "caracas|saint_georges|sea": {
     "navwarn_4_2023_1100": 354
-  },
-  "cartagena|guayaquil|sea": {
-    "quake_us6000u1cf": 150
-  },
-  "cartagena|lima|sea": {
-    "quake_us6000u1cf": 150
   },
   "cartagena|saint_georges|sea": {
     "navwarn_4_2023_1100": 408
@@ -427,21 +371,6 @@
   "dubai|muscat|sea": {
     "navwarn_p_2023_1938": 60
   },
-  "easter_island_site|panama_city|sea": {
-    "quake_us6000u1cf": 150
-  },
-  "guantanamo|guayaquil|sea": {
-    "quake_us6000u1cf": 150
-  },
-  "guayaquil|kingston|sea": {
-    "quake_us6000u1cf": 150
-  },
-  "guayaquil|panama_city|sea": {
-    "quake_us6000u1cf": 150
-  },
-  "guayaquil|port_au_prince|sea": {
-    "quake_us6000u1cf": 150
-  },
   "jeddah|tel_aviv|sea": {
     "navwarn_p_2024_241": 38
   },
@@ -458,24 +387,8 @@
   "kuwait_city|muscat|sea": {
     "navwarn_p_2024_311": 55
   },
-  "lima|panama_city|sea": {
-    "quake_us6000u1cf": 150
-  },
   "los_angeles|pmrf|sea": {
-    "navwarn_12_2023_93": 257,
-    "storm_ep202026_72h": 532
-  },
-  "los_angeles|portland_or|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "los_angeles|san_francisco|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "los_angeles|vancouver|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "los_angeles|vandenberg|sea": {
-    "storm_ep202026_72h": 120
+    "navwarn_12_2023_93": 257
   },
   "male|mumbai|sea": {
     "navwarn_p_2023_3497": 43,
@@ -512,8 +425,7 @@
     "navwarn_12_2023_93": 382
   },
   "pearl_harbor|vandenberg|sea": {
-    "navwarn_12_2023_93": 11,
-    "storm_ep202026_72h": 621
+    "navwarn_12_2023_93": 11
   },
   "pmrf|san_francisco|sea": {
     "navwarn_12_2023_93": 257
@@ -522,50 +434,10 @@
     "navwarn_12_2023_93": 366
   },
   "pmrf|vandenberg|sea": {
-    "navwarn_12_2023_93": 257,
-    "storm_ep202026_72h": 621
+    "navwarn_12_2023_93": 257
   },
   "port_sudan|tel_aviv|sea": {
     "navwarn_p_2024_241": 38
-  },
-  "portland_or|san_diego|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "portland_or|tijuana|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "portland_or|vandenberg|sea": {
-    "storm_ep202026_72h": 176
-  },
-  "san_diego|san_francisco|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "san_diego|seattle|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "san_diego|vancouver|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "san_diego|vandenberg|sea": {
-    "storm_ep202026_72h": 120
-  },
-  "san_francisco|tijuana|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "san_francisco|vandenberg|sea": {
-    "storm_ep202026_72h": 176
-  },
-  "seattle|tijuana|sea": {
-    "storm_ep202026_72h": 210
-  },
-  "seattle|vandenberg|sea": {
-    "storm_ep202026_72h": 176
-  },
-  "tijuana|vandenberg|sea": {
-    "storm_ep202026_72h": 120
-  },
-  "vancouver|vandenberg|sea": {
-    "storm_ep202026_72h": 176
   },
   "abeche_airport|sarh_airport|truck": {
     "fire_11.21_19.12_2364": 39,
