@@ -206,6 +206,40 @@ describe("routing engine (real dataset smoke test)", () => {
     }
   });
 
+  // Which ports a Red Sea passage calls at shifts with live conflict zones (a
+  // Bab-el-Mandeb tag on the direct Salalah leg is enough to add a Djibouti
+  // stop), so these assert the invariant instead: every leg follows routed
+  // water geometry and none of it crosses the Rub' al Khali.
+  const RUB_AL_KHALI = { minLat: 18.5, maxLat: 23.5, minLon: 44, maxLon: 54 };
+  const expectSeaRouteAroundArabia = (
+    route: ReturnType<ReturnType<typeof createRouteEngine>["computeRoutes"]>[number],
+    originId: string,
+    destinationId: string,
+  ) => {
+    expect(route).toBeDefined();
+    expect(route.legs[0].from).toBe(originId);
+    expect(route.legs[route.legs.length - 1].to).toBe(destinationId);
+    for (const leg of route.legs) {
+      expect(leg.mode).toBe("sea");
+      const via = leg.via ?? [];
+      expect(via.length).toBeGreaterThan(0);
+      for (let i = 1; i < via.length; i++) {
+        const [lon0, lat0] = via[i - 1];
+        const [lon1, lat1] = via[i];
+        for (let t = 0; t <= 1; t += 0.05) {
+          const lon = lon0 + (lon1 - lon0) * t;
+          const lat = lat0 + (lat1 - lat0) * t;
+          const overLand =
+            lat > RUB_AL_KHALI.minLat &&
+            lat < RUB_AL_KHALI.maxLat &&
+            lon > RUB_AL_KHALI.minLon &&
+            lon < RUB_AL_KHALI.maxLon;
+          expect(overLand, `${leg.from}->${leg.to} crosses Arabia at ${lat},${lon}`).toBe(false);
+        }
+      }
+    }
+  };
+
   it("routes ships from Oman to Jeddah around the Arabian Peninsula", () => {
     const engine = createRouteEngine(nodes, edges, costs);
     const [route] = engine.computeRoutes({
@@ -214,11 +248,7 @@ describe("routing engine (real dataset smoke test)", () => {
       allowedModes: ["sea"],
     });
 
-    expect(route.legs.map(({ from, to }) => [from, to])).toEqual([
-      ["muscat", "salalah"],
-      ["salalah", "jeddah"],
-    ]);
-    expect(route.legs.every((leg) => (leg.via?.length ?? 0) > 0)).toBe(true);
+    expectSeaRouteAroundArabia(route, "muscat", "jeddah");
   });
 
   it("routes ships from Jeddah to Dubai around Arabia instead of across land", () => {
@@ -229,11 +259,7 @@ describe("routing engine (real dataset smoke test)", () => {
       allowedModes: ["sea"],
     });
 
-    expect(route.legs.map(({ from, to }) => [from, to])).toEqual([
-      ["jeddah", "salalah"],
-      ["salalah", "dubai"],
-    ]);
-    expect(route.legs.every((leg) => (leg.via?.length ?? 0) > 0)).toBe(true);
+    expectSeaRouteAroundArabia(route, "jeddah", "dubai");
   });
 
   it("charges the China-to-Europe land bridge for its break of gauge", () => {
