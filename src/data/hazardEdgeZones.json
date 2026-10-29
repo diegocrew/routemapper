@@ -1,31 +1,6 @@
 {
-  "shanghai|singapore|sea": {
-    "gdacs_tc_1001338": 234
-  },
-  "shanghai|busan|sea": {
-    "gdacs_tc_1001338": 805
-  },
-  "shanghai|ningbo|sea": {
-    "gdacs_tc_1001338": 41
-  },
-  "ningbo|singapore|sea": {
-    "gdacs_tc_1001338": 34
-  },
-  "qingdao|busan|sea": {
-    "gdacs_tc_1001338": 529
-  },
-  "tianjin|busan|sea": {
-    "gdacs_tc_1001338": 500
-  },
-  "shanghai|los_angeles|sea": {
-    "gdacs_tc_1001338": 826
-  },
   "shanghai|rotterdam|sea": {
-    "gdacs_tc_1001338": 234,
     "navwarn_p_2024_241": 38
-  },
-  "busan|los_angeles|sea": {
-    "gdacs_tc_1001338": 58
   },
   "singapore|rotterdam|sea": {
     "navwarn_p_2024_241": 38
@@ -53,7 +28,6 @@
     "navwarn_p_2024_241": 38
   },
   "piraeus|shanghai|sea": {
-    "gdacs_tc_1001338": 234,
     "navwarn_p_2024_241": 38
   },
   "piraeus|singapore|sea": {
@@ -70,10 +44,10 @@
     "quake_us6000u4bk": 74
   },
   "callao|los_angeles|sea": {
-    "storm_ep222026_0h": 286
+    "storm_ep222026_0h": 256
   },
   "manzanillo|los_angeles|sea": {
-    "storm_ep222026_0h": 291
+    "storm_ep222026_0h": 310
   },
   "panama_city|santos|sea": {
     "navwarn_4_2023_1100": 424
@@ -85,33 +59,33 @@
     "quake_us7000ttpe": 20
   },
   "los_angeles|denver|rail": {
-    "fire_34.08_-118.01_1092": 40
+    "fire_34.08_-118.01_1113": 40
   },
   "chicago|new_york|rail": {
-    "fire_40.61_-74.22_746": 39,
-    "fire_41.46_-81.67_894": 20,
-    "fire_41.59_-83.44_895": 59,
-    "fire_41.64_-87.32_896": 59
+    "fire_40.61_-74.22_758": 39,
+    "fire_41.46_-81.67_906": 20,
+    "fire_41.59_-83.44_907": 59,
+    "fire_41.64_-87.32_908": 59
   },
   "houston|kansas_city|rail": {
-    "fire_29.70_-95.09_2762": 39,
-    "fire_36.88_-94.39_2791": 39
+    "fire_29.70_-95.09_2876": 39,
+    "fire_36.88_-94.39_2905": 39
   },
   "zhengzhou|beijing|rail": {
-    "fire_36.21_114.12_2640": 39
+    "fire_36.21_114.12_2754": 39
   },
   "chengdu|khorgos|rail": {
-    "fire_43.90_80.89_854": 60
+    "fire_43.90_80.89_866": 60
   },
   "xian|khorgos|rail": {
-    "fire_43.90_80.89_854": 60
+    "fire_43.90_80.89_866": 60
   },
   "almaty|novosibirsk|rail": {
-    "fire_43.63_77.30_853": 39
+    "fire_43.63_77.30_865": 39
   },
   "yekaterinburg|moscow|rail": {
-    "fire_56.36_47.92_1089": 40,
-    "fire_56.87_59.89_877": 40
+    "fire_56.36_47.92_1109": 40,
+    "fire_56.87_59.89_889": 40
   },
   "lodz|duisburg|rail": {
     "fire_51.45_6.72_8": 20
@@ -136,47 +110,52 @@
     "navwarn_p_2023_3916": 46,
     "navwarn_p_2024_1423": 39
   },
+  "windhoek|durban|truck": {
+    "fire_-29.55_30.02_1648": 40
+  },
   "ndjamena|lagos|truck": {
-    "fire_10.89_13.05_2218": 40,
-    "fire_11.05_13.46_2221": 59,
-    "fire_11.15_13.04_3424": 59,
-    "fire_11.18_12.61_86": 59,
-    "fire_11.33_14.22_2223": 40,
-    "fire_11.40_13.07_2222": 99,
-    "fire_11.41_13.71_87": 59,
-    "fire_11.48_13.35_2234": 79,
-    "fire_11.53_14.01_89": 79,
-    "fire_11.67_14.78_2235": 59,
+    "fire_10.91_13.06_2313": 40,
+    "fire_11.09_13.45_2316": 59,
+    "fire_11.11_13.02_3604": 59,
+    "fire_11.18_12.63_86": 59,
+    "fire_11.33_14.21_2320": 20,
+    "fire_11.40_13.07_2319": 99,
+    "fire_11.40_13.71_87": 59,
+    "fire_11.47_13.34_2332": 79,
+    "fire_11.54_14.01_89": 79,
+    "fire_11.63_14.79_2333": 59,
     "fire_11.76_13.78_91": 59,
-    "fire_11.76_14.35_2239": 59,
-    "fire_11.88_14.76_2240": 40
+    "fire_11.76_14.35_2338": 59,
+    "fire_11.91_14.68_2339": 59,
+    "fire_9.82_10.72_2239": 59
   },
   "vienna|munich|rail": {
-    "fire_48.28_14.34_2928": 20
+    "fire_48.28_14.34_3047": 20
   },
   "madrid|lisbon|rail": {
-    "fire_39.17_-8.82_155": 39
+    "fire_39.17_-8.82_158": 39,
+    "fire_39.50_-5.87_4189": 19
   },
   "london|brussels|rail": {
     "fire_51.04_2.29_5": 19
   },
   "milan|vienna|rail": {
-    "fire_45.67_9.56_153": 78
+    "fire_45.67_9.56_156": 78
   },
   "new_delhi|mumbai|rail": {
-    "fire_25.29_76.01_819": 79,
-    "fire_25.35_75.77_956": 59
+    "fire_25.29_76.01_831": 79,
+    "fire_25.35_75.77_968": 59
   },
   "new_delhi|kolkata|rail": {
-    "fire_23.74_86.13_808": 79,
-    "fire_23.74_86.41_807": 79
+    "fire_23.74_86.13_820": 79,
+    "fire_23.74_86.41_819": 79
   },
   "johannesburg|pretoria|rail": {
-    "fire_-26.25_28.12_1610": 17
+    "fire_-26.25_28.12_1652": 17
   },
   "johannesburg|durban|rail": {
-    "fire_-26.25_28.12_1610": 39,
-    "fire_-28.08_29.70_1608": 19
+    "fire_-26.25_28.12_1652": 39,
+    "fire_-28.08_29.70_1650": 19
   },
   "belgrade|constanta|sea": {
     "navwarn_a_2022_838": 46,
@@ -201,9 +180,9 @@
     "navwarn_p_2023_1938": 11
   },
   "pyongyang|beijing|rail": {
-    "fire_40.76_123.74_3666": 58,
-    "fire_41.01_122.62_2668": 59,
-    "fire_41.20_123.02_2669": 40
+    "fire_40.76_123.74_3860": 58,
+    "fire_41.01_122.62_2782": 59,
+    "fire_41.20_123.02_2783": 40
   },
   "vladivostok_base|yokosuka|sea": {
     "quake_us7000ttpe": 106
@@ -221,7 +200,6 @@
     "navwarn_12_2023_93": 269
   },
   "severomorsk|vladivostok_base|sea": {
-    "gdacs_tc_1001338": 963,
     "navwarn_p_2024_241": 38
   },
   "djibouti_base|karwar|sea": {
@@ -232,17 +210,11 @@
     "navwarn_p_2024_241": 38,
     "quake_us6000u4bk": 67
   },
-  "kadena|yokosuka|sea": {
-    "gdacs_tc_1001338": 741
-  },
   "tunis|gioia_tauro|sea": {
     "quake_us6000u4bk": 74
   },
   "abu_dhabi|dubai|sea": {
     "navwarn_p_2023_1938": 11
-  },
-  "seoul|busan|sea": {
-    "gdacs_tc_1001338": 520
   },
   "kuwait_city|basra|sea": {
     "navwarn_p_2024_311": 39
@@ -254,7 +226,7 @@
     "navwarn_4_2023_1100": 355
   },
   "tijuana|manzanillo|sea": {
-    "storm_ep222026_0h": 291
+    "storm_ep222026_0h": 310
   },
   "port_of_spain|cartagena|sea": {
     "navwarn_4_2023_1100": 424
@@ -265,9 +237,6 @@
   },
   "kolkata|colombo|sea": {
     "gdacs_tc_1001345": 567
-  },
-  "vladivostok_base|busan|sea": {
-    "gdacs_tc_1001338": 58
   },
   "pearl_harbor|los_angeles|sea": {
     "navwarn_12_2023_93": 11
@@ -344,27 +313,6 @@
   },
   "bridgetown|caracas|sea": {
     "navwarn_4_2023_1100": 354
-  },
-  "busan|kadena|sea": {
-    "gdacs_tc_1001338": 1087
-  },
-  "busan|nanjing|sea": {
-    "gdacs_tc_1001338": 805
-  },
-  "busan|ningbo|sea": {
-    "gdacs_tc_1001338": 848
-  },
-  "busan|osaka|sea": {
-    "gdacs_tc_1001338": 309
-  },
-  "busan|tokyo|sea": {
-    "gdacs_tc_1001338": 309
-  },
-  "busan|yokohama|sea": {
-    "gdacs_tc_1001338": 309
-  },
-  "busan|yokosuka|sea": {
-    "gdacs_tc_1001338": 309
   },
   "callao|georgetown_guyana|sea": {
     "navwarn_4_2023_1100": 424
@@ -469,12 +417,6 @@
   "gioia_tauro|toulon|sea": {
     "quake_us6000u4bk": 67
   },
-  "hong_kong|ningbo|sea": {
-    "gdacs_tc_1001338": 34
-  },
-  "hong_kong|shanghai|sea": {
-    "gdacs_tc_1001338": 234
-  },
   "honiara|port_vila|sea": {
     "quake_us6000u4jb": 172,
     "quake_us6000u4kq": 114,
@@ -482,36 +424,6 @@
   },
   "jeddah|tel_aviv|sea": {
     "navwarn_p_2024_241": 38
-  },
-  "kadena|nanjing|sea": {
-    "gdacs_tc_1001338": 722
-  },
-  "kadena|ningbo|sea": {
-    "gdacs_tc_1001338": 638
-  },
-  "kadena|osaka|sea": {
-    "gdacs_tc_1001338": 836
-  },
-  "kadena|qingdao|sea": {
-    "gdacs_tc_1001338": 845
-  },
-  "kadena|shanghai|sea": {
-    "gdacs_tc_1001338": 722
-  },
-  "kadena|tianjin|sea": {
-    "gdacs_tc_1001338": 915
-  },
-  "kadena|tokyo|sea": {
-    "gdacs_tc_1001338": 741
-  },
-  "kadena|yokohama|sea": {
-    "gdacs_tc_1001338": 741
-  },
-  "kaohsiung|ningbo|sea": {
-    "gdacs_tc_1001338": 34
-  },
-  "kaohsiung|shanghai|sea": {
-    "gdacs_tc_1001338": 234
   },
   "karachi|male|sea": {
     "navwarn_p_2024_1423": 39
@@ -552,47 +464,11 @@
     "navwarn_p_2023_3497": 43,
     "navwarn_p_2023_3916": 46
   },
-  "nanjing|ningbo|sea": {
-    "gdacs_tc_1001338": 41
-  },
-  "nanjing|qingdao|sea": {
-    "gdacs_tc_1001338": 238
-  },
-  "nanjing|seoul|sea": {
-    "gdacs_tc_1001338": 610
-  },
-  "nanjing|tianjin|sea": {
-    "gdacs_tc_1001338": 309
-  },
-  "nanjing|xiamen|sea": {
-    "gdacs_tc_1001338": 234
-  },
   "naples|tunis|sea": {
     "quake_us6000u4bk": 18
   },
-  "ningbo|qingdao|sea": {
-    "gdacs_tc_1001338": 282
-  },
-  "ningbo|seoul|sea": {
-    "gdacs_tc_1001338": 654
-  },
-  "ningbo|tianjin|sea": {
-    "gdacs_tc_1001338": 352
-  },
-  "ningbo|xiamen|sea": {
-    "gdacs_tc_1001338": 34
-  },
-  "ningbo|yokosuka|sea": {
-    "gdacs_tc_1001338": 1070
-  },
   "odesa|thessaloniki|sea": {
     "navwarn_a_2022_838": 297
-  },
-  "osaka|seoul|sea": {
-    "gdacs_tc_1001338": 724
-  },
-  "osaka|vladivostok_base|sea": {
-    "gdacs_tc_1001338": 234
   },
   "palikir|port_vila|sea": {
     "quake_us6000u4jb": 172,
@@ -631,42 +507,6 @@
   "port_sudan|tel_aviv|sea": {
     "navwarn_p_2024_241": 38
   },
-  "qingdao|shanghai|sea": {
-    "gdacs_tc_1001338": 238
-  },
-  "qingdao|vladivostok_base|sea": {
-    "gdacs_tc_1001338": 551
-  },
-  "seoul|shanghai|sea": {
-    "gdacs_tc_1001338": 610
-  },
-  "seoul|vladivostok_base|sea": {
-    "gdacs_tc_1001338": 542
-  },
-  "seoul|yokohama|sea": {
-    "gdacs_tc_1001338": 724
-  },
-  "seoul|yokosuka|sea": {
-    "gdacs_tc_1001338": 724
-  },
-  "shanghai|tianjin|sea": {
-    "gdacs_tc_1001338": 309
-  },
-  "shanghai|tokyo|sea": {
-    "gdacs_tc_1001338": 1015
-  },
-  "shanghai|vladivostok_base|sea": {
-    "gdacs_tc_1001338": 826
-  },
-  "shanghai|xiamen|sea": {
-    "gdacs_tc_1001338": 234
-  },
-  "shanghai|yokohama|sea": {
-    "gdacs_tc_1001338": 1015
-  },
-  "shanghai|yokosuka|sea": {
-    "gdacs_tc_1001338": 1015
-  },
   "tokyo|vladivostok_base|sea": {
     "quake_us7000ttpe": 106
   },
@@ -674,101 +514,104 @@
     "quake_us7000ttpe": 106
   },
   "abeche_airport|sarh_airport|truck": {
-    "fire_10.07_19.03_2152": 78,
-    "fire_10.26_18.68_2180": 59,
-    "fire_10.46_18.98_2177": 78,
-    "fire_10.57_19.24_2179": 59,
+    "fire_10.07_19.03_2242": 78,
+    "fire_10.26_18.68_2270": 59,
+    "fire_10.46_18.98_2267": 78,
+    "fire_10.59_19.27_2269": 59,
     "fire_10.72_18.91_83": 39,
-    "fire_10.92_19.21_2204": 78,
-    "fire_11.44_19.34_2214": 78,
-    "fire_11.71_19.51_2236": 39,
+    "fire_10.92_19.21_2295": 78,
+    "fire_11.44_19.34_2306": 78,
+    "fire_11.71_19.51_2335": 39,
     "fire_12.34_20.26_99": 39,
-    "fire_9.26_18.64_2118": 20,
-    "fire_9.69_18.54_2141": 39
+    "fire_9.26_18.64_2207": 20,
+    "fire_9.69_18.54_2231": 39
   },
   "abu_al_duhur_air_base|incirlik|truck": {
-    "fire_36.73_36.21_1579": 40
+    "fire_36.73_36.21_1615": 40
   },
   "abu_suweir_air_base|beni_suef_air_base|truck": {
-    "fire_29.80_31.30_2892": 55
+    "fire_29.80_31.30_3009": 55
   },
   "abu_suweir_air_base|cairo|truck": {
-    "fire_29.80_31.30_2892": 17
+    "fire_29.80_31.30_3009": 17
   },
   "abu_suweir_air_base|helwan_airfield|truck": {
-    "fire_29.80_31.30_2892": 37
+    "fire_29.80_31.30_3009": 37
+  },
+  "abuja|kano|truck": {
+    "fire_10.43_7.88_2312": 57
   },
   "abuja|port_harcourt|truck": {
-    "fire_4.94_7.12_131": 40
+    "fire_4.94_7.12_133": 40
   },
   "achalgarh_fort|naliya_air_force_station|truck": {
-    "fire_23.91_71.19_3700": 19,
-    "fire_24.23_71.34_3701": 38
+    "fire_23.91_71.19_3894": 19,
+    "fire_24.23_71.34_3895": 38
   },
   "achalgarh_fort|pns_mehran|truck": {
-    "fire_24.52_71.29_3135": 59,
-    "fire_25.06_67.55_2856": 39,
-    "fire_25.10_68.47_954": 39
+    "fire_24.52_71.29_3258": 59,
+    "fire_25.06_67.55_2971": 39,
+    "fire_25.10_68.47_966": 39
   },
   "achalgarh_fort|pns_qasim|truck": {
-    "fire_24.52_71.29_3135": 57
+    "fire_24.52_71.29_3258": 57
   },
   "achalgarh_fort|suratgarh_air_force_station|truck": {
-    "fire_26.90_73.50_2843": 58,
-    "fire_29.49_74.06_966": 19
+    "fire_26.90_73.50_2958": 58,
+    "fire_29.49_74.06_978": 19
   },
   "afonsos_air_force_base|bartolomeu_de_gusmao_airport|truck": {
-    "fire_-22.91_-43.75_3053": 17
+    "fire_-22.91_-43.75_3176": 17
   },
   "afonsos_air_force_base|madeira_island_submarine_base|truck": {
-    "fire_-22.91_-43.75_3053": 32
+    "fire_-22.91_-43.75_3176": 32
   },
   "afonsos_air_force_base|santa_cruz_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 17
+    "fire_-22.91_-43.75_3176": 17
   },
   "afonsos_air_force_base|santos|truck": {
-    "fire_-22.91_-43.75_3053": 37
+    "fire_-22.91_-43.75_3176": 37
   },
   "afonsos_air_force_base|santos_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 37
+    "fire_-22.91_-43.75_3176": 37
   },
   "afonsos_air_force_base|sao_paulo|truck": {
-    "fire_-22.91_-43.75_3053": 37
+    "fire_-22.91_-43.75_3176": 37
   },
   "ahmad_al_jaber_air_base|ali_al_salem_air_base|truck": {
-    "fire_29.02_47.70_3229": 35
+    "fire_29.02_47.70_3369": 35
   },
   "ahmad_al_jaber_air_base|basra|truck": {
-    "fire_29.02_47.70_3229": 39,
-    "fire_30.43_47.65_969": 39
+    "fire_29.02_47.70_3369": 39,
+    "fire_30.43_47.65_981": 39
   },
   "ahmad_al_jaber_air_base|jalibah_southeast_air_base|truck": {
-    "fire_29.02_47.70_3229": 39
+    "fire_29.02_47.70_3369": 39
   },
   "ahmad_al_jaber_air_base|king_abdulaziz_air_base|truck": {
-    "fire_27.02_49.57_3227": 79,
-    "fire_27.15_49.21_986": 40,
-    "fire_27.83_48.73_990": 59,
-    "fire_29.02_47.70_3229": 20
+    "fire_27.02_49.57_3367": 79,
+    "fire_27.15_49.21_998": 40,
+    "fire_27.83_48.73_1002": 59,
+    "fire_29.02_47.70_3369": 20
   },
   "ahmad_al_jaber_air_base|king_abdulaziz_naval_base|truck": {
-    "fire_27.02_49.57_3227": 43,
-    "fire_27.15_49.21_986": 36,
-    "fire_27.83_48.73_990": 62,
-    "fire_29.02_47.70_3229": 20
+    "fire_27.02_49.57_3367": 43,
+    "fire_27.15_49.21_998": 36,
+    "fire_27.83_48.73_1002": 62,
+    "fire_29.02_47.70_3369": 20
   },
   "ahmad_al_jaber_air_base|king_khalid_military_city|truck": {
-    "fire_29.02_47.70_3229": 38
+    "fire_29.02_47.70_3369": 38
   },
   "ahmad_al_jaber_air_base|kuwait_city|truck": {
-    "fire_29.02_47.70_3229": 35
+    "fire_29.02_47.70_3369": 35
   },
   "ahmad_al_jaber_air_base|nasiriyah_airport|truck": {
-    "fire_29.02_47.70_3229": 39
+    "fire_29.02_47.70_3369": 39
   },
   "ahmad_al_jaber_air_base|omidiyeh_air_base|truck": {
-    "fire_29.02_47.70_3229": 39,
-    "fire_30.80_49.58_974": 18
+    "fire_29.02_47.70_3369": 39,
+    "fire_30.80_49.58_986": 18
   },
   "ain_m_lila_airfield|ain_oussera_airport|truck": {
     "fire_35.82_4.46_28": 40
@@ -789,7 +632,7 @@
     "fire_35.80_-0.25_29": 20
   },
   "ain_oussera_airport|oran_tafraoui_airport|truck": {
-    "fire_35.50_-0.33_154": 39
+    "fire_35.50_-0.33_157": 39
   },
   "ain_oussera_airport|oum_el_bouaghi_airport|truck": {
     "fire_35.82_4.46_28": 20
@@ -797,208 +640,245 @@
   "ain_oussera_airport|telergma_airport|truck": {
     "fire_35.82_4.46_28": 38
   },
+  "air_force_base_bloemspruit|air_force_base_durban|truck": {
+    "fire_-29.55_30.02_1648": 20,
+    "fire_-29.88_29.74_4151": 20,
+    "fire_-29.91_30.21_4152": 60
+  },
   "air_force_base_bloemspruit|air_force_base_swartkop|truck": {
-    "fire_-26.25_28.12_1610": 19,
-    "fire_-26.42_27.76_1609": 39,
-    "fire_-26.69_27.89_2925": 39
+    "fire_-26.25_28.12_1652": 19,
+    "fire_-26.42_27.76_1651": 39,
+    "fire_-26.70_27.90_3044": 39
   },
   "air_force_base_bloemspruit|air_force_base_waterkloof|truck": {
-    "fire_-26.25_28.12_1610": 39,
-    "fire_-26.42_27.76_1609": 39,
-    "fire_-26.69_27.89_2925": 39
+    "fire_-26.25_28.12_1652": 39,
+    "fire_-26.42_27.76_1651": 39,
+    "fire_-26.70_27.90_3044": 58
+  },
+  "air_force_base_bloemspruit|durban|truck": {
+    "fire_-29.55_30.02_1648": 39,
+    "fire_-29.91_30.21_4152": 39
   },
   "air_force_base_bloemspruit|johannesburg|truck": {
-    "fire_-26.25_28.12_1610": 19,
-    "fire_-26.42_27.76_1609": 38,
-    "fire_-26.69_27.89_2925": 38
+    "fire_-26.25_28.12_1652": 19,
+    "fire_-26.42_27.76_1651": 38,
+    "fire_-26.70_27.90_3044": 58
   },
   "air_force_base_bloemspruit|pretoria|truck": {
-    "fire_-26.25_28.12_1610": 20,
-    "fire_-26.42_27.76_1609": 59,
-    "fire_-26.69_27.89_2925": 20
+    "fire_-26.25_28.12_1652": 20,
+    "fire_-26.42_27.76_1651": 59,
+    "fire_-26.70_27.90_3044": 59
   },
   "air_force_base_bloemspruit|thaba_tshwane|truck": {
-    "fire_-26.42_27.76_1609": 39,
-    "fire_-26.69_27.89_2925": 39
+    "fire_-26.42_27.76_1651": 39,
+    "fire_-26.70_27.90_3044": 39
   },
   "air_force_base_durban|johannesburg|truck": {
-    "fire_-26.25_28.12_1610": 19,
-    "fire_-28.08_29.70_1608": 19
+    "fire_-26.25_28.12_1652": 19,
+    "fire_-28.08_29.70_1650": 19
+  },
+  "air_force_base_durban|maseru|truck": {
+    "fire_-29.55_30.02_1648": 19,
+    "fire_-29.88_29.74_4151": 19,
+    "fire_-29.91_30.21_4152": 57
+  },
+  "air_force_base_durban|mbabane|truck": {
+    "fire_-26.37_30.97_3820": 39
   },
   "air_force_base_hoedspruit|air_force_base_makhado|truck": {
-    "fire_-23.49_30.36_1648": 57
+    "fire_-23.49_30.36_1694": 57
   },
   "air_force_base_hoedspruit|air_force_base_waterkloof|truck": {
-    "fire_-24.72_30.19_1628": 77,
-    "fire_-25.19_29.71_1621": 58,
-    "fire_-25.66_28.67_1615": 58
+    "fire_-24.73_30.20_1672": 77,
+    "fire_-25.14_29.04_1665": 39,
+    "fire_-25.20_29.72_1663": 39,
+    "fire_-25.66_28.67_1657": 58
   },
   "air_force_base_hoedspruit|josiah_tungamirai_air_force_base|truck": {
-    "fire_-23.81_31.04_1643": 39
+    "fire_-23.81_31.04_1689": 39
   },
   "air_force_base_hoedspruit|maputo|truck": {
-    "fire_-25.42_32.13_1617": 59,
-    "fire_-25.81_32.23_1612": 59
+    "fire_-25.38_32.13_1659": 79,
+    "fire_-25.81_32.23_1654": 59
   },
   "air_force_base_hoedspruit|mbabane|truck": {
-    "fire_-25.53_31.32_1618": 20
+    "fire_-25.53_31.32_1660": 20,
+    "fire_-26.37_30.97_3820": 20
   },
   "air_force_base_hoedspruit|pretoria|truck": {
-    "fire_-24.72_30.19_1628": 77,
-    "fire_-25.19_29.71_1621": 19,
-    "fire_-25.66_28.67_1615": 58
+    "fire_-24.73_30.20_1672": 77,
+    "fire_-25.14_29.04_1665": 58,
+    "fire_-25.20_29.72_1663": 19,
+    "fire_-25.66_28.67_1657": 58
   },
   "air_force_base_hoedspruit|thaba_tshwane|truck": {
-    "fire_-24.72_30.19_1628": 59,
-    "fire_-25.19_29.71_1621": 39,
-    "fire_-25.66_28.67_1615": 39
+    "fire_-24.73_30.20_1672": 59,
+    "fire_-25.14_29.04_1665": 59,
+    "fire_-25.20_29.72_1663": 39,
+    "fire_-25.66_28.67_1657": 39
+  },
+  "air_force_base_langebaanweg|vastrap|truck": {
+    "fire_-28.56_21.08_4183": 39
   },
   "air_force_base_makhado|air_force_base_swartkop|truck": {
-    "fire_-24.18_29.45_1641": 20,
-    "fire_-24.67_29.09_1629": 39,
-    "fire_-25.25_28.33_1622": 39
+    "fire_-24.18_29.45_1687": 20,
+    "fire_-24.31_29.12_1686": 59,
+    "fire_-24.67_29.09_1673": 39,
+    "fire_-25.25_28.33_1666": 39
   },
   "air_force_base_makhado|air_force_base_waterkloof|truck": {
-    "fire_-24.18_29.45_1641": 39,
-    "fire_-24.67_29.09_1629": 39,
-    "fire_-25.25_28.33_1622": 39
+    "fire_-24.18_29.45_1687": 39,
+    "fire_-24.31_29.12_1686": 59,
+    "fire_-24.67_29.09_1673": 39,
+    "fire_-25.25_28.33_1666": 39
   },
   "air_force_base_makhado|gaborone|truck": {
-    "fire_-23.35_29.04_1654": 20,
-    "fire_-23.61_28.96_1646": 20
+    "fire_-23.35_29.04_1700": 20,
+    "fire_-23.61_28.96_1692": 20
   },
   "air_force_base_makhado|harare|truck": {
-    "fire_-18.45_30.76_1733": 39,
-    "fire_-18.46_31.01_1734": 59,
-    "fire_-18.90_30.55_1721": 20
+    "fire_-17.89_31.32_1798": 20,
+    "fire_-18.45_30.76_1786": 39,
+    "fire_-18.47_31.03_1787": 59,
+    "fire_-18.90_30.55_1773": 20
   },
   "air_force_base_makhado|maputo|truck": {
-    "fire_-23.49_30.36_1648": 58,
-    "fire_-25.42_32.13_1617": 78,
-    "fire_-25.81_32.23_1612": 58
+    "fire_-23.49_30.36_1694": 58,
+    "fire_-25.38_32.13_1659": 78,
+    "fire_-25.81_32.23_1654": 58
   },
   "air_force_base_makhado|mbabane|truck": {
-    "fire_-24.72_30.19_1628": 57
+    "fire_-24.73_30.20_1672": 57,
+    "fire_-26.37_30.97_3820": 19
   },
   "air_force_base_makhado|pretoria|truck": {
-    "fire_-24.18_29.45_1641": 19,
-    "fire_-24.67_29.09_1629": 38,
-    "fire_-25.25_28.33_1622": 38
+    "fire_-24.18_29.45_1687": 19,
+    "fire_-24.31_29.12_1686": 58,
+    "fire_-24.67_29.09_1673": 38,
+    "fire_-25.25_28.33_1666": 38
   },
   "air_force_base_makhado|thaba_tshwane|truck": {
-    "fire_-24.18_29.45_1641": 20,
-    "fire_-24.67_29.09_1629": 39,
-    "fire_-25.25_28.33_1622": 39
+    "fire_-24.18_29.45_1687": 20,
+    "fire_-24.31_29.12_1686": 59,
+    "fire_-24.67_29.09_1673": 39,
+    "fire_-25.25_28.33_1666": 39
   },
   "air_force_base_swartkop|gaborone|truck": {
-    "fire_-25.22_27.40_1620": 56,
-    "fire_-25.67_27.65_3630": 56
+    "fire_-25.22_27.40_1662": 56,
+    "fire_-25.67_27.64_3822": 56
   },
   "air_force_base_swartkop|johannesburg|truck": {
-    "fire_-26.25_28.12_1610": 15
+    "fire_-26.25_28.12_1652": 15
   },
   "air_force_base_swartkop|maputo|truck": {
-    "fire_-25.66_28.67_1615": 38,
-    "fire_-25.79_30.10_1611": 77,
-    "fire_-25.81_32.23_1612": 58,
-    "fire_-25.83_29.15_1613": 77,
-    "fire_-25.84_29.55_3629": 58
+    "fire_-25.66_28.67_1657": 38,
+    "fire_-25.75_30.11_1653": 77,
+    "fire_-25.81_32.23_1654": 58,
+    "fire_-25.84_29.14_1655": 77,
+    "fire_-25.85_29.57_3821": 58
   },
   "air_force_base_swartkop|maseru|truck": {
-    "fire_-26.25_28.12_1610": 40,
-    "fire_-26.69_27.89_2925": 40
+    "fire_-26.25_28.12_1652": 40,
+    "fire_-26.70_27.90_3044": 79
   },
   "air_force_base_swartkop|mbabane|truck": {
-    "fire_-25.66_28.67_1615": 19,
-    "fire_-25.83_29.15_1613": 76,
-    "fire_-25.84_29.55_3629": 38
+    "fire_-25.66_28.67_1657": 19,
+    "fire_-25.84_29.14_1655": 76,
+    "fire_-25.85_29.57_3821": 38,
+    "fire_-26.37_30.97_3820": 38
   },
   "air_force_base_waterkloof|gaborone|truck": {
-    "fire_-25.22_27.40_1620": 57,
-    "fire_-25.67_27.65_3630": 38
+    "fire_-25.22_27.40_1662": 57,
+    "fire_-25.67_27.64_3822": 57
   },
   "air_force_base_waterkloof|johannesburg|truck": {
-    "fire_-26.25_28.12_1610": 15
+    "fire_-26.25_28.12_1652": 15
   },
   "air_force_base_waterkloof|maputo|truck": {
-    "fire_-25.66_28.67_1615": 40,
-    "fire_-25.79_30.10_1611": 59,
-    "fire_-25.81_32.23_1612": 59,
-    "fire_-25.83_29.15_1613": 59,
-    "fire_-25.84_29.55_3629": 59
+    "fire_-25.66_28.67_1657": 40,
+    "fire_-25.75_30.11_1653": 59,
+    "fire_-25.81_32.23_1654": 59,
+    "fire_-25.84_29.14_1655": 59,
+    "fire_-25.85_29.57_3821": 59
   },
   "air_force_base_waterkloof|maseru|truck": {
-    "fire_-26.25_28.12_1610": 39,
-    "fire_-26.69_27.89_2925": 39
+    "fire_-26.25_28.12_1652": 39,
+    "fire_-26.70_27.90_3044": 79
   },
   "air_force_base_waterkloof|mbabane|truck": {
-    "fire_-25.83_29.15_1613": 59,
-    "fire_-25.84_29.55_3629": 40
+    "fire_-25.84_29.14_1655": 59,
+    "fire_-25.85_29.57_3821": 40,
+    "fire_-26.37_30.97_3820": 40
+  },
+  "akhtubinsk_air_base|astrakhan_air_base|truck": {
+    "fire_46.29_48.03_3277": 19
   },
   "akhtubinsk_air_base|kotelnikovo_air_base|truck": {
-    "fire_47.49_43.56_1044": 19,
-    "fire_47.69_42.97_3154": 38,
-    "fire_47.91_43.36_1045": 19
+    "fire_47.49_43.56_1056": 19,
+    "fire_47.70_42.95_3279": 19,
+    "fire_47.91_43.38_1057": 19
   },
   "akhtubinsk_air_base|lebyazhye_air_base|truck": {
-    "fire_50.08_45.70_1597": 37
+    "fire_50.08_45.70_1635": 37
   },
   "akhtubinsk_air_base|marinovka_air_base|truck": {
-    "fire_48.42_44.66_3155": 56,
-    "fire_48.64_43.94_3156": 37
+    "fire_48.42_44.66_3280": 56,
+    "fire_48.64_43.94_3281": 37,
+    "fire_48.74_44.75_1059": 56
   },
   "akhtubinsk_air_base|morozovsk_air_base|truck": {
-    "fire_48.11_43.15_3230": 20,
-    "fire_48.20_42.26_1046": 59,
-    "fire_48.42_44.66_3155": 78
+    "fire_48.12_43.15_3370": 20,
+    "fire_48.21_42.29_1058": 78,
+    "fire_48.34_42.64_1630": 39,
+    "fire_48.42_44.66_3280": 78
   },
   "al_asad_airbase|kharab_al_jir_base|truck": {
-    "fire_36.66_42.39_1576": 58,
-    "fire_36.93_42.19_2885": 39
+    "fire_36.66_42.39_1612": 58,
+    "fire_36.93_42.19_3002": 39
   },
   "al_jufra_airbase|in_amenas_airport|truck": {
     "fire_28.13_9.79_47": 40
   },
   "al_minhad_air_base|muscat|truck": {
-    "fire_24.48_56.61_2854": 37
+    "fire_24.48_56.61_2969": 37
   },
   "al_safran_air_base|rafo_thumrait|truck": {
-    "fire_22.54_53.95_2851": 59
+    "fire_22.54_53.95_2966": 59
   },
   "al_udeid_air_base|king_abdulaziz_naval_base|truck": {
-    "fire_26.72_50.07_2889": 15,
-    "fire_27.02_49.57_3227": 15
+    "fire_26.72_50.07_3006": 15,
+    "fire_27.02_49.57_3367": 15
   },
   "al_udeid_air_base|prince_sultan_air_base|truck": {
-    "fire_24.74_50.31_952": 20
+    "fire_24.74_50.31_964": 20
   },
   "al_watiya_air_base|in_amenas_airport|truck": {
     "fire_28.13_9.79_47": 40,
-    "fire_28.83_9.86_53": 60
+    "fire_28.83_9.85_53": 60
   },
   "al_watiya_air_base|tripoli|truck": {
-    "fire_32.76_12.68_2933": 74
+    "fire_32.76_12.68_3052": 74
   },
   "alexandria|baggush_box|truck": {
-    "fire_31.08_29.80_2893": 42
+    "fire_31.08_29.80_3010": 42
   },
   "alexandria|beni_suef_air_base|truck": {
-    "fire_31.08_29.80_2893": 19
+    "fire_31.08_29.80_3010": 19
   },
   "alexandria|frontier_wire_libya|truck": {
-    "fire_31.08_29.80_2893": 42
+    "fire_31.08_29.80_3010": 42
   },
   "alexandria|helwan_airfield|truck": {
-    "fire_29.80_31.30_2892": 37
+    "fire_29.80_31.30_3009": 37
   },
   "alexandria|jabal_hamzah_ballistic_missile_test_and_launch_f|truck": {
-    "fire_31.08_29.80_2893": 19
+    "fire_31.08_29.80_3010": 19
   },
   "alexandria|july_3_naval_base|truck": {
-    "fire_31.08_29.80_2893": 42
+    "fire_31.08_29.80_3010": 42
   },
   "alexandria|sidi_azeiz_airfield|truck": {
-    "fire_31.08_29.80_2893": 42
+    "fire_31.08_29.80_3010": 42
   },
   "algiers|boufarik_airport|truck": {
     "fire_36.68_3.10_33": 28
@@ -1008,7 +888,7 @@
     "fire_36.68_3.10_33": 29
   },
   "algiers|oran_tafraoui_airport|truck": {
-    "fire_35.50_-0.33_154": 19,
+    "fire_35.50_-0.33_157": 19,
     "fire_36.13_1.24_30": 39,
     "fire_36.68_3.10_33": 39
   },
@@ -1028,84 +908,84 @@
     "fire_36.87_6.97_36": 39
   },
   "ali_al_salem_air_base|basra|truck": {
-    "fire_30.43_47.65_969": 38
+    "fire_30.43_47.65_981": 38
   },
   "ali_al_salem_air_base|king_abdulaziz_naval_base|truck": {
-    "fire_27.02_49.57_3227": 37,
-    "fire_27.15_49.21_986": 19,
-    "fire_27.83_48.73_990": 58,
-    "fire_29.00_48.07_3228": 38,
-    "fire_29.02_47.70_3229": 38
+    "fire_27.02_49.57_3367": 37,
+    "fire_27.15_49.21_998": 19,
+    "fire_27.83_48.73_1002": 58,
+    "fire_29.00_48.07_3368": 38,
+    "fire_29.02_47.70_3369": 38
   },
   "ali_al_salem_air_base|omidiyeh_air_base|truck": {
-    "fire_30.80_49.58_974": 20
+    "fire_30.80_49.58_986": 20
   },
   "almaty|bishkek|truck": {
-    "fire_42.79_75.29_1027": 19,
-    "fire_43.02_74.96_2830": 39
+    "fire_42.79_75.29_1039": 19,
+    "fire_43.02_74.96_2944": 39
   },
   "almaty|kant_air_base|truck": {
-    "fire_42.79_75.29_1027": 39,
-    "fire_43.02_74.96_2830": 39
+    "fire_42.79_75.29_1039": 39,
+    "fire_43.02_74.96_2944": 39
   },
   "almaty|usharal_airport|truck": {
-    "fire_43.63_77.30_853": 59
+    "fire_43.63_77.30_865": 59
   },
   "almaza_air_base|beni_suef_air_base|truck": {
-    "fire_29.80_31.30_2892": 69
+    "fire_29.80_31.30_3009": 69
   },
   "almaza_air_base|cairo|truck": {
-    "fire_29.80_31.30_2892": 13
+    "fire_29.80_31.30_3009": 13
   },
   "almaza_air_base|helwan_airfield|truck": {
-    "fire_29.80_31.30_2892": 30
+    "fire_29.80_31.30_3009": 30
   },
   "almaza_air_base|jabal_hamzah_ballistic_missile_test_and_launch_f|truck": {
-    "fire_29.80_31.30_2892": 18
+    "fire_29.80_31.30_3009": 18
   },
   "amazon_site|manaus|truck": {
-    "fire_-3.40_-60.55_3847": 57
+    "fire_-3.40_-60.55_4100": 57
   },
   "amazon_site|manaus_air_force_base|truck": {
-    "fire_-3.40_-60.55_3847": 58
+    "fire_-3.40_-60.55_4100": 58
   },
   "amazon_site|ponta_pelada_airport|truck": {
-    "fire_-3.40_-60.55_3847": 58
+    "fire_-3.40_-60.55_4100": 58
   },
   "amedee_army_airfield|beale_air_force_base|truck": {
-    "fire_39.01_-121.59_2811": 19
+    "fire_39.01_-121.59_2925": 19
   },
   "amedee_army_airfield|travis_air_force_base|truck": {
-    "fire_39.01_-121.59_2811": 58
+    "fire_39.01_-121.59_2925": 58
   },
   "an_hoa_combat_base|ben_het_camp|truck": {
-    "fire_15.53_108.13_695": 56
+    "fire_15.53_108.13_707": 56
   },
   "an_hoa_combat_base|chu_lai_base_area|truck": {
-    "fire_15.53_108.13_695": 57
+    "fire_15.53_108.13_707": 57
   },
   "an_hoa_combat_base|da_nang|truck": {
-    "fire_15.53_108.13_695": 16
+    "fire_15.53_108.13_707": 16
   },
   "an_hoa_combat_base|dak_pek_camp|truck": {
-    "fire_15.53_108.13_695": 52
+    "fire_15.53_108.13_707": 52
   },
   "andorra_la_vella|istres_le_tube_air_base|truck": {
     "fire_43.45_4.89_16": 19
   },
   "anniston_army_depot|columbus_air_force_base|truck": {
-    "fire_33.53_-86.82_904": 38
+    "fire_33.53_-86.82_916": 38
   },
   "anniston_army_depot|montgomery_air_national_guard_base|truck": {
-    "fire_32.95_-86.52_3581": 19
+    "fire_32.95_-86.52_3766": 19
   },
   "anniston_army_depot|sumpter_smith_air_national_guard_base|truck": {
-    "fire_33.53_-86.82_904": 18
+    "fire_33.53_-86.82_916": 18
   },
   "antananarivo|toamasina|truck": {
-    "fire_-18.59_48.11_1167": 79,
-    "fire_-18.63_48.33_3717": 59,
-    "fire_-18.86_47.97_1158": 59
+    "fire_-18.60_48.11_1188": 79,
+    "fire_-18.63_48.33_3912": 59,
+    "fire_-18.86_47.97_1179": 59
   },
   "antwerp|koksijde_air_base|truck": {
     "fire_51.17_3.81_7": 18
@@ -1114,405 +994,446 @@
     "fire_51.17_3.81_7": 16
   },
   "arivonimamo_air_base|toamasina|truck": {
-    "fire_-18.59_48.11_1167": 79,
-    "fire_-18.63_48.33_3717": 59,
-    "fire_-18.86_47.97_1158": 59
+    "fire_-18.60_48.11_1188": 59,
+    "fire_-18.63_48.33_3912": 59,
+    "fire_-18.86_47.97_1179": 59
+  },
+  "astrakhan_air_base|budyonnovsk_air_base|truck": {
+    "fire_46.29_48.03_3277": 19
+  },
+  "astrakhan_air_base|kapustin_yar_air_base|truck": {
+    "fire_46.29_48.03_3277": 19
   },
   "astrakhan_air_base|kotelnikovo_air_base|truck": {
-    "fire_47.49_43.56_1044": 78,
-    "fire_47.69_42.97_3154": 19
+    "fire_46.29_48.03_3277": 19,
+    "fire_47.49_43.56_1056": 78,
+    "fire_47.70_42.95_3279": 19
   },
   "astrakhan_air_base|marinovka_air_base|truck": {
-    "fire_48.42_44.66_3155": 59,
-    "fire_48.64_43.94_3156": 40
+    "fire_46.29_48.03_3277": 20,
+    "fire_48.42_44.66_3280": 59,
+    "fire_48.64_43.94_3281": 40
+  },
+  "astrakhan_air_base|mozdok_air_base|truck": {
+    "fire_46.29_48.03_3277": 39
   },
   "asuncion|santa_maria_air_force_base|truck": {
-    "fire_-26.03_-57.12_2471": 39
+    "fire_-26.03_-57.12_2585": 39
   },
   "atlanta|fort_benning|truck": {
-    "fire_32.24_-84.93_3580": 18
+    "fire_32.24_-84.93_3765": 18
   },
   "atlanta|robins_air_force_base|truck": {
-    "fire_32.65_-83.54_2775": 54
+    "fire_32.65_-83.54_2889": 54
   },
   "attock_fort|paf_base_m_m_alam|truck": {
-    "fire_32.87_71.61_2839": 18
+    "fire_32.87_71.61_2954": 18
+  },
+  "auckland|linton_military_camp|truck": {
+    "fire_-37.20_174.72_2364": 38
+  },
+  "auckland|wellington|truck": {
+    "fire_-37.20_174.72_2364": 39
   },
   "augusta_arsenal|marine_corps_recruit_depot_parris_island|truck": {
-    "fire_32.97_-81.88_3582": 20
+    "fire_32.97_-81.88_3767": 20
   },
   "augusta_arsenal|robins_air_force_base|truck": {
-    "fire_32.65_-83.54_2775": 58,
-    "fire_32.98_-82.89_3856": 38,
-    "fire_33.32_-82.40_3583": 58
+    "fire_32.65_-83.54_2889": 58,
+    "fire_32.98_-82.89_4109": 38,
+    "fire_33.32_-82.40_3768": 58
   },
   "australian_marine_complex|henderson_naval_base|truck": {
-    "fire_-32.18_116.09_3121": 2
+    "fire_-32.18_116.09_3244": 2
   },
   "australian_marine_complex|naval_base_perth|truck": {
-    "fire_-32.18_116.09_3121": 21
+    "fire_-32.18_116.09_3244": 21
   },
   "australian_marine_complex|perth|truck": {
-    "fire_-32.18_116.09_3121": 25
+    "fire_-32.18_116.09_3244": 25
   },
   "australian_marine_complex|raaf_base_pearce|truck": {
-    "fire_-32.18_116.09_3121": 20
+    "fire_-32.18_116.09_3244": 20
   },
   "australian_marine_complex|raaf_gingin|truck": {
-    "fire_-32.18_116.09_3121": 19
+    "fire_-32.18_116.09_3244": 19
   },
   "bacchus_marsh_airfield|hmas_cerberus_naval_base|truck": {
-    "fire_-37.83_144.78_2414": 32
+    "fire_-37.83_144.78_2528": 32
   },
   "bacchus_marsh_airfield|hmas_lonsdale_naval_base|truck": {
-    "fire_-37.83_144.78_2414": 29
+    "fire_-37.83_144.78_2528": 29
   },
   "bacchus_marsh_airfield|melbourne|truck": {
-    "fire_-37.83_144.78_2414": 32
+    "fire_-37.83_144.78_2528": 32
   },
   "bacchus_marsh_airfield|raaf_base_east_sale|truck": {
-    "fire_-37.83_144.78_2414": 37
+    "fire_-37.83_144.78_2528": 37
   },
   "bacchus_marsh_airfield|raaf_williams|truck": {
-    "fire_-37.83_144.78_2414": 18
+    "fire_-37.83_144.78_2528": 18
   },
   "bagay_baranovka_air_base|balashov_air_base|truck": {
-    "fire_51.39_43.32_1059": 37,
-    "fire_51.60_43.68_1064": 19,
-    "fire_52.15_45.83_1071": 37
+    "fire_51.39_43.32_1074": 37,
+    "fire_51.61_43.68_1079": 19,
+    "fire_52.15_45.83_1087": 37
   },
   "bagay_baranovka_air_base|lebyazhye_air_base|truck": {
-    "fire_50.62_45.96_1598": 57
+    "fire_50.62_45.96_1637": 57
   },
   "bagay_baranovka_air_base|petrovsk_air_base|truck": {
-    "fire_52.15_45.83_1071": 54
+    "fire_52.15_45.83_1087": 54
+  },
+  "bagay_baranovka_air_base|ulyanovsk_vostochny_airport|truck": {
+    "fire_54.21_48.29_1100": 37
+  },
+  "baggush_box|jabal_hamzah_ballistic_missile_test_and_launch_f|truck": {
+    "fire_30.20_30.03_4180": 19
   },
   "baghdad|kermanshah_airport|truck": {
-    "fire_33.21_44.72_1574": 38
+    "fire_33.21_44.72_1610": 38
   },
   "bahtoo_station|nampong_air_force_base|truck": {
-    "fire_25.12_97.51_811": 40
+    "fire_25.12_97.51_823": 40
   },
   "bahtoo_station|yangon|truck": {
-    "fire_17.83_96.68_796": 60
+    "fire_17.83_96.68_808": 60
   },
   "baikonur|orsk_air_base|truck": {
-    "fire_51.17_58.56_860": 39
+    "fire_51.17_58.56_872": 39
   },
   "bakharevka_airport|kamensk_uralsky_air_base|truck": {
-    "fire_56.87_59.89_877": 39
+    "fire_56.87_59.89_889": 39
   },
   "bakharevka_airport|salka_aerodrome|truck": {
-    "fire_57.94_60.04_879": 20
+    "fire_57.94_60.04_891": 20
   },
   "bakharevka_airport|yekaterinburg|truck": {
-    "fire_56.87_59.89_877": 39
+    "fire_56.87_59.89_889": 39
   },
   "balashov_air_base|borisoglebsk_air_base|truck": {
-    "fire_51.28_42.94_2882": 20,
-    "fire_51.35_42.60_1058": 40,
-    "fire_51.39_43.32_1059": 40
+    "fire_51.28_42.94_2999": 20,
+    "fire_51.35_42.59_1073": 40,
+    "fire_51.39_43.32_1074": 40
   },
   "balashov_air_base|buturlinovka_air_base|truck": {
-    "fire_50.84_40.90_2879": 56,
-    "fire_51.28_42.94_2882": 37,
-    "fire_51.35_42.60_1058": 37,
-    "fire_51.39_43.32_1059": 37
+    "fire_50.84_40.90_2996": 56,
+    "fire_50.98_40.48_2997": 19,
+    "fire_51.28_42.94_2999": 37,
+    "fire_51.35_42.59_1073": 37,
+    "fire_51.39_43.32_1074": 37
   },
   "balashov_air_base|engels|truck": {
-    "fire_51.39_43.32_1059": 37,
-    "fire_51.60_43.68_1064": 18
+    "fire_51.39_43.32_1074": 37,
+    "fire_51.61_43.68_1079": 18
   },
   "balashov_air_base|lebyazhye_air_base|truck": {
-    "fire_50.28_44.65_2877": 60,
-    "fire_51.02_44.44_1056": 40,
-    "fire_51.39_43.32_1059": 40
+    "fire_50.28_44.65_2994": 60,
+    "fire_51.02_44.44_1070": 40,
+    "fire_51.39_43.32_1074": 40
   },
   "balashov_air_base|petrovsk_air_base|truck": {
-    "fire_51.39_43.32_1059": 37,
-    "fire_51.60_43.68_1064": 18
+    "fire_51.39_43.32_1074": 37,
+    "fire_51.61_43.68_1079": 18
   },
   "balashov_air_base|tambov_air_base|truck": {
-    "fire_51.39_43.32_1059": 19
+    "fire_51.39_43.32_1074": 19
   },
   "bamarni_air_base|camp_speicher|truck": {
-    "fire_35.40_43.77_1575": 39,
-    "fire_35.86_43.61_1020": 58,
-    "fire_36.58_43.01_1024": 39,
-    "fire_36.66_43.36_1025": 77
+    "fire_35.40_43.77_1611": 39,
+    "fire_35.86_43.61_1032": 58,
+    "fire_36.58_43.01_1036": 39,
+    "fire_36.66_43.36_1037": 77
   },
   "bamarni_air_base|erbil|truck": {
-    "fire_36.10_43.79_1022": 35,
-    "fire_36.37_43.93_1023": 52,
-    "fire_36.66_43.36_1025": 69
+    "fire_36.10_43.79_1034": 35,
+    "fire_36.37_43.93_1035": 52,
+    "fire_36.66_43.36_1037": 69
   },
   "bamarni_air_base|kharab_al_jir_base|truck": {
-    "fire_36.66_42.39_1576": 58,
-    "fire_36.93_42.19_2885": 58,
-    "fire_37.02_42.59_1578": 58
+    "fire_36.66_42.39_1612": 58,
+    "fire_36.93_42.19_3002": 58,
+    "fire_37.02_42.59_1614": 58
   },
   "bamarni_air_base|mission_support_site_conoco|truck": {
-    "fire_36.58_43.01_1024": 19,
-    "fire_36.66_42.39_1576": 77,
-    "fire_37.02_42.59_1578": 39
+    "fire_36.58_43.01_1036": 19,
+    "fire_36.66_42.39_1612": 77,
+    "fire_37.02_42.59_1614": 39
   },
   "bamarni_air_base|tabriz|truck": {
-    "fire_38.12_45.72_1582": 38
+    "fire_38.12_45.72_1618": 38
   },
   "bamarni_air_base|tikrit_east_air_base|truck": {
-    "fire_34.86_43.94_1017": 37,
-    "fire_35.40_43.77_1575": 56,
-    "fire_35.66_44.01_1019": 37,
-    "fire_35.86_43.61_1020": 56,
-    "fire_36.10_43.79_1022": 37,
-    "fire_36.58_43.01_1024": 37,
-    "fire_36.66_43.36_1025": 75
+    "fire_34.86_43.94_1029": 37,
+    "fire_35.40_43.77_1611": 56,
+    "fire_35.66_44.01_1031": 37,
+    "fire_35.86_43.61_1032": 56,
+    "fire_36.10_43.79_1034": 37,
+    "fire_36.58_43.01_1036": 37,
+    "fire_36.66_43.36_1037": 75
   },
   "ban_me_thuot_east_airfield|tuy_hoa_air_base|truck": {
-    "fire_13.04_109.09_689": 59
+    "fire_13.04_109.09_701": 59
   },
   "ban_me_thuot_east_airfield|tuy_hoa_base_camp|truck": {
-    "fire_13.04_109.09_689": 53
+    "fire_13.04_109.09_701": 53
   },
   "band_rma_airport|foca_naval_base|truck": {
     "fire_38.74_26.94_15": 39
   },
   "bangui|sarh_airport|truck": {
-    "fire_7.30_18.38_2075": 79,
-    "fire_7.43_18.65_2080": 59,
-    "fire_7.55_18.19_2082": 39,
-    "fire_7.80_18.42_2085": 59,
-    "fire_8.21_18.26_2089": 39,
-    "fire_8.60_18.34_2095": 79
+    "fire_7.30_18.38_2160": 79,
+    "fire_7.43_18.65_2165": 59,
+    "fire_7.55_18.19_2167": 39,
+    "fire_7.79_18.41_2172": 59,
+    "fire_8.21_18.26_2176": 39,
+    "fire_8.60_18.34_2183": 79
   },
   "banjul|conakry|truck": {
-    "fire_11.27_-14.25_2281": 78
+    "fire_10.50_-13.45_2376": 39,
+    "fire_11.27_-14.25_2388": 78
   },
   "barcelona|istres_le_tube_air_base|truck": {
     "fire_43.45_4.89_16": 17
   },
+  "barcelona|zaragoza_air_base|truck": {
+    "fire_41.56_0.34_2362": 77
+  },
   "barksdale_air_force_base|grider_field|truck": {
-    "fire_34.19_-91.75_3858": 19
+    "fire_34.19_-91.75_4111": 19
   },
   "barrackpore_air_force_station|kalaikunda_air_force_station|truck": {
-    "fire_22.37_87.29_802": 18
+    "fire_22.37_87.29_814": 18
   },
   "bartolomeu_de_gusmao_airport|belo_horizonte|truck": {
-    "fire_-22.91_-43.75_3053": 20
+    "fire_-22.91_-43.75_3176": 20
   },
   "bartolomeu_de_gusmao_airport|galeao_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 17
+    "fire_-22.91_-43.75_3176": 17
   },
   "bartolomeu_de_gusmao_airport|madeira_island_submarine_base|truck": {
-    "fire_-22.91_-43.75_3053": 13
+    "fire_-22.91_-43.75_3176": 13
   },
   "bartolomeu_de_gusmao_airport|rio_de_janeiro|truck": {
-    "fire_-22.91_-43.75_3053": 19
+    "fire_-22.91_-43.75_3176": 19
   },
   "bartolomeu_de_gusmao_airport|santa_cruz_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 0
+    "fire_-22.91_-43.75_3176": 0
   },
   "bartolomeu_de_gusmao_airport|santos|truck": {
-    "fire_-22.91_-43.75_3053": 28
+    "fire_-22.91_-43.75_3176": 28
   },
   "bartolomeu_de_gusmao_airport|santos_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 28
+    "fire_-22.91_-43.75_3176": 28
   },
   "bartolomeu_de_gusmao_airport|sao_paulo|truck": {
-    "fire_-22.91_-43.75_3053": 28
+    "fire_-22.91_-43.75_3176": 28
   },
   "basra|jalibah_southeast_air_base|truck": {
-    "fire_30.29_47.36_967": 19,
-    "fire_30.43_47.65_969": 38,
-    "fire_30.65_47.30_973": 56
+    "fire_30.29_47.36_979": 19,
+    "fire_30.43_47.65_981": 38,
+    "fire_30.65_47.30_985": 56
   },
   "basra|king_khalid_military_city|truck": {
-    "fire_30.29_47.36_967": 39,
-    "fire_30.43_47.65_969": 39
+    "fire_30.29_47.36_979": 39,
+    "fire_30.43_47.65_981": 39
   },
   "basra|kuwait_city|truck": {
-    "fire_30.43_47.65_969": 36
+    "fire_30.43_47.65_981": 36
   },
   "basra|nasiriyah_airport|truck": {
-    "fire_30.43_47.65_969": 37,
-    "fire_30.65_47.30_973": 75
+    "fire_30.43_47.65_981": 37,
+    "fire_30.65_47.30_985": 75
   },
   "basra|omidiyeh_air_base|truck": {
-    "fire_30.43_47.65_969": 19,
-    "fire_30.76_48.29_975": 38,
-    "fire_30.80_49.58_974": 19
+    "fire_30.43_47.65_981": 19,
+    "fire_30.76_48.29_987": 38,
+    "fire_30.80_49.58_986": 19
   },
   "batchelor_airfield|mungalalu_truscott_airbase|truck": {
-    "fire_-14.71_126.99_3843": 37,
-    "fire_-15.23_129.04_585": 58,
-    "fire_-15.28_127.66_3827": 19
+    "fire_-14.71_126.99_4096": 37,
+    "fire_-15.23_129.04_597": 58,
+    "fire_-15.28_127.66_4078": 19
   },
   "beale_air_force_base|ground_equipment_facility_j_82|truck": {
-    "fire_39.01_-121.59_2811": 19
+    "fire_39.01_-121.59_2925": 19
   },
   "beale_air_force_base|kingsley_field_air_national_guard_base|truck": {
-    "fire_39.01_-121.59_2811": 20
+    "fire_39.01_-121.59_2925": 20
   },
   "beale_air_force_base|naval_air_station_fallon|truck": {
-    "fire_39.01_-121.59_2811": 20
+    "fire_39.01_-121.59_2925": 20
   },
   "beale_air_force_base|point_molate_naval_fuel_depot|truck": {
-    "fire_38.53_-121.91_2810": 39,
-    "fire_39.01_-121.59_2811": 59
+    "fire_38.53_-121.91_2924": 39,
+    "fire_39.01_-121.59_2925": 59
   },
   "beale_air_force_base|riverbank_army_ammunition_plant|truck": {
-    "fire_38.24_-120.85_3237": 55,
-    "fire_39.01_-121.59_2811": 36
+    "fire_38.24_-120.85_3380": 55,
+    "fire_39.01_-121.59_2925": 36
   },
   "beale_air_force_base|sacramento_army_depot|truck": {
-    "fire_39.01_-121.59_2811": 34
+    "fire_39.01_-121.59_2925": 34
   },
   "beale_air_force_base|skaggs_island_naval_communication_station|truck": {
-    "fire_38.53_-121.91_2810": 38,
-    "fire_39.01_-121.59_2811": 57
+    "fire_38.53_-121.91_2924": 38,
+    "fire_39.01_-121.59_2925": 57
   },
   "beale_air_force_base|travis_air_force_base|truck": {
-    "fire_38.53_-121.91_2810": 18,
-    "fire_39.01_-121.59_2811": 53
+    "fire_38.53_-121.91_2924": 18,
+    "fire_39.01_-121.59_2925": 53
   },
   "beijing|jianggezhuang_naval_base|truck": {
-    "fire_36.91_118.79_3664": 10,
-    "fire_38.06_118.12_3091": 82,
-    "fire_38.37_117.68_2650": 52,
-    "fire_38.98_117.44_2655": 65,
-    "fire_39.13_116.73_3094": 18,
-    "fire_39.34_116.91_717": 72
+    "fire_36.91_118.79_3858": 10,
+    "fire_38.06_118.12_3214": 82,
+    "fire_38.37_117.68_2764": 52,
+    "fire_38.98_117.44_2769": 65,
+    "fire_39.13_116.73_3217": 18,
+    "fire_39.34_116.91_729": 72
   },
   "beijing|qingdao|truck": {
-    "fire_38.06_118.12_3091": 79,
-    "fire_38.37_117.68_2650": 59,
-    "fire_38.73_116.95_3092": 40,
-    "fire_38.98_117.44_2655": 59,
-    "fire_39.13_116.73_3094": 59,
-    "fire_39.34_116.91_717": 79
+    "fire_38.06_118.12_3214": 79,
+    "fire_38.37_117.68_2764": 59,
+    "fire_38.73_116.95_3215": 40,
+    "fire_38.98_117.44_2769": 59,
+    "fire_39.13_116.73_3217": 59,
+    "fire_39.34_116.91_729": 79
   },
   "beijing|tianjin|truck": {
-    "fire_39.13_116.73_3094": 18,
-    "fire_39.34_116.91_717": 73
+    "fire_39.13_116.73_3217": 18,
+    "fire_39.34_116.91_729": 73
   },
   "beijing|xinzhou_wutaishan_airport|truck": {
-    "fire_38.41_112.91_2648": 19,
-    "fire_38.60_113.01_3093": 39
+    "fire_38.41_112.91_2762": 19,
+    "fire_38.60_113.01_3216": 39
   },
   "beijing|zhangjiakou_ningyuan_airport|truck": {
-    "fire_40.45_115.17_3101": 58
+    "fire_40.45_115.17_3224": 58
   },
   "beijing|zhengzhou|truck": {
-    "fire_36.21_114.12_2640": 39
+    "fire_36.21_114.12_2754": 39
   },
   "belmopan|ciudad_pemex_air_force_base|truck": {
-    "fire_17.89_-92.49_935": 20
+    "fire_17.89_-92.49_947": 20
   },
   "belo_horizonte|madeira_island_submarine_base|truck": {
-    "fire_-22.91_-43.75_3053": 20
+    "fire_-22.91_-43.75_3176": 20
   },
   "belo_horizonte|santa_cruz_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 20
+    "fire_-22.91_-43.75_3176": 20
   },
   "ben_guerir_air_base|casablanca|truck": {
-    "fire_33.51_-7.45_158": 36
+    "fire_33.49_-7.49_161": 36
   },
   "ben_guerir_air_base|kenitra_air_base|truck": {
-    "fire_33.51_-7.45_158": 39
+    "fire_33.49_-7.49_161": 19
   },
   "ben_guerir_air_base|rabat|truck": {
-    "fire_33.51_-7.45_158": 39
+    "fire_33.49_-7.49_161": 39
   },
   "ben_het_camp|chu_lai_base_area|truck": {
-    "fire_15.14_108.53_693": 40,
-    "fire_15.33_108.76_694": 20
+    "fire_15.14_108.53_705": 40,
+    "fire_15.33_108.76_706": 20
   },
   "beni_suef_air_base|cairo|truck": {
-    "fire_29.80_31.30_2892": 57
+    "fire_29.80_31.30_3009": 57
   },
   "beni_suef_air_base|helwan_airfield|truck": {
-    "fire_29.80_31.30_2892": 37
+    "fire_29.80_31.30_3009": 37
   },
   "beni_suef_air_base|kibrit_air_base|truck": {
-    "fire_29.75_32.25_2931": 37
+    "fire_29.75_32.25_3050": 37
   },
   "berga_naval_base|karlskrona_naval_base|truck": {
     "fire_58.68_17.13_14": 19
   },
   "biddle_air_national_guard_base|fort_tompkins_plattsburgh_new_york|truck": {
-    "fire_40.61_-74.22_746": 34
+    "fire_40.61_-74.22_758": 34
   },
   "bishkek|kambala_air_base|truck": {
-    "fire_43.21_74.49_852": 76
+    "fire_43.21_74.49_864": 76
   },
   "bishkek|kant_air_base|truck": {
-    "fire_43.02_74.96_2830": 10
+    "fire_43.02_74.96_2944": 10
   },
   "bishkek|khorgos|truck": {
-    "fire_43.02_74.96_2830": 39,
-    "fire_43.63_77.30_853": 39
+    "fire_43.02_74.96_2944": 39,
+    "fire_43.63_77.30_865": 39
   },
   "bishkek|usharal_airport|truck": {
-    "fire_43.02_74.96_2830": 40
+    "fire_43.02_74.96_2944": 40
   },
   "blackhorse_base_camp|phan_rang_air_base|truck": {
-    "fire_10.82_107.59_688": 57
+    "fire_10.82_107.59_700": 57
   },
   "blue_grass_army_depot|fort_st_clair|truck": {
-    "fire_38.82_-84.25_917": 58
+    "fire_38.82_-84.25_929": 58
   },
   "blue_grass_army_depot|wilmington_air_park|truck": {
-    "fire_38.82_-84.25_917": 40
+    "fire_38.82_-84.25_929": 40
   },
   "bobrovka_air_base|chebenki_air_base|truck": {
-    "fire_52.23_54.10_1072": 39,
-    "fire_52.35_53.66_1073": 39,
-    "fire_53.19_51.00_2867": 20
+    "fire_52.23_54.10_1089": 39,
+    "fire_52.34_53.66_1091": 39,
+    "fire_52.62_52.40_1093": 59,
+    "fire_53.19_51.00_2982": 20
   },
   "bobrovka_air_base|orenburg_air_base|truck": {
-    "fire_51.61_55.17_1062": 20,
-    "fire_51.87_54.72_1067": 59,
-    "fire_52.35_53.66_1073": 39,
-    "fire_52.56_51.78_3614": 20
+    "fire_51.61_55.17_1077": 20,
+    "fire_51.87_54.72_1083": 59,
+    "fire_52.34_53.66_1091": 39,
+    "fire_52.56_51.78_3800": 20,
+    "fire_52.62_52.40_1093": 59
   },
   "bobrovka_air_base|orsk_air_base|truck": {
-    "fire_51.17_58.56_860": 20,
-    "fire_52.23_54.10_1072": 40,
-    "fire_52.35_53.66_1073": 40,
-    "fire_53.19_51.00_2867": 20
+    "fire_51.17_58.56_872": 20,
+    "fire_52.23_54.10_1089": 40,
+    "fire_52.34_53.66_1091": 40,
+    "fire_52.62_52.40_1093": 60,
+    "fire_53.19_51.00_2982": 20
   },
   "borisoglebsk_air_base|buturlinovka_air_base|truck": {
-    "fire_50.84_40.90_2879": 55
+    "fire_50.84_40.90_2996": 55,
+    "fire_50.98_40.48_2997": 18,
+    "fire_51.16_41.11_2998": 36
   },
   "borisoglebsk_air_base|lipetsk_air_base|truck": {
-    "fire_51.54_41.22_3235": 20,
-    "fire_51.77_40.78_2883": 59,
-    "fire_51.90_41.29_1070": 59,
-    "fire_52.03_40.41_1601": 39,
+    "fire_51.55_41.18_3377": 20,
+    "fire_51.77_40.78_3000": 59,
+    "fire_51.89_41.29_1086": 59,
+    "fire_52.03_40.41_1641": 39,
+    "fire_52.17_40.96_1642": 39,
     "fire_52.55_39.62_10": 59
   },
   "borisoglebsk_air_base|michurinsk_air_base|truck": {
-    "fire_51.90_41.29_1070": 58,
-    "fire_52.18_41.02_1602": 39,
-    "fire_52.63_41.01_1074": 19
+    "fire_51.89_41.29_1086": 58,
+    "fire_52.17_40.96_1642": 39,
+    "fire_52.57_41.01_1092": 39
   },
   "borisoglebsk_air_base|petrovsk_air_base|truck": {
-    "fire_51.35_42.60_1058": 37,
-    "fire_51.39_43.32_1059": 37
+    "fire_51.35_42.59_1073": 37,
+    "fire_51.39_43.32_1074": 37
+  },
+  "borisoglebsk_air_base|tambov_air_base|truck": {
+    "fire_52.57_41.01_1092": 20
   },
   "borisoglebsk_air_base|voronezh_malshevo_air_base|truck": {
-    "fire_51.54_41.22_3235": 58,
-    "fire_51.64_39.90_1063": 58,
-    "fire_51.77_40.78_2883": 39
+    "fire_51.55_41.18_3377": 58,
+    "fire_51.64_39.92_1078": 58,
+    "fire_51.74_40.17_1081": 19,
+    "fire_51.77_40.78_3000": 39
+  },
+  "borizzo_airfield|gioia_tauro|truck": {
+    "fire_37.65_13.72_3619": 38
   },
   "borizzo_airfield|naval_air_station_sigonella|truck": {
-    "fire_37.61_13.67_3436": 79
+    "fire_37.65_13.72_3619": 99
   },
   "boufarik_airport|bousfer_air_base|truck": {
     "fire_35.80_-0.25_29": 34
   },
   "boufarik_airport|oran_tafraoui_airport|truck": {
-    "fire_35.50_-0.33_154": 19,
+    "fire_35.50_-0.33_157": 19,
     "fire_36.13_1.24_30": 38
   },
   "boufarik_airport|oum_el_bouaghi_airport|truck": {
@@ -1522,689 +1443,713 @@
     "fire_36.68_3.10_33": 40
   },
   "brazzaville|kitona_air_base|truck": {
-    "fire_-4.34_14.99_2050": 60,
-    "fire_-5.13_13.62_2019": 80,
-    "fire_-5.27_14.07_2020": 60,
-    "fire_-5.49_13.34_2014": 60,
-    "fire_-5.74_12.62_2013": 40
+    "fire_-4.34_14.99_2132": 60,
+    "fire_-5.13_13.62_2100": 80,
+    "fire_-5.27_14.07_2101": 60,
+    "fire_-5.49_13.34_2095": 60,
+    "fire_-5.74_12.62_2094": 40
   },
   "brazzaville|luanda|truck": {
-    "fire_-4.34_14.99_2050": 20,
-    "fire_-4.81_15.40_2023": 40,
-    "fire_-7.39_14.48_2005": 38,
-    "fire_-8.35_13.87_2002": 57,
-    "fire_-8.55_13.44_2000": 38
+    "fire_-4.34_14.99_2132": 20,
+    "fire_-4.81_15.40_2104": 40,
+    "fire_-7.39_14.48_2085": 38,
+    "fire_-8.34_13.87_2082": 57,
+    "fire_-8.53_13.43_2080": 38
   },
   "bremerhaven|diepholz_air_base|truck": {
     "fire_53.13_8.68_19": 18
   },
   "brisbane|bundaberg_airport|truck": {
-    "fire_-25.75_152.24_195": 20
+    "fire_-25.58_152.77_3650": 39,
+    "fire_-25.75_152.24_199": 39
   },
   "buenos_aires|rosario|truck": {
-    "fire_-33.33_-60.21_2461": 40
+    "fire_-33.33_-60.21_2575": 40
   },
   "bujumbura|kampala|truck": {
-    "fire_0.13_32.47_3754": 20
+    "fire_0.13_32.47_3969": 20
   },
   "bujumbura|rumangabo|truck": {
-    "fire_-1.40_29.20_2894": 37
+    "fire_-1.40_29.20_3011": 37
   },
   "bundaberg_airport|cecil_plains_airfield|truck": {
-    "fire_-25.43_151.87_197": 57,
-    "fire_-25.70_151.88_192": 57,
-    "fire_-25.75_152.24_195": 57,
-    "fire_-26.10_151.85_2950": 95,
-    "fire_-26.11_151.49_2948": 76,
-    "fire_-26.31_151.31_3871": 19
+    "fire_-25.43_151.87_201": 57,
+    "fire_-25.70_151.88_196": 57,
+    "fire_-25.75_152.24_199": 57,
+    "fire_-26.09_151.85_3070": 76,
+    "fire_-26.11_151.49_3068": 76,
+    "fire_-26.31_151.31_4128": 19,
+    "fire_-26.82_151.41_3065": 38
   },
   "bundaberg_airport|gailes_airfield|truck": {
-    "fire_-25.75_152.24_195": 59,
-    "fire_-26.69_152.22_2946": 39
+    "fire_-25.75_152.24_199": 59,
+    "fire_-26.34_152.20_3067": 20,
+    "fire_-26.69_152.22_3066": 39
   },
   "bundaberg_airport|hmas_moreton|truck": {
-    "fire_-25.75_152.24_195": 20
+    "fire_-25.58_152.77_3650": 39,
+    "fire_-25.75_152.24_199": 20
   },
   "bundaberg_airport|oakey_army_aviation_centre|truck": {
-    "fire_-25.43_151.87_197": 57,
-    "fire_-25.70_151.88_192": 38,
-    "fire_-25.75_152.24_195": 76,
-    "fire_-26.10_151.85_2950": 76,
-    "fire_-26.34_152.21_2947": 19,
-    "fire_-26.69_152.22_2946": 19,
-    "fire_-26.70_151.94_190": 57
+    "fire_-25.43_151.87_201": 57,
+    "fire_-25.70_151.88_196": 38,
+    "fire_-25.75_152.24_199": 76,
+    "fire_-26.09_151.85_3070": 76,
+    "fire_-26.34_152.20_3067": 38,
+    "fire_-26.69_151.94_194": 57,
+    "fire_-26.69_152.22_3066": 19
   },
   "bundaberg_airport|raaf_base_amberley|truck": {
-    "fire_-25.75_152.24_195": 58
+    "fire_-25.75_152.24_199": 58
   },
   "busan_naval_base|camp_carroll_south_korea|truck": {
-    "fire_35.09_128.94_2430": 20
+    "fire_35.09_128.94_2544": 20
   },
   "busan_naval_base|commander_fleet_activities_chinhae|truck": {
-    "fire_35.09_128.94_2430": 29
+    "fire_35.09_128.94_2544": 29
   },
   "busan_naval_base|gimhae_air_base|truck": {
-    "fire_35.09_128.94_2430": 18
+    "fire_35.09_128.94_2544": 18
   },
   "busan_naval_base|jungwon_air_base|truck": {
-    "fire_35.09_128.94_2430": 19
+    "fire_35.09_128.94_2544": 19
   },
   "busan_naval_base|yecheon_air_base|truck": {
-    "fire_35.09_128.94_2430": 18
+    "fire_35.09_128.94_2544": 18
   },
   "busan|busan_naval_base|truck": {
-    "fire_35.09_128.94_2430": 6
+    "fire_35.09_128.94_2544": 6
   },
   "busan|camp_carroll_south_korea|truck": {
-    "fire_35.09_128.94_2430": 19
+    "fire_35.09_128.94_2544": 19
   },
   "busan|commander_fleet_activities_chinhae|truck": {
-    "fire_35.09_128.94_2430": 37
+    "fire_35.09_128.94_2544": 37
   },
   "busan|gimhae_air_base|truck": {
-    "fire_35.09_128.94_2430": 13
+    "fire_35.09_128.94_2544": 13
   },
   "busan|jungwon_air_base|truck": {
-    "fire_35.09_128.94_2430": 20
+    "fire_35.09_128.94_2544": 20
   },
   "busan|mokpo_air_base|truck": {
-    "fire_35.09_128.94_2430": 38
+    "fire_35.09_128.94_2544": 38
   },
   "busan|yecheon_air_base|truck": {
-    "fire_35.09_128.94_2430": 18
+    "fire_35.09_128.94_2544": 18
   },
   "buturlinovka_air_base|lipetsk_air_base|truck": {
-    "fire_50.84_40.90_2879": 18,
-    "fire_51.00_40.45_2880": 18,
-    "fire_51.64_39.90_1063": 55,
+    "fire_50.84_40.90_2996": 18,
+    "fire_50.98_40.48_2997": 55,
+    "fire_51.27_40.66_1072": 18,
+    "fire_51.64_39.92_1078": 55,
+    "fire_51.74_40.17_1081": 37,
     "fire_52.55_39.62_10": 55
   },
   "buturlinovka_air_base|millerovo_air_base|truck": {
-    "fire_49.68_40.68_1050": 19,
-    "fire_49.89_40.15_1595": 93
+    "fire_49.68_40.68_1063": 19,
+    "fire_49.91_40.15_1633": 93,
+    "fire_50.40_40.41_3373": 19
   },
   "buturlinovka_air_base|tambov_air_base|truck": {
-    "fire_50.84_40.90_2879": 20,
-    "fire_51.54_41.22_3235": 20,
-    "fire_51.77_40.78_2883": 60,
-    "fire_51.90_41.29_1070": 60,
-    "fire_52.18_41.02_1602": 40,
-    "fire_52.63_41.01_1074": 20
+    "fire_50.84_40.90_2996": 20,
+    "fire_50.98_40.48_2997": 40,
+    "fire_51.16_41.11_2998": 20,
+    "fire_51.27_40.66_1072": 60,
+    "fire_51.55_41.18_3377": 40,
+    "fire_51.77_40.78_3000": 60,
+    "fire_51.89_41.29_1086": 60,
+    "fire_52.17_40.96_1642": 40,
+    "fire_52.57_41.01_1092": 40
   },
   "buturlinovka_air_base|voronezh_malshevo_air_base|truck": {
-    "fire_51.00_40.45_2880": 20,
-    "fire_51.11_39.64_1057": 60
+    "fire_50.98_40.48_2997": 40,
+    "fire_51.11_39.64_1071": 60
   },
   "cairo|helwan_airfield|truck": {
-    "fire_29.80_31.30_2892": 26
+    "fire_29.80_31.30_3009": 26
   },
   "cairo|jabal_hamzah_ballistic_missile_test_and_launch_f|truck": {
-    "fire_29.80_31.30_2892": 15
+    "fire_29.80_31.30_3009": 15
   },
   "cairo|kibrit_air_base|truck": {
-    "fire_29.80_31.30_2892": 17
+    "fire_29.80_31.30_3009": 17
   },
   "cam_ranh_base|qui_nhon_airfield|truck": {
-    "fire_13.04_109.09_689": 40,
-    "fire_13.43_109.09_691": 40
+    "fire_13.04_109.09_701": 40,
+    "fire_13.43_109.09_703": 40
   },
   "cam_ranh_base|tuy_hoa_air_base|truck": {
-    "fire_13.04_109.09_689": 30
+    "fire_13.04_109.09_701": 30
   },
   "cam_ranh_base|tuy_hoa_base_camp|truck": {
-    "fire_13.04_109.09_689": 18
+    "fire_13.04_109.09_701": 18
   },
   "camp_anza|los_angeles_air_force_base|truck": {
-    "fire_34.08_-118.01_1092": 34
+    "fire_34.08_-118.01_1113": 34
   },
   "camp_anza|marine_corps_logistics_base_barstow|truck": {
-    "fire_34.61_-117.25_1093": 40
+    "fire_34.61_-117.25_1114": 40
   },
   "camp_asaka|jmsdf_tateyama_air_base|truck": {
-    "fire_35.37_139.85_3466": 52,
+    "fire_35.37_139.85_3651": 52,
     "quake_us7000ttpe": 17
   },
   "camp_asaka|kisarazu_air_field|truck": {
-    "fire_35.37_139.85_3466": 35
+    "fire_35.37_139.85_3651": 35
   },
   "camp_asaka|narita|truck": {
     "quake_us7000ttpe": 36
   },
   "camp_asaka|yokohama|truck": {
-    "fire_35.37_139.85_3466": 19
+    "fire_35.37_139.85_3651": 19
   },
   "camp_asaka|yokosuka|truck": {
-    "fire_35.37_139.85_3466": 37
+    "fire_35.37_139.85_3651": 37
   },
   "camp_beauregard|naval_support_activity_new_orleans|truck": {
-    "fire_30.00_-90.49_919": 55
+    "fire_30.00_-90.49_931": 55
   },
   "camp_carroll_south_korea|gimhae_air_base|truck": {
-    "fire_35.09_128.94_2430": 17
+    "fire_35.09_128.94_2544": 17
   },
   "camp_castor|ouagadougou|truck": {
-    "fire_13.33_-0.97_114": 38,
-    "fire_14.03_-0.55_118": 38,
-    "fire_14.42_-0.55_2397": 38,
-    "fire_14.48_-0.82_123": 19
+    "fire_13.32_-0.97_114": 19,
+    "fire_14.03_-0.55_119": 38,
+    "fire_14.42_-0.55_2508": 38,
+    "fire_14.48_-0.82_125": 19
   },
   "camp_grayling|detroit|truck": {
-    "fire_42.28_-83.12_897": 20
+    "fire_42.28_-83.12_909": 20
   },
   "camp_humphreys|seosan_air_base|truck": {
-    "fire_36.98_126.69_2644": 19
+    "fire_36.98_126.69_2758": 19
   },
   "camp_kilmer|fort_hamilton|truck": {
-    "fire_40.61_-74.22_746": 36
+    "fire_40.61_-74.22_758": 36
   },
   "camp_kilmer|fort_tompkins_plattsburgh_new_york|truck": {
-    "fire_40.61_-74.22_746": 34
+    "fire_40.61_-74.22_758": 34
   },
   "camp_kilmer|lakehurst_maxfield_field|truck": {
-    "fire_40.61_-74.22_746": 18
+    "fire_40.61_-74.22_758": 18
   },
   "camp_kilmer|military_ocean_terminal_at_bayonne|truck": {
-    "fire_40.61_-74.22_746": 36
+    "fire_40.61_-74.22_758": 36
   },
   "camp_kilmer|naval_station_new_york|truck": {
-    "fire_40.61_-74.22_746": 34
+    "fire_40.61_-74.22_758": 34
   },
   "camp_kilmer|new_york|truck": {
-    "fire_40.61_-74.22_746": 43
+    "fire_40.61_-74.22_758": 43
   },
   "camp_kilmer|scranton_army_ammunition_plant|truck": {
-    "fire_40.61_-74.22_746": 18
+    "fire_40.61_-74.22_758": 18
   },
   "camp_kilmer|tobyhanna_army_depot|truck": {
-    "fire_40.61_-74.22_746": 19
+    "fire_40.61_-74.22_758": 19
   },
   "camp_millard|detroit|truck": {
-    "fire_41.21_-83.23_892": 57,
-    "fire_42.28_-83.12_897": 19
+    "fire_41.21_-83.23_904": 57,
+    "fire_42.28_-83.12_909": 19
   },
   "camp_mills|fort_hamilton|truck": {
-    "fire_40.61_-74.22_746": 19
+    "fire_40.61_-74.22_758": 19
   },
   "camp_mills|fort_tompkins_plattsburgh_new_york|truck": {
-    "fire_40.61_-74.22_746": 20
+    "fire_40.61_-74.22_758": 20
   },
   "camp_mills|military_ocean_terminal_at_bayonne|truck": {
-    "fire_40.61_-74.22_746": 20
+    "fire_40.61_-74.22_758": 20
   },
   "camp_mills|naval_station_new_york|truck": {
-    "fire_40.61_-74.22_746": 13
+    "fire_40.61_-74.22_758": 13
   },
   "camp_peary|fort_lee_military_base|truck": {
-    "fire_37.15_-77.40_911": 20
+    "fire_37.15_-77.40_923": 20
   },
   "camp_radcliff|tuy_hoa_air_base|truck": {
-    "fire_13.04_109.09_689": 37,
-    "fire_13.43_109.09_691": 55
+    "fire_13.04_109.09_701": 37,
+    "fire_13.43_109.09_703": 55
   },
   "camp_radcliff|tuy_hoa_base_camp|truck": {
-    "fire_13.04_109.09_689": 39,
-    "fire_13.43_109.09_691": 59
+    "fire_13.04_109.09_701": 39,
+    "fire_13.43_109.09_703": 59
   },
   "camp_shanks|fort_hamilton|truck": {
-    "fire_40.61_-74.22_746": 16
+    "fire_40.61_-74.22_758": 16
   },
   "camp_shanks|fort_tompkins_plattsburgh_new_york|truck": {
-    "fire_40.61_-74.22_746": 16
+    "fire_40.61_-74.22_758": 16
   },
   "camp_shanks|military_ocean_terminal_at_bayonne|truck": {
-    "fire_40.61_-74.22_746": 14
+    "fire_40.61_-74.22_758": 14
   },
   "camp_shanks|naval_station_new_york|truck": {
-    "fire_40.61_-74.22_746": 15
+    "fire_40.61_-74.22_758": 15
   },
   "camp_shelby|fort_pierce_alabama|truck": {
-    "fire_30.92_-88.03_923": 38,
-    "fire_31.16_-87.99_925": 56
+    "fire_30.92_-88.03_935": 38,
+    "fire_31.16_-87.99_937": 56
   },
   "camp_shelby|fort_stonewall|truck": {
-    "fire_31.16_-87.99_925": 59
+    "fire_31.16_-87.99_937": 59
   },
   "camp_smith_new_york|fort_tompkins_plattsburgh_new_york|truck": {
-    "fire_40.61_-74.22_746": 19
+    "fire_40.61_-74.22_758": 19
   },
   "camp_smith_new_york|military_ocean_terminal_at_bayonne|truck": {
-    "fire_40.61_-74.22_746": 18
+    "fire_40.61_-74.22_758": 18
   },
   "camp_smith_new_york|naval_station_new_york|truck": {
-    "fire_40.61_-74.22_746": 19
+    "fire_40.61_-74.22_758": 19
   },
   "camp_speicher|erbil|truck": {
-    "fire_35.40_43.77_1575": 77,
-    "fire_35.66_44.01_1019": 77,
-    "fire_35.86_43.61_1020": 38,
-    "fire_35.93_44.20_1021": 38,
-    "fire_36.10_43.79_1022": 38,
-    "fire_36.37_43.93_1023": 19
+    "fire_35.40_43.77_1611": 77,
+    "fire_35.66_44.01_1031": 77,
+    "fire_35.86_43.61_1032": 38,
+    "fire_35.93_44.20_1033": 38,
+    "fire_36.10_43.79_1034": 38,
+    "fire_36.37_43.93_1035": 19
   },
   "camp_speicher|kermanshah_airport|truck": {
-    "fire_34.86_43.94_1017": 20
+    "fire_34.86_43.94_1029": 20
   },
   "camp_speicher|kharab_al_jir_base|truck": {
-    "fire_36.66_42.39_1576": 76,
-    "fire_36.93_42.19_2885": 38
+    "fire_36.66_42.39_1612": 76,
+    "fire_36.93_42.19_3002": 38
   },
   "camp_taji|erbil|truck": {
-    "fire_34.86_43.94_1017": 59,
-    "fire_35.40_43.77_1575": 40,
-    "fire_35.44_44.30_1018": 59,
-    "fire_35.66_44.01_1019": 79,
-    "fire_35.93_44.20_1021": 59,
-    "fire_36.10_43.79_1022": 40
+    "fire_34.86_43.94_1029": 59,
+    "fire_35.40_43.77_1611": 40,
+    "fire_35.44_44.30_1030": 59,
+    "fire_35.66_44.01_1031": 79,
+    "fire_35.93_44.20_1033": 59,
+    "fire_36.10_43.79_1034": 40
   },
   "camp_withycombe|cape_disappointment_state_park|truck": {
-    "fire_46.01_-123.52_3599": 76
+    "fire_46.01_-123.52_3784": 76
   },
   "camp_withycombe|coast_guard_station_cape_disappointment|truck": {
-    "fire_46.01_-123.52_3599": 56
+    "fire_46.01_-123.52_3784": 56
   },
   "camp_withycombe|naval_air_station_tillamook|truck": {
-    "fire_45.43_-123.81_2816": 20
+    "fire_45.43_-123.81_2930": 20
   },
   "camp_withycombe|north_bend_air_force_station|truck": {
-    "fire_44.51_-123.44_3597": 57
+    "fire_44.51_-123.44_3782": 57
   },
   "campo_de_mayo_airport|rosario|truck": {
-    "fire_-33.33_-60.21_2461": 39
+    "fire_-33.33_-60.21_2575": 39
   },
   "canberra|raaf_williams|truck": {
-    "fire_-37.83_144.78_2414": 20
+    "fire_-37.83_144.78_2528": 20
   },
   "cape_disappointment_state_park|naval_air_station_tillamook|truck": {
-    "fire_45.43_-123.81_2816": 40,
-    "fire_46.01_-123.52_3599": 78
+    "fire_45.43_-123.81_2930": 40,
+    "fire_46.01_-123.52_3784": 78
   },
   "cape_disappointment_state_park|portland_or|truck": {
-    "fire_46.01_-123.52_3599": 59
+    "fire_46.01_-123.52_3784": 59
   },
   "captain_ernesto_esguerra_cubides_air_base|guayaquil|truck": {
-    "fire_-0.13_-76.68_773": 59,
-    "fire_0.56_-75.32_3569": 39
+    "fire_-0.13_-76.68_785": 59,
+    "fire_0.56_-75.32_3754": 39
   },
   "captain_ernesto_esguerra_cubides_air_base|la_macarena_airport|truck": {
-    "fire_1.79_-74.05_3570": 57
+    "fire_1.79_-74.05_3755": 57
   },
   "captain_ernesto_esguerra_cubides_air_base|lieutenant_bergerie_airport|truck": {
-    "fire_-3.74_-73.36_3567": 39,
-    "fire_0.56_-75.32_3569": 39
+    "fire_-3.74_-73.36_3752": 39,
+    "fire_0.56_-75.32_3754": 39
   },
   "captain_ernesto_esguerra_cubides_air_base|quito|truck": {
-    "fire_0.29_-76.80_2738": 79,
-    "fire_0.56_-75.32_3569": 39,
-    "fire_0.64_-76.47_3568": 39,
-    "fire_0.74_-75.78_2739": 39
+    "fire_0.29_-76.80_2852": 79,
+    "fire_0.56_-75.32_3754": 39,
+    "fire_0.64_-76.47_3753": 39,
+    "fire_0.74_-75.78_2853": 39
   },
   "captain_ernesto_esguerra_cubides_air_base|taura_air_base|truck": {
-    "fire_-0.13_-76.68_773": 60,
-    "fire_0.56_-75.32_3569": 40
+    "fire_-0.13_-76.68_785": 60,
+    "fire_0.56_-75.32_3754": 40
   },
   "casablanca|fes|truck": {
-    "fire_33.51_-7.45_158": 38
+    "fire_33.49_-7.49_161": 38
   },
   "casablanca|kenitra_air_base|truck": {
-    "fire_33.51_-7.45_158": 33
+    "fire_33.49_-7.49_161": 33
   },
   "casablanca|marrakesh|truck": {
-    "fire_33.51_-7.45_158": 40
+    "fire_33.49_-7.49_161": 40
   },
   "casablanca|rabat|truck": {
-    "fire_33.51_-7.45_158": 39
+    "fire_33.49_-7.49_161": 39
   },
   "casablanca|sidi_slimane_air_base|truck": {
-    "fire_33.51_-7.45_158": 40
+    "fire_33.49_-7.49_161": 40
   },
   "casablanca|tanger_med|truck": {
-    "fire_33.51_-7.45_158": 33
+    "fire_33.49_-7.49_161": 33
   },
   "casablanca|united_states_naval_communications_station_sidi_|truck": {
-    "fire_33.51_-7.45_158": 36
+    "fire_33.49_-7.49_161": 36
   },
   "cfb_gagetown|cfb_moncton|truck": {
-    "fire_45.75_-66.26_3839": 19
+    "fire_45.75_-66.26_4092": 19
   },
   "cfb_gagetown|nato_satellite_ground_terminal_folly_lake|truck": {
-    "fire_45.75_-66.26_3839": 19
+    "fire_45.75_-66.26_4092": 19
   },
   "cfb_london|fort_denonville|truck": {
-    "fire_43.08_-80.87_899": 20,
-    "fire_43.30_-79.78_900": 79
+    "fire_43.08_-80.87_911": 20,
+    "fire_43.30_-79.78_912": 79
   },
   "cfb_london|lake_ontario_ordnance_works|truck": {
-    "fire_43.08_-80.87_899": 18,
-    "fire_43.30_-79.78_900": 55
+    "fire_43.08_-80.87_911": 18,
+    "fire_43.30_-79.78_912": 55
   },
   "cfb_london|toronto|truck": {
-    "fire_43.08_-80.87_899": 18,
-    "fire_43.30_-79.78_900": 55
+    "fire_43.08_-80.87_911": 18,
+    "fire_43.30_-79.78_912": 55
   },
   "charbatia_air_base|kalaikunda_air_force_station|truck": {
-    "fire_20.96_86.03_799": 19
+    "fire_20.96_86.03_811": 19
   },
   "charlotte|fort_bragg|truck": {
-    "fire_35.10_-79.73_2785": 56
+    "fire_35.10_-79.73_2899": 56
   },
   "charlotte|pope_field|truck": {
-    "fire_35.10_-79.73_2785": 55
+    "fire_35.10_-79.73_2899": 55
   },
   "chebenki_air_base|orenburg_air_base|truck": {
-    "fire_51.61_55.17_1062": 31
+    "fire_51.61_55.17_1077": 31
   },
   "chebenki_air_base|orsk_air_base|truck": {
-    "fire_51.17_58.56_860": 19
+    "fire_51.17_58.56_872": 19
   },
   "chebenki_air_base|pugachyov_air_base|truck": {
-    "fire_51.87_54.72_1067": 39,
-    "fire_51.95_51.28_1068": 39,
-    "fire_52.15_51.79_2865": 39
+    "fire_51.87_54.72_1083": 39,
+    "fire_51.95_51.28_1084": 39,
+    "fire_52.15_51.79_2980": 39
   },
   "chebenki_air_base|uprun_air_base|truck": {
-    "fire_53.45_59.03_868": 59,
-    "fire_53.87_60.00_1077": 98
+    "fire_53.45_59.03_880": 59,
+    "fire_53.88_60.00_1096": 98
   },
   "chernigovka_air_base|harbin|truck": {
-    "fire_45.37_128.13_347": 98,
-    "fire_45.65_126.92_350": 59,
-    "fire_45.71_128.06_352": 20,
-    "fire_45.81_127.49_353": 39,
-    "fire_46.17_126.61_355": 20
+    "fire_45.37_128.13_359": 98,
+    "fire_45.65_126.92_362": 59,
+    "fire_45.71_128.06_364": 20,
+    "fire_45.81_127.49_365": 39,
+    "fire_46.17_126.61_367": 20
   },
   "chernigovka_air_base|jilin_ertaizi_airport|truck": {
-    "fire_44.08_126.42_739": 39,
-    "fire_44.25_129.06_3007": 79,
-    "fire_44.33_131.58_3008": 39,
-    "fire_44.38_127.20_741": 20
+    "fire_44.08_126.42_751": 39,
+    "fire_44.25_129.06_3130": 79,
+    "fire_44.33_131.58_3131": 39,
+    "fire_44.38_127.20_753": 20
   },
   "chiang_kham_airport|takhli_royal_thai_air_force_base|truck": {
-    "fire_17.25_100.04_3126": 39
+    "fire_17.25_100.04_3249": 39
   },
   "chiang_kham_airport|yangon|truck": {
-    "fire_16.79_96.64_795": 39,
-    "fire_17.02_96.52_3125": 20
+    "fire_16.79_96.64_807": 39,
+    "fire_17.02_96.52_3248": 20
   },
   "chiang_mai|takhli_royal_thai_air_force_base|truck": {
-    "fire_17.11_99.57_2803": 79
+    "fire_17.11_99.57_2917": 79
   },
   "chiang_mai|yangon|truck": {
-    "fire_16.79_96.64_795": 39,
-    "fire_17.02_96.52_3125": 20
+    "fire_16.79_96.64_807": 39,
+    "fire_17.02_96.52_3248": 20
   },
   "chicago|newport_chemical_depot|truck": {
-    "fire_41.64_-87.32_896": 57
+    "fire_41.64_-87.32_908": 57
   },
   "chicago|sangamon_ordnance_plant|truck": {
-    "fire_41.64_-87.32_896": 19
+    "fire_41.64_-87.32_908": 19
   },
   "china_maritime_satellite_telemetry_and_control_d|jianggezhuang_naval_base|truck": {
-    "fire_31.82_120.07_3550": 18,
-    "fire_34.46_119.62_3545": 40,
-    "fire_34.57_119.35_3662": 40,
-    "fire_34.74_119.07_3663": 20,
-    "fire_35.16_119.09_3089": 62
+    "fire_31.82_120.07_3735": 18,
+    "fire_34.46_119.62_3730": 40,
+    "fire_34.57_119.35_3856": 40,
+    "fire_34.74_119.07_3857": 20,
+    "fire_35.16_119.09_3212": 62
   },
   "china_maritime_satellite_telemetry_and_control_d|jiaxing_nanhu_airport|truck": {
-    "fire_31.82_120.07_3550": 35
+    "fire_31.82_120.07_3735": 35
   },
   "china_maritime_satellite_telemetry_and_control_d|nanjing|truck": {
-    "fire_31.82_120.07_3550": 40
+    "fire_31.82_120.07_3735": 40
   },
   "china_maritime_satellite_telemetry_and_control_d|ningbo|truck": {
-    "fire_31.82_120.07_3550": 38
+    "fire_31.82_120.07_3735": 38
   },
   "china_maritime_satellite_telemetry_and_control_d|qingdao|truck": {
-    "fire_31.82_120.07_3550": 18,
-    "fire_34.46_119.62_3545": 40,
-    "fire_34.57_119.35_3662": 40,
-    "fire_34.74_119.07_3663": 20,
-    "fire_35.16_119.09_3089": 62
+    "fire_31.82_120.07_3735": 18,
+    "fire_34.46_119.62_3730": 40,
+    "fire_34.57_119.35_3856": 40,
+    "fire_34.74_119.07_3857": 20,
+    "fire_35.16_119.09_3212": 62
   },
   "china_maritime_satellite_telemetry_and_control_d|shanghai|truck": {
-    "fire_31.82_120.07_3550": 20,
-    "fire_31.89_120.72_3084": 39
+    "fire_31.82_120.07_3735": 20,
+    "fire_31.89_120.72_3207": 39
   },
   "china_maritime_satellite_telemetry_and_control_d|suzhou_guangfu_airport|truck": {
-    "fire_31.82_120.07_3550": 37
+    "fire_31.82_120.07_3735": 37
   },
   "china_maritime_satellite_telemetry_and_control_d|wuhu_wanli_airport|truck": {
-    "fire_31.30_119.27_708": 37,
-    "fire_31.53_119.63_3549": 18,
-    "fire_31.82_120.07_3550": 55
+    "fire_31.30_119.27_720": 37,
+    "fire_31.53_119.63_3734": 18,
+    "fire_31.82_120.07_3735": 55
   },
   "chkalovsky_air_base|klokovo_air_base|truck": {
     "fire_54.16_37.68_12": 18
   },
   "chkalovsky_air_base|savasleyka_air_base|truck": {
-    "fire_55.61_40.94_1087": 58
+    "fire_55.61_40.94_1107": 58
   },
   "chodo_airport|shenyang|truck": {
-    "fire_40.91_124.53_2998": 56,
-    "fire_41.30_123.54_3000": 42,
-    "fire_41.34_124.09_3106": 42,
-    "fire_41.64_123.19_3542": 11,
-    "fire_41.68_124.09_3669": 69,
-    "fire_41.81_123.73_2672": 39
+    "fire_40.91_124.53_3121": 56,
+    "fire_41.30_123.54_3123": 42,
+    "fire_41.34_124.09_3229": 42,
+    "fire_41.64_123.19_3727": 11,
+    "fire_41.68_124.09_3863": 69,
+    "fire_41.81_123.73_2786": 39
   },
   "chu_lai_base_area|da_nang|truck": {
-    "fire_15.33_108.76_694": 15
+    "fire_15.33_108.76_706": 15
   },
   "chu_lai_base_area|dak_pek_camp|truck": {
-    "fire_15.14_108.53_693": 18,
-    "fire_15.33_108.76_694": 18,
-    "fire_15.53_108.13_695": 37
+    "fire_15.14_108.53_705": 18,
+    "fire_15.33_108.76_706": 18,
+    "fire_15.53_108.13_707": 37
   },
   "chu_lai_base_area|phu_bai_combat_base|truck": {
-    "fire_15.53_108.13_695": 19
+    "fire_15.53_108.13_707": 19
   },
   "ciudad_pemex_air_force_base|guatemala_city|truck": {
-    "fire_17.89_-92.49_935": 20
+    "fire_17.89_-92.49_947": 20
   },
   "ciudad_pemex_air_force_base|ixtepec_airport|truck": {
-    "fire_17.85_-93.12_934": 38,
-    "fire_17.89_-92.49_935": 19
+    "fire_17.85_-93.12_946": 38,
+    "fire_17.89_-92.49_947": 19
   },
   "ciudad_pemex_air_force_base|loma_bonita_air_force_station|truck": {
-    "fire_17.82_-93.78_933": 40,
-    "fire_17.85_-93.12_934": 60,
-    "fire_17.89_-92.49_935": 20,
-    "fire_17.95_-93.45_936": 79,
-    "fire_17.99_-94.52_2760": 60,
-    "fire_18.15_-93.98_938": 20
+    "fire_17.82_-93.78_945": 40,
+    "fire_17.85_-93.12_946": 60,
+    "fire_17.89_-92.49_947": 20,
+    "fire_17.95_-93.45_948": 79,
+    "fire_17.99_-94.52_2874": 60,
+    "fire_18.15_-93.98_950": 20
   },
   "ciudad_pemex_air_force_base|salina_cruz_naval_air_base|truck": {
-    "fire_16.20_-95.17_932": 19,
-    "fire_17.89_-92.49_935": 19
+    "fire_16.20_-95.17_944": 19,
+    "fire_17.89_-92.49_947": 19
   },
   "ciudad_pemex_air_force_base|tuxtla_gutierrez_air_force_base|truck": {
-    "fire_17.89_-92.49_935": 18
+    "fire_17.89_-92.49_947": 18
   },
   "claysburg_air_force_station|fort_henry_west_virginia|truck": {
-    "fire_40.36_-79.86_890": 37
+    "fire_40.36_-79.86_902": 37
   },
   "claysburg_air_force_station|oakdale_air_force_station|truck": {
-    "fire_40.36_-79.86_890": 58
+    "fire_40.36_-79.86_902": 58
   },
   "claysburg_air_force_station|pittsburgh_iap_air_reserve_station|truck": {
-    "fire_40.36_-79.86_890": 71
+    "fire_40.36_-79.86_902": 71
   },
   "coast_guard_station_cape_disappointment|naval_air_station_tillamook|truck": {
-    "fire_45.43_-123.81_2816": 40,
-    "fire_46.01_-123.52_3599": 95
+    "fire_45.43_-123.81_2930": 40,
+    "fire_46.01_-123.52_3784": 95
   },
   "coast_guard_station_cape_disappointment|portland_or|truck": {
-    "fire_46.01_-123.52_3599": 58
+    "fire_46.01_-123.52_3784": 58
   },
   "cologne|duisburg|truck": {
     "fire_51.45_6.72_8": 19
   },
   "columbus_air_force_base|memphis|truck": {
-    "fire_35.00_-90.07_906": 19
+    "fire_35.00_-90.07_918": 19
   },
   "columbus_air_force_base|naval_air_station_meridian|truck": {
-    "fire_33.43_-88.56_903": 52
+    "fire_33.43_-88.56_915": 52
   },
   "columbus_air_force_base|sumpter_smith_air_national_guard_base|truck": {
-    "fire_33.53_-86.82_904": 20
+    "fire_33.53_-86.82_916": 20
   },
   "commander_fleet_activities_chinhae|gimhae_air_base|truck": {
-    "fire_35.09_128.94_2430": 14
+    "fire_35.09_128.94_2544": 14
   },
   "commander_fleet_activities_chinhae|mokpo_air_base|truck": {
-    "fire_34.92_127.75_2639": 19
+    "fire_34.92_127.75_2753": 19
   },
   "da_nang|dak_pek_camp|truck": {
-    "fire_15.53_108.13_695": 60
+    "fire_15.53_108.13_707": 60
   },
   "dar_es_salaam|dodoma|truck": {
-    "fire_-6.02_35.62_1473": 20,
-    "fire_-6.26_35.64_3375": 20,
-    "fire_-6.27_36.44_3376": 40,
-    "fire_-6.27_37.28_2909": 59,
-    "fire_-6.38_36.02_3374": 40,
-    "fire_-6.40_36.65_3371": 79,
-    "fire_-6.43_38.04_3372": 59,
-    "fire_-6.59_36.99_3370": 40
+    "fire_-6.02_35.62_1506": 20,
+    "fire_-6.26_35.64_3543": 20,
+    "fire_-6.28_36.43_3544": 40,
+    "fire_-6.28_37.26_3027": 59,
+    "fire_-6.38_36.01_3542": 59,
+    "fire_-6.40_38.05_3540": 40,
+    "fire_-6.41_36.66_3539": 79,
+    "fire_-6.59_36.99_3538": 59,
+    "fire_-6.61_38.96_3963": 40,
+    "fire_-6.92_38.93_3962": 40
   },
   "dar_es_salaam|mombasa|truck": {
-    "fire_-6.20_38.74_1474": 75
+    "fire_-5.52_38.85_3359": 70,
+    "fire_-5.62_38.56_3805": 35,
+    "fire_-6.21_38.73_1507": 75,
+    "fire_-6.61_38.96_3963": 38
+  },
+  "dar_es_salaam|ngerengere_air_force_base|truck": {
+    "fire_-6.61_38.96_3963": 36,
+    "fire_-6.92_38.93_3962": 53
   },
   "dauphin_island_air_force_station|fort_pierce_alabama|truck": {
-    "fire_30.92_-88.03_923": 63,
-    "fire_31.16_-87.99_925": 46
+    "fire_30.92_-88.03_935": 63,
+    "fire_31.16_-87.99_937": 46
   },
   "dauphin_island_air_force_station|fort_stonewall|truck": {
-    "fire_30.92_-88.03_923": 78,
-    "fire_31.16_-87.99_925": 58
+    "fire_30.92_-88.03_935": 78,
+    "fire_31.16_-87.99_937": 58
   },
   "de_kooy_airfield|rotterdam|truck": {
-    "fire_52.49_4.60_2941": 19
+    "fire_52.49_4.60_3060": 19
   },
   "deelen_air_base|duisburg|truck": {
     "fire_51.45_6.72_8": 19
   },
   "defense_supply_center_columbus|detroit|truck": {
-    "fire_41.21_-83.23_892": 37,
-    "fire_42.28_-83.12_897": 19
+    "fire_41.21_-83.23_904": 37,
+    "fire_42.28_-83.12_909": 19
   },
   "delta_airbase|fort_bragg|truck": {
-    "fire_35.10_-79.73_2785": 39
+    "fire_35.10_-79.73_2899": 39
   },
   "delta_airbase|pope_field|truck": {
-    "fire_35.10_-79.73_2785": 39
+    "fire_35.10_-79.73_2899": 39
   },
   "detroit|empire_air_force_station|truck": {
-    "fire_42.28_-83.12_897": 19
+    "fire_42.28_-83.12_909": 19
   },
   "detroit|grayling_army_airfield|truck": {
-    "fire_42.28_-83.12_897": 20
+    "fire_42.28_-83.12_909": 20
   },
   "detroit|lima_army_tank_plant|truck": {
-    "fire_41.59_-83.44_895": 55,
-    "fire_42.28_-83.12_897": 18
+    "fire_41.59_-83.44_907": 55,
+    "fire_42.28_-83.12_909": 18
   },
   "detroit|rickenbacker_air_national_guard_base|truck": {
-    "fire_41.21_-83.23_892": 40,
-    "fire_42.28_-83.12_897": 20
+    "fire_41.21_-83.23_904": 40,
+    "fire_42.28_-83.12_909": 20
   },
   "detroit|youngstown_air_reserve_station|truck": {
-    "fire_42.28_-83.12_897": 19
+    "fire_42.28_-83.12_909": 19
+  },
+  "devonport_naval_base|wellington|truck": {
+    "fire_-37.20_174.72_2364": 39
   },
   "dhaka|kalaikunda_air_force_station|truck": {
-    "fire_22.37_87.29_802": 19
+    "fire_22.37_87.29_814": 19
   },
   "diori_hamani_international_airport|ouagadougou|truck": {
-    "fire_12.84_-0.53_106": 80,
+    "fire_12.84_-0.49_106": 80,
     "fire_12.99_0.95_110": 20
   },
   "dobbins_air_reserve_base|fort_benning|truck": {
-    "fire_32.24_-84.93_3580": 20
+    "fire_32.24_-84.93_3765": 20
   },
   "dobbins_air_reserve_base|robins_air_force_base|truck": {
-    "fire_32.65_-83.54_2775": 55
+    "fire_32.65_-83.54_2889": 55
   },
   "dodoma|kigamboni_naval_base|truck": {
-    "fire_-6.02_35.62_1473": 20,
-    "fire_-6.26_35.64_3375": 20,
-    "fire_-6.27_36.44_3376": 40,
-    "fire_-6.27_37.28_2909": 60,
-    "fire_-6.38_36.02_3374": 40,
-    "fire_-6.40_36.65_3371": 80,
-    "fire_-6.43_38.04_3372": 60,
-    "fire_-6.59_36.99_3370": 40
+    "fire_-6.02_35.62_1506": 20,
+    "fire_-6.26_35.64_3543": 20,
+    "fire_-6.28_36.43_3544": 40,
+    "fire_-6.28_37.26_3027": 60,
+    "fire_-6.38_36.01_3542": 60,
+    "fire_-6.40_38.05_3540": 40,
+    "fire_-6.41_36.66_3539": 80,
+    "fire_-6.59_36.99_3538": 60,
+    "fire_-6.61_38.96_3963": 40,
+    "fire_-6.92_38.93_3962": 40
   },
   "dodoma|moi_air_base|truck": {
-    "fire_-4.89_35.89_3384": 80,
-    "fire_-5.28_35.94_3382": 80,
-    "fire_-5.49_35.55_1476": 99,
-    "fire_-5.74_35.92_1479": 60,
-    "fire_-6.02_35.62_1473": 40,
-    "fire_-6.26_35.64_3375": 20
+    "fire_-4.89_35.89_3553": 80,
+    "fire_-5.27_35.94_3551": 80,
+    "fire_-5.49_35.55_1509": 99,
+    "fire_-5.74_35.93_1512": 60,
+    "fire_-6.02_35.62_1506": 40,
+    "fire_-6.26_35.64_3543": 20
   },
   "dodoma|mombasa|truck": {
-    "fire_-5.28_37.25_1486": 79,
-    "fire_-5.38_36.98_1487": 79,
-    "fire_-5.74_35.92_1479": 39,
-    "fire_-5.93_36.13_3377": 59,
-    "fire_-6.02_35.62_1473": 20,
-    "fire_-6.26_35.64_3375": 20
+    "fire_-5.29_37.24_1519": 59,
+    "fire_-5.36_36.97_1520": 59,
+    "fire_-5.74_35.93_1512": 39,
+    "fire_-5.92_36.13_3546": 59,
+    "fire_-6.02_35.62_1506": 20,
+    "fire_-6.26_35.64_3543": 20
   },
   "dodoma|nairobi|truck": {
-    "fire_-4.89_35.89_3384": 79,
-    "fire_-5.28_35.94_3382": 79,
-    "fire_-5.49_35.55_1476": 99,
-    "fire_-5.74_35.92_1479": 59,
-    "fire_-6.02_35.62_1473": 40,
-    "fire_-6.26_35.64_3375": 20
+    "fire_-4.89_35.89_3553": 79,
+    "fire_-5.27_35.94_3551": 79,
+    "fire_-5.49_35.55_1509": 99,
+    "fire_-5.74_35.93_1512": 59,
+    "fire_-6.02_35.62_1506": 40,
+    "fire_-6.26_35.64_3543": 20
   },
   "dodoma|ngerengere_air_force_base|truck": {
-    "fire_-6.02_35.62_1473": 19,
-    "fire_-6.26_35.64_3375": 19,
-    "fire_-6.27_36.44_3376": 39,
-    "fire_-6.27_37.28_2909": 58,
-    "fire_-6.38_36.02_3374": 39,
-    "fire_-6.40_36.65_3371": 78,
-    "fire_-6.43_38.04_3372": 39,
-    "fire_-6.59_36.99_3370": 58
+    "fire_-6.02_35.62_1506": 19,
+    "fire_-6.26_35.64_3543": 19,
+    "fire_-6.28_36.43_3544": 39,
+    "fire_-6.28_37.26_3027": 58,
+    "fire_-6.38_36.01_3542": 58,
+    "fire_-6.41_36.66_3539": 58,
+    "fire_-6.59_36.99_3538": 58,
+    "fire_-7.00_37.81_3535": 19
   },
   "doha|king_abdulaziz_naval_base|truck": {
-    "fire_26.72_50.07_2889": 15,
-    "fire_27.02_49.57_3227": 15
+    "fire_26.72_50.07_3006": 15,
+    "fire_27.02_49.57_3367": 15
   },
   "doha|prince_sultan_air_base|truck": {
-    "fire_24.86_49.33_1568": 38
+    "fire_24.86_49.33_1604": 38
   },
   "doshan_tappeh_air_base|fath_air_base|truck": {
-    "fire_35.53_51.44_2884": 33
+    "fire_35.53_51.44_3001": 33
   },
   "doshan_tappeh_air_base|isfahan|truck": {
-    "fire_35.53_51.44_2884": 60
+    "fire_35.53_51.44_3001": 60
   },
   "doshan_tappeh_air_base|malek_ashtar_garrison|truck": {
-    "fire_35.53_51.44_2884": 60
+    "fire_35.53_51.44_3001": 60
   },
   "doshan_tappeh_air_base|new_semnan_airport|truck": {
-    "fire_35.53_51.44_2884": 37
+    "fire_35.53_51.44_3001": 37
   },
   "doshan_tappeh_air_base|parchin|truck": {
-    "fire_35.53_51.44_2884": 34
+    "fire_35.53_51.44_3001": 34
   },
   "doshan_tappeh_air_base|shahroud_space_center|truck": {
-    "fire_35.53_51.44_2884": 20
+    "fire_35.53_51.44_3001": 20
   },
   "doshan_tappeh_air_base|tehran|truck": {
-    "fire_35.53_51.44_2884": 8
+    "fire_35.53_51.44_3001": 8
   },
   "douala|port_harcourt|truck": {
-    "fire_4.58_7.04_128": 19,
-    "fire_4.94_7.12_131": 38
+    "fire_4.58_7.04_130": 19,
+    "fire_4.94_7.12_133": 38
   },
   "dubai_international_airport|muscat|truck": {
-    "fire_24.48_56.61_2854": 39
+    "fire_24.48_56.61_2969": 39
   },
   "dubai|muscat|truck": {
-    "fire_24.48_56.61_2854": 36
+    "fire_24.48_56.61_2969": 36
   },
   "duisburg|jhq_rheindahlen|truck": {
     "fire_51.45_6.72_8": 14
@@ -2225,40 +2170,47 @@
     "fire_51.45_6.72_8": 19
   },
   "duke_field|eglin_air_force_base|truck": {
-    "fire_30.62_-86.58_3575": 18
+    "fire_30.62_-86.58_3760": 18
   },
   "duke_field|fort_rucker|truck": {
-    "fire_30.62_-86.58_3575": 18,
-    "fire_31.16_-86.21_3578": 55
+    "fire_30.62_-86.58_3760": 18,
+    "fire_31.16_-86.21_3763": 55
   },
   "duke_field|hanchey_army_heliport|truck": {
-    "fire_30.62_-86.58_3575": 19,
-    "fire_31.16_-86.21_3578": 38
+    "fire_30.62_-86.58_3760": 19,
+    "fire_31.16_-86.21_3763": 38
   },
   "duke_field|hurlburt_field|truck": {
-    "fire_30.62_-86.58_3575": 29
+    "fire_30.62_-86.58_3760": 29
   },
   "duke_field|naval_air_station_pensacola|truck": {
-    "fire_30.62_-86.58_3575": 45
+    "fire_30.62_-86.58_3760": 45
   },
   "duke_field|naval_air_station_pensacola_corry_station|truck": {
-    "fire_30.62_-86.58_3575": 39
+    "fire_30.62_-86.58_3760": 39
   },
   "duke_field|naval_outlying_landing_field_choctaw|truck": {
-    "fire_30.62_-86.58_3575": 45
+    "fire_30.62_-86.58_3760": 45
   },
   "duke_field|naval_outlying_landing_field_santa_rosa|truck": {
-    "fire_30.62_-86.58_3575": 40
+    "fire_30.62_-86.58_3760": 40
   },
   "duke_field|naval_support_activity_panama_city|truck": {
-    "fire_30.62_-86.58_3575": 36
+    "fire_30.62_-86.58_3760": 36
   },
   "duke_field|tyndall_air_force_base|truck": {
-    "fire_30.62_-86.58_3575": 37
+    "fire_30.62_-86.58_3760": 37
   },
   "durban|johannesburg|truck": {
-    "fire_-26.25_28.12_1610": 39,
-    "fire_-28.08_29.70_1608": 19
+    "fire_-26.25_28.12_1652": 39,
+    "fire_-28.08_29.70_1650": 19
+  },
+  "durban|maseru|truck": {
+    "fire_-29.55_30.02_1648": 39,
+    "fire_-29.91_30.21_4152": 39
+  },
+  "durban|mbabane|truck": {
+    "fire_-26.37_30.97_3820": 39
   },
   "dyagilevo_air_base|klokovo_air_base|truck": {
     "fire_54.16_37.68_12": 39,
@@ -2268,98 +2220,101 @@
     "fire_52.55_39.62_10": 19
   },
   "edwards_afb|los_angeles_air_force_base|truck": {
-    "fire_34.08_-118.01_1092": 20
+    "fire_34.08_-118.01_1113": 20
   },
   "eglin_air_force_base|fort_rucker|truck": {
-    "fire_30.62_-86.58_3575": 35,
-    "fire_31.16_-86.21_3578": 35
+    "fire_30.62_-86.58_3760": 35,
+    "fire_31.16_-86.21_3763": 35
   },
   "eglin_air_force_base|hanchey_army_heliport|truck": {
-    "fire_30.62_-86.58_3575": 36,
-    "fire_31.16_-86.21_3578": 18
+    "fire_30.62_-86.58_3760": 36,
+    "fire_31.16_-86.21_3763": 18
   },
   "eglin_air_force_base|hurlburt_field|truck": {
-    "fire_30.62_-86.58_3575": 16
+    "fire_30.62_-86.58_3760": 16
   },
   "eglin_air_force_base|naval_air_station_pensacola|truck": {
-    "fire_30.62_-86.58_3575": 37
+    "fire_30.62_-86.58_3760": 37
   },
   "eglin_air_force_base|naval_air_station_pensacola_corry_station|truck": {
-    "fire_30.62_-86.58_3575": 46
+    "fire_30.62_-86.58_3760": 46
   },
   "eglin_air_force_base|naval_outlying_landing_field_choctaw|truck": {
-    "fire_30.62_-86.58_3575": 40
+    "fire_30.62_-86.58_3760": 40
   },
   "eglin_air_force_base|naval_outlying_landing_field_santa_rosa|truck": {
-    "fire_30.62_-86.58_3575": 40
+    "fire_30.62_-86.58_3760": 40
   },
   "eglin_air_force_base|naval_support_activity_panama_city|truck": {
-    "fire_30.62_-86.58_3575": 17
+    "fire_30.62_-86.58_3760": 17
   },
   "eglin_air_force_base|tyndall_air_force_base|truck": {
-    "fire_30.62_-86.58_3575": 19
+    "fire_30.62_-86.58_3760": 19
   },
   "ellington_field_joint_reserve_base|fort_polk|truck": {
-    "fire_29.70_-95.09_2762": 59
+    "fire_29.70_-95.09_2876": 59
   },
   "ellington_field_joint_reserve_base|houston|truck": {
-    "fire_29.70_-95.09_2762": 25
+    "fire_29.70_-95.09_2876": 25
   },
   "ellington_field_joint_reserve_base|james_connally_air_force_base|truck": {
-    "fire_29.70_-95.09_2762": 58
+    "fire_29.70_-95.09_2876": 58
   },
   "ellington_field_joint_reserve_base|naval_air_station_hitchcock|truck": {
-    "fire_29.70_-95.09_2762": 33
+    "fire_29.70_-95.09_2876": 33
   },
   "ellington_field_joint_reserve_base|naval_station_ingleside|truck": {
-    "fire_29.70_-95.09_2762": 38
+    "fire_29.70_-95.09_2876": 38
   },
   "ellington_field_joint_reserve_base|united_states_naval_station_orange|truck": {
-    "fire_29.70_-95.09_2762": 56
+    "fire_29.70_-95.09_2876": 56
   },
   "engels|lebyazhye_air_base|truck": {
-    "fire_50.62_45.96_1598": 59
+    "fire_50.62_45.96_1637": 59
   },
   "engels|petrovsk_air_base|truck": {
-    "fire_52.15_45.83_1071": 52
+    "fire_52.15_45.83_1087": 52
+  },
+  "engels|ulyanovsk_vostochny_airport|truck": {
+    "fire_54.21_48.29_1100": 39
   },
   "entebbe|juba|truck": {
-    "fire_0.13_32.47_3754": 19,
-    "fire_3.64_31.99_1491": 58
+    "fire_0.13_32.47_3969": 19,
+    "fire_3.64_31.99_1524": 58
   },
   "entebbe|kampala|truck": {
-    "fire_0.13_32.47_3754": 18
+    "fire_0.13_32.47_3969": 18
   },
   "entebbe|kisumu|truck": {
-    "fire_0.13_32.47_3754": 20
+    "fire_0.13_32.47_3969": 20
   },
   "entebbe|moi_air_base|truck": {
-    "fire_0.13_32.47_3754": 20
+    "fire_0.13_32.47_3969": 20
   },
   "entebbe|nairobi|truck": {
-    "fire_0.13_32.47_3754": 20
+    "fire_0.13_32.47_3969": 20
   },
   "entebbe|rumangabo|truck": {
-    "fire_-1.40_29.20_2894": 20
+    "fire_-1.40_29.20_3011": 20
   },
   "erbil|kharab_al_jir_base|truck": {
-    "fire_36.10_43.79_1022": 39,
-    "fire_36.37_43.93_1023": 39,
-    "fire_36.58_43.01_1024": 79,
-    "fire_36.66_42.39_1576": 79,
-    "fire_36.66_43.36_1025": 59,
-    "fire_36.93_42.19_2885": 39
+    "fire_36.10_43.79_1034": 39,
+    "fire_36.37_43.93_1035": 39,
+    "fire_36.58_43.01_1036": 79,
+    "fire_36.66_42.39_1612": 79,
+    "fire_36.66_43.36_1037": 59,
+    "fire_36.93_42.19_3002": 39
   },
   "erbil|tabriz|truck": {
-    "fire_36.10_43.79_1022": 19,
-    "fire_36.37_43.93_1023": 39
+    "fire_36.10_43.79_1034": 19,
+    "fire_36.37_43.93_1035": 39
   },
   "erbil|tikrit_east_air_base|truck": {
-    "fire_34.86_43.94_1017": 59,
-    "fire_35.40_43.77_1575": 59,
-    "fire_35.66_44.01_1019": 79,
-    "fire_35.93_44.20_1021": 59,
-    "fire_36.10_43.79_1022": 39
+    "fire_34.86_43.94_1029": 59,
+    "fire_35.40_43.77_1611": 59,
+    "fire_35.66_44.01_1031": 79,
+    "fire_35.93_44.20_1033": 59,
+    "fire_36.10_43.79_1034": 39
   },
   "erdek_naval_base|foca_naval_base|truck": {
     "fire_38.74_26.94_15": 20
@@ -2368,39 +2323,39 @@
     "fire_38.74_26.94_15": 18
   },
   "eskan_village|king_abdulaziz_air_base|truck": {
-    "fire_24.54_46.97_2886": 38,
-    "fire_25.65_49.42_985": 19
+    "fire_24.54_46.97_3003": 38,
+    "fire_25.65_49.42_997": 19
   },
   "eskan_village|king_abdulaziz_naval_base|truck": {
-    "fire_24.54_46.97_2886": 39,
-    "fire_27.02_49.57_3227": 39
+    "fire_24.54_46.97_3003": 39,
+    "fire_27.02_49.57_3367": 39
   },
   "eskan_village|king_khalid_military_city|truck": {
-    "fire_24.54_46.97_2886": 19
+    "fire_24.54_46.97_3003": 19
   },
   "eskan_village|king_salman_air_base|truck": {
-    "fire_24.54_46.97_2886": 21
+    "fire_24.54_46.97_3003": 21
   },
   "eskan_village|prince_sultan_air_base|truck": {
-    "fire_24.54_46.97_2886": 37
+    "fire_24.54_46.97_3003": 37
   },
   "eskan_village|riyadh|truck": {
-    "fire_24.54_46.97_2886": 23
+    "fire_24.54_46.97_3003": 23
   },
   "fath_air_base|new_semnan_airport|truck": {
-    "fire_35.53_51.44_2884": 58
+    "fire_35.53_51.44_3001": 58
   },
   "fath_air_base|parchin|truck": {
-    "fire_35.53_51.44_2884": 59
+    "fire_35.53_51.44_3001": 59
   },
   "fath_air_base|tehran|truck": {
-    "fire_35.53_51.44_2884": 27
+    "fire_35.53_51.44_3001": 27
   },
   "firebase_pedro|hanoi|truck": {
-    "fire_20.44_105.89_2682": 19
+    "fire_20.44_105.89_2796": 19
   },
   "firq_air_base|kalba_fort|truck": {
-    "fire_24.48_56.61_2854": 39
+    "fire_24.48_56.61_2969": 39
   },
   "foca_naval_base|kutahya_air_base|truck": {
     "fire_38.74_26.94_15": 39
@@ -2412,248 +2367,249 @@
     "fire_51.17_3.81_7": 17
   },
   "fort_benning|fort_mcpherson|truck": {
-    "fire_32.24_-84.93_3580": 20
+    "fire_32.24_-84.93_3765": 20
   },
   "fort_benning|fort_rucker|truck": {
-    "fire_31.72_-85.23_2770": 38,
-    "fire_32.24_-84.93_3580": 38
+    "fire_31.72_-85.23_2884": 38,
+    "fire_32.24_-84.93_3765": 38
   },
   "fort_benning|hanchey_army_heliport|truck": {
-    "fire_31.72_-85.23_2770": 37,
-    "fire_32.24_-84.93_3580": 37
+    "fire_31.72_-85.23_2884": 37,
+    "fire_32.24_-84.93_3765": 37
   },
   "fort_benning|marine_corps_logistics_base_albany|truck": {
-    "fire_31.79_-84.58_3579": 72,
-    "fire_32.24_-84.93_3580": 36
+    "fire_31.79_-84.58_3764": 72,
+    "fire_32.24_-84.93_3765": 36
   },
   "fort_benning|maxwell_air_force_base|truck": {
-    "fire_32.24_-84.93_3580": 19
+    "fire_32.24_-84.93_3765": 19
   },
   "fort_benning|montgomery_air_national_guard_base|truck": {
-    "fire_32.24_-84.93_3580": 19
+    "fire_32.24_-84.93_3765": 19
   },
   "fort_benning|robins_air_force_base|truck": {
-    "fire_32.24_-84.93_3580": 19,
-    "fire_32.65_-83.54_2775": 38
+    "fire_32.24_-84.93_3765": 19,
+    "fire_32.65_-83.54_2889": 38
   },
   "fort_dalles|naval_air_station_tillamook|truck": {
-    "fire_45.43_-123.81_2816": 37
+    "fire_45.43_-123.81_2930": 37
   },
   "fort_eustis|fort_lee_military_base|truck": {
-    "fire_37.15_-77.40_911": 34
+    "fire_37.15_-77.40_923": 34
   },
   "fort_gordon|hunter_army_airfield|truck": {
-    "fire_32.35_-81.57_2774": 73,
-    "fire_32.97_-81.88_3582": 73
+    "fire_32.35_-81.57_2888": 73,
+    "fire_32.97_-81.88_3767": 73
   },
   "fort_gordon|marine_corps_air_station_beaufort|truck": {
-    "fire_32.97_-81.88_3582": 37
+    "fire_32.97_-81.88_3767": 37
   },
   "fort_gordon|robins_air_force_base|truck": {
-    "fire_32.65_-83.54_2775": 54,
-    "fire_32.98_-82.89_3856": 54,
-    "fire_33.32_-82.40_3583": 54
+    "fire_32.65_-83.54_2889": 54,
+    "fire_32.98_-82.89_4109": 54,
+    "fire_33.32_-82.40_3768": 54
   },
   "fort_hamilton|military_ocean_terminal_at_bayonne|truck": {
-    "fire_40.61_-74.22_746": 7
+    "fire_40.61_-74.22_758": 7
   },
   "fort_hamilton|naval_station_new_york|truck": {
-    "fire_40.61_-74.22_746": 4
+    "fire_40.61_-74.22_758": 4
   },
   "fort_hamilton|new_york|truck": {
-    "fire_40.61_-74.22_746": 12
+    "fire_40.61_-74.22_758": 12
   },
   "fort_henry_west_virginia|oakdale_air_force_station|truck": {
-    "fire_40.36_-79.86_890": 15
+    "fire_40.36_-79.86_902": 15
   },
   "fort_knox|terre_haute_regional_airport|truck": {
-    "fire_38.00_-86.14_914": 38
+    "fire_38.00_-86.14_926": 38
   },
   "fort_lee_military_base|joint_base_langley_eustis|truck": {
-    "fire_37.15_-77.40_911": 18
+    "fire_37.15_-77.40_923": 18
   },
   "fort_lee_military_base|langley_air_force_base|truck": {
-    "fire_37.15_-77.40_911": 18
+    "fire_37.15_-77.40_923": 18
   },
   "fort_lee_military_base|mary_walker_landing_zone|truck": {
-    "fire_37.15_-77.40_911": 19
+    "fire_37.15_-77.40_923": 19
   },
   "fort_lee_military_base|naval_weapons_station_yorktown|truck": {
-    "fire_37.15_-77.40_911": 17
+    "fire_37.15_-77.40_923": 17
   },
   "fort_lee_military_base|radford_army_ammunition_plant|truck": {
-    "fire_37.15_-77.40_911": 38
+    "fire_37.15_-77.40_923": 38
   },
   "fort_lewis_washington|naval_air_station_tillamook|truck": {
-    "fire_45.43_-123.81_2816": 38,
-    "fire_46.01_-123.52_3599": 57
+    "fire_45.43_-123.81_2930": 38,
+    "fire_46.01_-123.52_3784": 57
   },
   "fort_mcpherson|robins_air_force_base|truck": {
-    "fire_32.65_-83.54_2775": 53
+    "fire_32.65_-83.54_2889": 53
   },
   "fort_oglethorpe_fort_oglethorpe_georgia|sumpter_smith_air_national_guard_base|truck": {
-    "fire_33.53_-86.82_904": 19
+    "fire_33.53_-86.82_916": 19
   },
   "fort_pierce_alabama|fort_stonewall|truck": {
-    "fire_31.16_-87.99_925": 24
+    "fire_31.16_-87.99_937": 24
   },
   "fort_pierce_alabama|naval_air_station_meridian|truck": {
-    "fire_31.16_-87.99_925": 38,
-    "fire_32.27_-88.19_2778": 57
+    "fire_31.16_-87.99_937": 38,
+    "fire_32.27_-88.19_2892": 57
   },
   "fort_pierce_alabama|naval_air_station_pensacola|truck": {
-    "fire_31.16_-87.99_925": 17
+    "fire_31.16_-87.99_937": 17
   },
   "fort_pierce_alabama|naval_air_station_pensacola_corry_station|truck": {
-    "fire_31.16_-87.99_925": 19
+    "fire_31.16_-87.99_937": 19
   },
   "fort_pierce_alabama|naval_outlying_landing_field_santa_rosa|truck": {
-    "fire_30.88_-87.34_3577": 34,
-    "fire_31.16_-87.99_925": 17
+    "fire_30.88_-87.34_3762": 34,
+    "fire_31.16_-87.99_937": 17
   },
   "fort_pierce_alabama|naval_station_mobile|truck": {
-    "fire_30.92_-88.03_923": 55,
-    "fire_31.16_-87.99_925": 37
+    "fire_30.92_-88.03_935": 55,
+    "fire_31.16_-87.99_937": 37
   },
   "fort_pierce_alabama|naval_station_pascagoula|truck": {
-    "fire_30.92_-88.03_923": 58,
-    "fire_31.16_-87.99_925": 39
+    "fire_30.92_-88.03_935": 58,
+    "fire_31.16_-87.99_937": 39
   },
   "fort_polk|houston|truck": {
-    "fire_29.70_-95.09_2762": 56
+    "fire_29.70_-95.09_2876": 56
   },
   "fort_polk|naval_air_station_hitchcock|truck": {
-    "fire_29.70_-95.09_2762": 92
+    "fire_29.70_-95.09_2876": 92
   },
   "fort_putnam|military_ocean_terminal_at_bayonne|truck": {
-    "fire_40.61_-74.22_746": 16
+    "fire_40.61_-74.22_758": 16
   },
   "fort_putnam|naval_station_new_york|truck": {
-    "fire_40.61_-74.22_746": 17
+    "fire_40.61_-74.22_758": 17
   },
   "fort_rucker|hurlburt_field|truck": {
-    "fire_30.62_-86.58_3575": 59,
-    "fire_31.16_-86.21_3578": 39
+    "fire_30.62_-86.58_3760": 59,
+    "fire_31.16_-86.21_3763": 39
   },
   "fort_rucker|marine_corps_logistics_base_albany|truck": {
-    "fire_31.48_-84.40_2767": 20,
-    "fire_31.79_-84.58_3579": 20
+    "fire_31.48_-84.40_2881": 20,
+    "fire_31.79_-84.58_3764": 20
   },
   "fort_stonewall|naval_air_station_meridian|truck": {
-    "fire_32.27_-88.19_2778": 57
+    "fire_32.27_-88.19_2892": 57
   },
   "fort_stonewall|naval_air_station_pensacola|truck": {
-    "fire_31.16_-87.99_925": 34
+    "fire_31.16_-87.99_937": 34
   },
   "fort_stonewall|naval_air_station_pensacola_corry_station|truck": {
-    "fire_31.16_-87.99_925": 38
+    "fire_31.16_-87.99_937": 38
   },
   "fort_stonewall|naval_outlying_landing_field_choctaw|truck": {
-    "fire_30.88_-87.34_3577": 35,
-    "fire_31.16_-87.99_925": 17
+    "fire_30.88_-87.34_3762": 35,
+    "fire_31.16_-87.99_937": 17
   },
   "fort_stonewall|naval_outlying_landing_field_santa_rosa|truck": {
-    "fire_30.88_-87.34_3577": 19,
-    "fire_31.16_-87.99_925": 19
+    "fire_30.88_-87.34_3762": 19,
+    "fire_31.16_-87.99_937": 19
   },
   "fort_stonewall|naval_station_mobile|truck": {
-    "fire_30.92_-88.03_923": 58,
-    "fire_31.16_-87.99_925": 58
+    "fire_30.92_-88.03_935": 58,
+    "fire_31.16_-87.99_937": 58
   },
   "fort_tompkins_plattsburgh_new_york|lakehurst_maxfield_field|truck": {
-    "fire_40.61_-74.22_746": 34
+    "fire_40.61_-74.22_758": 34
   },
   "fort_tompkins_plattsburgh_new_york|mcguire_air_force_base|truck": {
-    "fire_40.61_-74.22_746": 39
+    "fire_40.61_-74.22_758": 39
   },
   "forward_operating_base_kalsu|kermanshah_airport|truck": {
-    "fire_33.21_44.72_1574": 19
+    "fire_33.21_44.72_1610": 19
   },
   "frontier_wire_libya|jabal_hamzah_ballistic_missile_test_and_launch_f|truck": {
-    "fire_30.82_27.59_1571": 59
+    "fire_30.20_30.03_4180": 20,
+    "fire_30.82_27.59_1607": 59
   },
   "fuerte_militar_larandia|guayaquil|truck": {
-    "fire_0.29_-76.80_2738": 80,
-    "fire_0.64_-76.47_3568": 80,
-    "fire_0.99_-76.07_2740": 80
+    "fire_0.29_-76.80_2852": 80,
+    "fire_0.64_-76.47_3753": 80,
+    "fire_0.99_-76.07_2854": 80
   },
   "fuerte_militar_larandia|lieutenant_bergerie_airport|truck": {
-    "fire_-3.74_-73.36_3567": 39,
-    "fire_0.56_-75.32_3569": 39
+    "fire_-3.74_-73.36_3752": 39,
+    "fire_0.56_-75.32_3754": 39
   },
   "fuerte_militar_larandia|lieutenant_colonel_luis_f_pinto_parra_air_base|truck": {
-    "fire_3.82_-74.95_3572": 20
+    "fire_3.82_-74.95_3757": 20
   },
   "fuerte_militar_larandia|quito|truck": {
-    "fire_0.64_-76.47_3568": 57,
-    "fire_0.99_-76.07_2740": 57
+    "fire_0.64_-76.47_3753": 57,
+    "fire_0.99_-76.07_2854": 57
   },
   "fuerte_militar_larandia|taura_air_base|truck": {
-    "fire_0.29_-76.80_2738": 78,
-    "fire_0.64_-76.47_3568": 59,
-    "fire_0.99_-76.07_2740": 59
+    "fire_0.29_-76.80_2852": 78,
+    "fire_0.64_-76.47_3753": 59,
+    "fire_0.99_-76.07_2854": 59
   },
   "fuerte_militar_larandia|tolemaida_air_base|truck": {
-    "fire_2.89_-75.16_748": 19,
-    "fire_3.82_-74.95_3572": 38
+    "fire_2.89_-75.16_760": 19,
+    "fire_3.82_-74.95_3757": 38
   },
   "gaborone|johannesburg|truck": {
-    "fire_-25.48_27.09_3727": 20,
-    "fire_-25.67_27.65_3630": 39,
-    "fire_-26.25_28.12_1610": 20
+    "fire_-25.48_27.09_3924": 20,
+    "fire_-25.67_27.64_3822": 59,
+    "fire_-26.25_28.12_1652": 20
   },
   "gaborone|kalahari_site|truck": {
-    "fire_-24.24_24.42_3244": 20
+    "fire_-24.24_24.42_3388": 20
   },
   "gaborone|pretoria|truck": {
-    "fire_-25.22_27.40_1620": 40,
-    "fire_-25.67_27.65_3630": 60
+    "fire_-25.22_27.40_1662": 40,
+    "fire_-25.67_27.64_3822": 60
   },
   "gaborone|thaba_tshwane|truck": {
-    "fire_-25.22_27.40_1620": 40,
-    "fire_-25.67_27.65_3630": 60
+    "fire_-25.22_27.40_1662": 40,
+    "fire_-25.67_27.64_3822": 60
   },
   "gaborone|vastrap|truck": {
-    "fire_-25.50_24.70_1616": 59
+    "fire_-25.51_24.69_1658": 59
   },
   "galeao_air_force_base|madeira_island_submarine_base|truck": {
-    "fire_-22.91_-43.75_3053": 32
+    "fire_-22.91_-43.75_3176": 32
   },
   "galeao_air_force_base|santa_cruz_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 17
+    "fire_-22.91_-43.75_3176": 17
   },
   "gangneung_air_base|yecheon_air_base|truck": {
-    "fire_37.46_129.11_2432": 19
+    "fire_37.46_129.11_2546": 19
   },
   "genoa|ghedi_air_base|truck": {
     "fire_45.48_10.32_17": 19
   },
   "georgetown_guyana|kourou_site|truck": {
-    "fire_5.03_-52.51_2578": 19,
-    "fire_5.45_-55.57_2584": 58,
-    "fire_5.65_-54.18_2585": 78,
-    "fire_5.73_-55.20_2588": 58,
-    "fire_5.79_-57.21_2590": 38,
-    "fire_5.82_-55.66_2593": 58,
-    "fire_5.87_-56.79_2595": 78,
-    "fire_6.03_-57.35_437": 74,
-    "fire_6.04_-57.63_2592": 91,
-    "fire_6.32_-57.71_2597": 73,
-    "fire_6.44_-57.85_438": 55,
-    "fire_6.61_-58.25_2599": 18,
-    "fire_6.73_-58.09_752": 37
+    "fire_5.03_-52.51_2692": 19,
+    "fire_5.45_-55.57_2698": 58,
+    "fire_5.65_-54.18_2699": 78,
+    "fire_5.73_-55.20_2702": 58,
+    "fire_5.79_-57.21_2704": 38,
+    "fire_5.82_-55.66_2707": 58,
+    "fire_5.87_-56.79_2709": 78,
+    "fire_6.03_-57.35_449": 74,
+    "fire_6.04_-57.63_2706": 91,
+    "fire_6.32_-57.71_2711": 73,
+    "fire_6.44_-57.85_450": 55,
+    "fire_6.61_-58.25_2713": 18,
+    "fire_6.73_-58.09_764": 37
   },
   "georgetown_guyana|paramaribo|truck": {
-    "fire_5.73_-55.20_2588": 39,
-    "fire_5.79_-57.21_2590": 36,
-    "fire_5.82_-55.66_2593": 59,
-    "fire_5.87_-56.79_2595": 71,
-    "fire_6.03_-57.35_437": 73,
-    "fire_6.04_-57.63_2592": 91,
-    "fire_6.32_-57.71_2597": 73,
-    "fire_6.44_-57.85_438": 55,
-    "fire_6.61_-58.25_2599": 18,
-    "fire_6.73_-58.09_752": 37
+    "fire_5.73_-55.20_2702": 39,
+    "fire_5.79_-57.21_2704": 36,
+    "fire_5.82_-55.66_2707": 59,
+    "fire_5.87_-56.79_2709": 71,
+    "fire_6.03_-57.35_449": 73,
+    "fire_6.04_-57.63_2706": 91,
+    "fire_6.32_-57.71_2711": 73,
+    "fire_6.44_-57.85_450": 55,
+    "fire_6.61_-58.25_2713": 18,
+    "fire_6.73_-58.09_764": 37
   },
   "ghedi_air_base|istrana_air_base|truck": {
     "fire_45.48_10.32_17": 18
@@ -2663,428 +2619,438 @@
   },
   "ghedi_air_base|milan|truck": {
     "fire_45.48_10.32_17": 17,
-    "fire_45.67_9.56_153": 50
+    "fire_45.67_9.56_156": 50
   },
   "ghedi_air_base|piacenza_air_base|truck": {
     "fire_45.48_10.32_17": 18
   },
   "ghedi_air_base|riviera_airport_switzerland|truck": {
     "fire_45.48_10.32_17": 20,
-    "fire_45.67_9.56_153": 79
+    "fire_45.67_9.56_156": 79
   },
   "ghedi_air_base|verona_villafranca_airport|truck": {
     "fire_45.48_10.32_17": 16
   },
   "gimhae_air_base|jungwon_air_base|truck": {
-    "fire_35.09_128.94_2430": 19
+    "fire_35.09_128.94_2544": 19
   },
   "gimhae_air_base|mokpo_air_base|truck": {
-    "fire_34.92_127.75_2639": 20,
-    "fire_35.09_128.94_2430": 20
+    "fire_34.92_127.75_2753": 20,
+    "fire_35.09_128.94_2544": 20
   },
   "gimhae_air_base|yecheon_air_base|truck": {
-    "fire_35.09_128.94_2430": 19
+    "fire_35.09_128.94_2544": 19
   },
   "gitega|kampala|truck": {
-    "fire_0.13_32.47_3754": 20
+    "fire_0.13_32.47_3969": 20
   },
   "gitega|rumangabo|truck": {
-    "fire_-1.40_29.20_2894": 40
+    "fire_-1.40_29.20_3011": 40
   },
   "grider_field|little_rock_air_force_base|truck": {
-    "fire_34.19_-91.75_3858": 17
+    "fire_34.19_-91.75_4111": 17
   },
   "grider_field|memphis|truck": {
-    "fire_34.19_-91.75_3858": 37,
-    "fire_34.45_-91.33_2783": 55,
-    "fire_34.81_-91.03_2784": 37,
-    "fire_35.00_-90.07_906": 37
+    "fire_34.19_-91.75_4111": 37,
+    "fire_34.45_-91.33_2897": 55,
+    "fire_34.81_-91.03_2898": 37,
+    "fire_35.00_-90.07_918": 37
   },
   "grider_field|naval_support_activity_mid_south|truck": {
-    "fire_34.19_-91.75_3858": 38,
-    "fire_34.45_-91.33_2783": 57,
-    "fire_34.81_-91.03_2784": 57,
-    "fire_35.00_-90.07_906": 38
+    "fire_34.19_-91.75_4111": 38,
+    "fire_34.45_-91.33_2897": 57,
+    "fire_34.81_-91.03_2898": 57,
+    "fire_35.00_-90.07_918": 38
   },
   "grider_field|robinson_army_airfield|truck": {
-    "fire_34.19_-91.75_3858": 16
+    "fire_34.19_-91.75_4111": 16
   },
   "grider_field|walnut_ridge_air_force_station|truck": {
-    "fire_34.19_-91.75_3858": 20,
-    "fire_35.18_-91.29_3584": 59,
-    "fire_35.46_-90.94_2786": 98,
-    "fire_35.60_-91.31_2787": 59,
-    "fire_35.61_-90.90_3585": 20,
-    "fire_35.92_-90.94_2788": 59,
-    "fire_36.21_-90.85_2789": 20
+    "fire_34.19_-91.75_4111": 20,
+    "fire_35.18_-91.29_3769": 59,
+    "fire_35.46_-90.94_2900": 98,
+    "fire_35.60_-91.31_2901": 59,
+    "fire_35.61_-90.90_3770": 20,
+    "fire_35.92_-90.94_2902": 59,
+    "fire_36.21_-90.85_2903": 20
   },
   "ground_equipment_facility_j_82|sacramento_army_depot|truck": {
-    "fire_39.01_-121.59_2811": 60
+    "fire_39.01_-121.59_2925": 60
   },
   "gurha_salim_airport|lahore|truck": {
-    "fire_31.76_74.24_843": 72,
-    "fire_31.87_73.81_842": 36,
-    "fire_32.06_74.09_2837": 90,
-    "fire_32.23_73.75_848": 72,
-    "fire_32.43_74.12_850": 54
+    "fire_31.76_74.24_855": 72,
+    "fire_31.87_73.81_854": 36,
+    "fire_32.06_74.09_2952": 90,
+    "fire_32.23_73.75_860": 72,
+    "fire_32.43_74.12_862": 54
   },
   "gurha_salim_airport|sheikhupura_fort|truck": {
-    "fire_31.76_74.24_843": 39,
-    "fire_31.87_73.81_842": 58,
-    "fire_32.06_74.09_2837": 77,
-    "fire_32.23_73.75_848": 77
+    "fire_31.76_74.24_855": 39,
+    "fire_31.87_73.81_854": 58,
+    "fire_32.06_74.09_2952": 77,
+    "fire_32.23_73.75_860": 77
   },
   "gurha_salim_airport|sri_guru_ravidas_airport|truck": {
-    "fire_31.62_75.52_841": 60,
-    "fire_31.84_75.18_3711": 60,
-    "fire_31.87_75.42_1011": 40,
-    "fire_31.91_74.79_844": 60,
-    "fire_32.16_75.19_847": 40,
-    "fire_32.24_74.71_846": 60,
-    "fire_32.43_74.12_850": 60
+    "fire_31.62_75.52_853": 60,
+    "fire_31.84_75.18_3905": 60,
+    "fire_31.87_75.42_1023": 40,
+    "fire_31.91_74.79_856": 60,
+    "fire_32.16_75.19_859": 40,
+    "fire_32.24_74.71_858": 60,
+    "fire_32.43_74.12_862": 60
   },
   "halwara_air_force_station|hindan_air_force_station|truck": {
-    "fire_30.53_75.81_3143": 75
+    "fire_30.53_75.81_3266": 75
   },
   "halwara_air_force_station|lahore|truck": {
-    "fire_31.10_75.40_835": 57,
-    "fire_31.19_74.95_837": 57,
-    "fire_31.20_74.62_839": 57,
-    "fire_31.37_75.14_840": 38,
-    "fire_31.41_74.82_3146": 57,
-    "fire_31.76_74.24_843": 19
+    "fire_31.10_75.40_847": 57,
+    "fire_31.19_74.95_849": 57,
+    "fire_31.20_74.62_851": 57,
+    "fire_31.37_75.14_852": 38,
+    "fire_31.41_74.82_3269": 57,
+    "fire_31.76_74.24_855": 19
   },
   "halwara_air_force_station|najibabad_fort|truck": {
-    "fire_30.53_75.81_3143": 58,
-    "fire_30.60_76.56_829": 58
+    "fire_30.53_75.81_3266": 58,
+    "fire_30.60_76.56_841": 58
   },
   "halwara_air_force_station|new_delhi|truck": {
-    "fire_30.53_75.81_3143": 75
+    "fire_30.53_75.81_3266": 75
   },
   "halwara_air_force_station|pathankot_air_force_station|truck": {
-    "fire_31.10_75.40_835": 55,
-    "fire_31.62_75.52_841": 55,
-    "fire_31.87_75.42_1011": 37
+    "fire_31.10_75.40_847": 55,
+    "fire_31.62_75.52_853": 55,
+    "fire_31.87_75.42_1023": 37
   },
   "halwara_air_force_station|phalodi_air_force_station|truck": {
-    "fire_29.49_74.06_966": 19,
-    "fire_29.62_74.38_3706": 39,
-    "fire_30.30_75.25_3708": 78,
-    "fire_30.53_75.81_3143": 39
+    "fire_29.49_74.06_978": 19,
+    "fire_29.62_74.38_3900": 39,
+    "fire_30.30_75.25_3902": 78,
+    "fire_30.53_75.81_3266": 39
   },
   "halwara_air_force_station|sheikhupura_fort|truck": {
-    "fire_31.10_75.40_835": 57,
-    "fire_31.19_74.95_837": 57,
-    "fire_31.20_74.62_839": 57,
-    "fire_31.41_74.82_3146": 57,
-    "fire_31.46_73.88_838": 38,
-    "fire_31.76_74.24_843": 57,
-    "fire_31.87_73.81_842": 19
+    "fire_31.10_75.40_847": 57,
+    "fire_31.19_74.95_849": 57,
+    "fire_31.20_74.62_851": 57,
+    "fire_31.41_74.82_3269": 57,
+    "fire_31.46_73.88_850": 38,
+    "fire_31.76_74.24_855": 57,
+    "fire_31.87_73.81_854": 19
   },
   "halwara_air_force_station|sri_guru_ravidas_airport|truck": {
-    "fire_31.10_75.40_835": 39
+    "fire_31.10_75.40_847": 39
   },
   "halwara_air_force_station|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 56,
-    "fire_29.62_74.38_3706": 56,
-    "fire_30.30_75.25_3708": 75,
-    "fire_30.53_75.81_3143": 19
+    "fire_29.49_74.06_978": 56,
+    "fire_29.62_74.38_3900": 56,
+    "fire_30.30_75.25_3902": 75,
+    "fire_30.53_75.81_3266": 19
   },
   "halwara_air_force_station|udhampur_air_force_station|truck": {
-    "fire_31.10_75.40_835": 75,
-    "fire_31.62_75.52_841": 56,
-    "fire_31.84_75.18_3711": 56,
-    "fire_31.87_75.42_1011": 56,
-    "fire_32.16_75.19_847": 56
+    "fire_31.10_75.40_847": 75,
+    "fire_31.62_75.52_853": 56,
+    "fire_31.84_75.18_3905": 56,
+    "fire_31.87_75.42_1023": 56,
+    "fire_32.16_75.19_859": 56
   },
   "hamamatsu_air_base|jmsdf_maizuru_naval_base|truck": {
-    "fire_35.03_136.87_2996": 19
+    "fire_35.03_136.87_3119": 19
   },
   "hamamatsu_air_base|maizuru_naval_arsenal|truck": {
-    "fire_35.03_136.87_2996": 19
+    "fire_35.03_136.87_3119": 19
   },
   "hamamatsu_air_base|sub_area_activity_hanshin|truck": {
-    "fire_35.03_136.87_2996": 19
+    "fire_35.03_136.87_3119": 19
   },
   "hanchey_army_heliport|marine_corps_logistics_base_albany|truck": {
-    "fire_31.48_-84.40_2767": 38,
-    "fire_31.79_-84.58_3579": 19
+    "fire_31.48_-84.40_2881": 38,
+    "fire_31.79_-84.58_3764": 19
   },
   "harare|josiah_tungamirai_air_force_base|truck": {
-    "fire_-18.45_30.76_1733": 40,
-    "fire_-18.90_30.55_1721": 20,
-    "fire_-19.00_30.08_1717": 40
+    "fire_-17.89_31.32_1798": 20,
+    "fire_-18.45_30.76_1786": 40,
+    "fire_-18.90_30.55_1773": 20,
+    "fire_-19.02_30.08_1769": 59
   },
   "harare|lilongwe|truck": {
-    "fire_-15.36_32.42_1839": 20,
-    "fire_-15.52_33.08_1837": 40,
-    "fire_-15.61_32.75_1830": 60,
-    "fire_-15.78_32.42_1821": 60,
-    "fire_-16.07_32.54_3287": 60,
-    "fire_-16.46_31.68_1788": 40,
-    "fire_-16.48_32.14_1786": 60,
-    "fire_-16.76_31.94_2915": 60,
-    "fire_-16.92_31.35_1774": 40,
-    "fire_-16.95_31.78_1768": 60,
-    "fire_-17.20_31.36_1762": 80,
-    "fire_-17.53_31.50_1751": 40
+    "fire_-15.02_32.82_1904": 40,
+    "fire_-15.36_32.42_1900": 20,
+    "fire_-15.52_33.08_1896": 40,
+    "fire_-15.61_32.75_1889": 60,
+    "fire_-15.78_32.42_1880": 60,
+    "fire_-16.07_32.54_3437": 60,
+    "fire_-16.46_31.68_1845": 40,
+    "fire_-16.48_32.14_1843": 60,
+    "fire_-16.76_31.93_3033": 60,
+    "fire_-16.92_31.35_1831": 40,
+    "fire_-16.95_31.78_1825": 60,
+    "fire_-17.20_31.36_1819": 80,
+    "fire_-17.54_31.52_1807": 40,
+    "fire_-17.89_31.32_1798": 40
   },
   "harare|lusaka|truck": {
-    "fire_-15.94_28.45_1814": 20,
-    "fire_-16.19_29.27_1808": 20,
-    "fire_-16.42_29.78_1785": 60,
-    "fire_-16.62_29.89_3281": 60,
-    "fire_-16.63_29.44_1777": 80,
-    "fire_-16.78_29.56_3278": 40,
-    "fire_-16.85_29.94_1770": 80,
-    "fire_-17.15_30.73_1767": 20,
-    "fire_-17.17_30.20_2914": 40,
-    "fire_-17.46_30.62_1755": 80,
-    "fire_-17.50_30.27_1748": 40,
-    "fire_-17.52_30.87_1752": 60
+    "fire_-15.53_28.59_1898": 60,
+    "fire_-15.94_28.45_1873": 20,
+    "fire_-16.19_29.27_1867": 20,
+    "fire_-16.42_29.78_1842": 60,
+    "fire_-16.62_29.89_3431": 60,
+    "fire_-16.63_29.44_1834": 80,
+    "fire_-16.78_29.56_3428": 40,
+    "fire_-16.85_29.95_1827": 80,
+    "fire_-17.14_30.73_1824": 20,
+    "fire_-17.15_30.18_3032": 40,
+    "fire_-17.46_30.62_1812": 80,
+    "fire_-17.51_30.26_1804": 40,
+    "fire_-17.51_30.88_1808": 80
   },
   "harare|peter_zuze_air_force_base|truck": {
-    "fire_-13.09_29.07_1877": 40,
-    "fire_-13.90_29.41_1861": 40,
-    "fire_-14.69_29.43_1851": 79,
-    "fire_-14.93_29.92_1847": 40,
-    "fire_-15.01_29.35_1849": 40,
-    "fire_-15.18_30.10_3291": 40,
-    "fire_-15.25_29.67_1840": 60,
-    "fire_-15.87_30.38_1822": 20,
-    "fire_-16.09_30.18_1807": 79,
-    "fire_-16.41_30.58_1787": 60,
-    "fire_-16.48_30.21_1784": 79,
-    "fire_-16.88_30.54_1773": 79,
-    "fire_-17.10_30.99_3276": 20,
-    "fire_-17.15_30.73_1767": 79,
-    "fire_-17.46_30.62_1755": 40,
-    "fire_-17.52_30.87_1752": 79
+    "fire_-13.09_29.07_1947": 40,
+    "fire_-13.90_29.41_1929": 40,
+    "fire_-14.69_29.43_1918": 79,
+    "fire_-14.93_29.92_1912": 40,
+    "fire_-15.01_29.35_1915": 40,
+    "fire_-15.18_30.10_3441": 40,
+    "fire_-15.25_29.67_1902": 60,
+    "fire_-15.83_30.39_1881": 20,
+    "fire_-16.09_30.18_1866": 79,
+    "fire_-16.41_30.58_1844": 60,
+    "fire_-16.48_30.21_1841": 79,
+    "fire_-16.88_30.54_1830": 79,
+    "fire_-17.10_30.99_3426": 20,
+    "fire_-17.14_30.73_1824": 60,
+    "fire_-17.46_30.62_1812": 40,
+    "fire_-17.51_30.88_1808": 79
   },
   "harbin|jilin_ertaizi_airport|truck": {
-    "fire_44.08_126.42_739": 39,
-    "fire_44.48_126.78_341": 39,
-    "fire_45.11_127.04_345": 20,
-    "fire_45.18_126.78_346": 59,
-    "fire_45.65_126.92_350": 39
+    "fire_44.08_126.42_751": 39,
+    "fire_44.48_126.78_353": 39,
+    "fire_45.11_127.04_357": 20,
+    "fire_45.18_126.78_358": 59,
+    "fire_45.65_126.92_362": 39
   },
   "harbin|okno_s|truck": {
-    "fire_45.37_128.13_347": 96,
-    "fire_45.65_126.92_350": 58,
-    "fire_45.65_128.70_349": 38,
-    "fire_45.71_128.06_352": 58,
-    "fire_45.81_127.49_353": 58,
-    "fire_46.17_126.61_355": 19
+    "fire_45.37_128.13_359": 96,
+    "fire_45.65_126.92_362": 58,
+    "fire_45.65_128.70_361": 38,
+    "fire_45.71_128.06_364": 58,
+    "fire_45.81_127.49_365": 58,
+    "fire_46.17_126.61_367": 19
   },
   "harbin|punggye_ri|truck": {
-    "fire_44.38_127.20_741": 79,
-    "fire_44.56_127.47_742": 59,
-    "fire_44.78_127.18_342": 79,
-    "fire_45.02_127.48_344": 40,
-    "fire_45.11_127.04_345": 79,
-    "fire_45.18_126.78_346": 59,
-    "fire_45.34_127.21_348": 40,
-    "fire_45.65_126.92_350": 59
+    "fire_44.38_127.20_753": 79,
+    "fire_44.56_127.47_754": 59,
+    "fire_44.78_127.18_354": 79,
+    "fire_45.02_127.48_356": 40,
+    "fire_45.11_127.04_357": 79,
+    "fire_45.18_126.78_358": 59,
+    "fire_45.34_127.21_360": 40,
+    "fire_45.65_126.92_362": 59
   },
   "harbin|shenyang|truck": {
-    "fire_41.81_123.73_2672": 39,
-    "fire_42.31_123.44_729": 59,
-    "fire_42.45_123.88_730": 78,
-    "fire_42.69_124.37_731": 59,
-    "fire_43.07_124.81_733": 39,
-    "fire_43.15_124.45_2631": 59,
-    "fire_43.23_124.10_736": 39,
-    "fire_43.45_125.18_2633": 59,
-    "fire_43.55_124.72_336": 78,
-    "fire_43.80_125.04_340": 78,
-    "fire_45.65_126.92_350": 20
+    "fire_41.81_123.73_2786": 39,
+    "fire_42.31_123.44_741": 59,
+    "fire_42.45_123.88_742": 78,
+    "fire_42.69_124.37_743": 59,
+    "fire_43.07_124.81_745": 39,
+    "fire_43.15_124.45_2745": 59,
+    "fire_43.23_124.10_748": 39,
+    "fire_43.45_125.18_2747": 59,
+    "fire_43.55_124.72_348": 78,
+    "fire_43.80_125.04_352": 78,
+    "fire_45.65_126.92_362": 20
   },
   "harbin|vladivostok_base|truck": {
-    "fire_44.25_129.06_3007": 39,
-    "fire_44.92_127.88_343": 78,
-    "fire_45.02_127.48_344": 39,
-    "fire_45.34_127.21_348": 39,
-    "fire_45.37_128.13_347": 59,
-    "fire_45.65_126.92_350": 59
+    "fire_44.25_129.06_3130": 39,
+    "fire_44.92_127.88_355": 78,
+    "fire_45.02_127.48_356": 39,
+    "fire_45.34_127.21_360": 39,
+    "fire_45.37_128.13_359": 59,
+    "fire_45.65_126.92_362": 59
   },
   "harbin|vozzhayevka_air_base|truck": {
-    "fire_45.65_126.92_350": 20,
-    "fire_46.17_126.61_355": 80,
-    "fire_46.17_127.20_362": 20,
-    "fire_46.55_126.57_366": 40,
-    "fire_46.73_127.24_369": 60,
-    "fire_46.86_127.10_371": 80,
-    "fire_47.12_127.32_376": 80,
-    "fire_47.41_127.68_384": 40,
-    "fire_47.47_127.23_389": 60,
-    "fire_47.86_127.23_397": 20,
-    "fire_48.12_127.96_401": 40,
-    "fire_48.55_127.74_405": 80,
-    "fire_48.94_128.11_414": 20,
-    "fire_49.06_127.74_417": 60,
-    "fire_49.84_128.20_3011": 40,
-    "fire_50.44_128.84_427": 40
+    "fire_45.65_126.92_362": 20,
+    "fire_46.17_126.61_367": 80,
+    "fire_46.17_127.20_374": 20,
+    "fire_46.55_126.57_378": 40,
+    "fire_46.73_127.24_381": 60,
+    "fire_46.86_127.10_383": 80,
+    "fire_47.12_127.32_388": 80,
+    "fire_47.41_127.68_396": 40,
+    "fire_47.47_127.23_401": 60,
+    "fire_47.86_127.23_409": 20,
+    "fire_48.12_127.96_413": 40,
+    "fire_48.55_127.74_417": 80,
+    "fire_48.94_128.11_426": 20,
+    "fire_49.06_127.74_429": 60,
+    "fire_49.84_128.20_3134": 40,
+    "fire_50.44_128.84_439": 40
   },
   "helwan_airfield|jabal_hamzah_ballistic_missile_test_and_launch_f|truck": {
-    "fire_29.80_31.30_2892": 39
+    "fire_29.80_31.30_3009": 39
   },
   "helwan_airfield|kibrit_air_base|truck": {
-    "fire_29.80_31.30_2892": 35
+    "fire_29.80_31.30_3009": 35
   },
   "henderson_naval_base|naval_base_perth|truck": {
-    "fire_-32.18_116.09_3121": 18
+    "fire_-32.18_116.09_3244": 18
   },
   "henderson_naval_base|perth|truck": {
-    "fire_-32.18_116.09_3121": 23
+    "fire_-32.18_116.09_3244": 23
   },
   "henderson_naval_base|raaf_base_pearce|truck": {
-    "fire_-32.18_116.09_3121": 19
+    "fire_-32.18_116.09_3244": 19
   },
   "henderson_naval_base|raaf_gingin|truck": {
-    "fire_-32.18_116.09_3121": 19
+    "fire_-32.18_116.09_3244": 19
   },
   "heweitan|sri_guru_ravidas_airport|truck": {
-    "fire_31.62_75.52_841": 20
+    "fire_31.62_75.52_853": 20
   },
   "hindan_air_force_station|lahore|truck": {
-    "fire_30.30_75.25_3708": 39,
-    "fire_30.53_75.81_3143": 59,
-    "fire_31.12_74.26_1004": 20,
-    "fire_31.19_74.95_837": 59,
-    "fire_31.20_74.62_839": 59,
-    "fire_31.41_74.82_3146": 39,
-    "fire_31.76_74.24_843": 20
+    "fire_30.30_75.25_3902": 39,
+    "fire_30.53_75.81_3266": 59,
+    "fire_31.12_74.26_1016": 20,
+    "fire_31.19_74.95_849": 59,
+    "fire_31.20_74.62_851": 59,
+    "fire_31.41_74.82_3269": 39,
+    "fire_31.76_74.24_855": 20
   },
   "hindan_air_force_station|sri_guru_ravidas_airport|truck": {
-    "fire_30.60_76.56_829": 40
+    "fire_30.60_76.56_841": 40
   },
   "hindan_air_force_station|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 38
+    "fire_29.49_74.06_978": 38
   },
   "hmas_albatross_air_station|hmas_waterhen_naval_base|truck": {
-    "fire_-34.46_150.88_187": 39
+    "fire_-34.46_150.88_191": 39
   },
   "hmas_albatross_air_station|naval_base_sydney|truck": {
-    "fire_-34.46_150.88_187": 19
+    "fire_-34.46_150.88_191": 19
   },
   "hmas_albatross_air_station|sydney|truck": {
-    "fire_-34.46_150.88_187": 19
+    "fire_-34.46_150.88_191": 19
   },
   "hmas_cairns_naval_base|raaf_base_scherger|truck": {
-    "fire_-13.66_143.12_226": 39,
-    "fire_-15.66_144.76_223": 58
+    "fire_-13.66_143.12_231": 39,
+    "fire_-15.66_144.76_228": 58
   },
   "hmas_cerberus_naval_base|raaf_williams|truck": {
-    "fire_-37.83_144.78_2414": 19
+    "fire_-37.83_144.78_2528": 19
   },
   "hmas_lonsdale_naval_base|melbourne|truck": {
-    "fire_-37.83_144.78_2414": 5
+    "fire_-37.83_144.78_2528": 5
   },
   "hmas_lonsdale_naval_base|raaf_williams|truck": {
-    "fire_-37.83_144.78_2414": 18
+    "fire_-37.83_144.78_2528": 18
+  },
+  "hmas_nirimba|scone_airport|truck": {
+    "fire_-32.29_150.88_4076": 19
+  },
+  "hmas_nirimba|tamworth_regional_airport|truck": {
+    "fire_-32.29_150.88_4076": 39
   },
   "hmas_stirling|naval_base_perth|truck": {
-    "fire_-32.18_116.09_3121": 15
+    "fire_-32.18_116.09_3244": 15
   },
   "hmas_stirling|perth|truck": {
-    "fire_-32.18_116.09_3121": 17
+    "fire_-32.18_116.09_3244": 17
   },
   "hmas_stirling|raaf_base_pearce|truck": {
-    "fire_-32.18_116.09_3121": 17
+    "fire_-32.18_116.09_3244": 17
   },
   "houston|james_connally_air_force_base|truck": {
-    "fire_29.70_-95.09_2762": 19
+    "fire_29.70_-95.09_2876": 19
   },
   "houston|naval_air_station_hitchcock|truck": {
-    "fire_29.70_-95.09_2762": 56
+    "fire_29.70_-95.09_2876": 56
   },
   "houston|naval_station_ingleside|truck": {
-    "fire_29.70_-95.09_2762": 28
+    "fire_29.70_-95.09_2876": 28
   },
   "houston|united_states_naval_station_orange|truck": {
-    "fire_29.70_-95.09_2762": 72
+    "fire_29.70_-95.09_2876": 72
   },
   "hurlburt_field|naval_air_station_pensacola|truck": {
-    "fire_30.62_-86.58_3575": 20
+    "fire_30.62_-86.58_3760": 20
   },
   "hurlburt_field|naval_air_station_pensacola_corry_station|truck": {
-    "fire_30.62_-86.58_3575": 19
+    "fire_30.62_-86.58_3760": 19
   },
   "hurlburt_field|naval_outlying_landing_field_choctaw|truck": {
-    "fire_30.62_-86.58_3575": 14
+    "fire_30.62_-86.58_3760": 14
   },
   "hurlburt_field|naval_outlying_landing_field_santa_rosa|truck": {
-    "fire_30.62_-86.58_3575": 31
+    "fire_30.62_-86.58_3760": 31
   },
   "hurlburt_field|naval_support_activity_panama_city|truck": {
-    "fire_30.62_-86.58_3575": 36
+    "fire_30.62_-86.58_3760": 36
   },
   "hurlburt_field|tyndall_air_force_base|truck": {
-    "fire_30.62_-86.58_3575": 36
+    "fire_30.62_-86.58_3760": 36
   },
   "ibadan|port_harcourt|truck": {
-    "fire_4.94_7.12_131": 20,
-    "fire_5.21_6.71_132": 39,
-    "fire_5.98_5.49_138": 39
+    "fire_4.94_7.12_133": 20,
+    "fire_5.24_6.73_134": 39,
+    "fire_5.99_5.50_141": 39
   },
   "in_amenas_airport|remada_air_base|truck": {
     "fire_28.13_9.79_47": 40,
-    "fire_28.83_9.86_53": 60
+    "fire_28.83_9.85_53": 60
   },
   "in_amenas_airport|takhamalt_airport|truck": {
     "fire_28.13_9.79_47": 20
   },
   "in_amenas_airport|tripoli|truck": {
     "fire_28.13_9.79_47": 40,
-    "fire_28.83_9.86_53": 40,
+    "fire_28.83_9.85_53": 40,
     "fire_31.40_12.14_75": 40,
-    "fire_32.76_12.68_2933": 40
+    "fire_32.76_12.68_3052": 40
   },
   "incirlik|iskenderun_naval_base|truck": {
-    "fire_36.73_36.21_1579": 33
+    "fire_36.73_36.21_1615": 33
   },
   "incirlik|khmeimim_air_base|truck": {
-    "fire_36.73_36.21_1579": 33
+    "fire_36.73_36.21_1615": 33
   },
   "incirlik|menagh_air_base|truck": {
-    "fire_36.73_36.21_1579": 38
+    "fire_36.73_36.21_1615": 38
   },
   "ins_netaji_subhas|kalaikunda_air_force_station|truck": {
-    "fire_22.37_87.29_802": 19
+    "fire_22.37_87.29_814": 19
   },
   "irapuato_air_force_station|la_pesca_naval_air_base|truck": {
-    "fire_20.56_-101.10_927": 19
+    "fire_20.56_-101.10_939": 19
   },
   "irapuato_air_force_station|mexico_city|truck": {
-    "fire_20.56_-101.10_927": 57
+    "fire_20.56_-101.10_939": 57
   },
   "irapuato_air_force_station|pie_de_la_cuesta_air_force_base|truck": {
-    "fire_20.56_-101.10_927": 38
+    "fire_20.56_-101.10_939": 38
   },
   "irapuato_air_force_station|tuxpan_naval_air_base|truck": {
-    "fire_20.56_-101.10_927": 39
+    "fire_20.56_-101.10_939": 39
   },
   "iruma_air_base|kisarazu_air_field|truck": {
-    "fire_35.37_139.85_3466": 33
+    "fire_35.37_139.85_3651": 33
   },
   "iruma_air_base|narita|truck": {
     "quake_us7000ttpe": 36
   },
   "iruma_air_base|yokohama|truck": {
-    "fire_35.37_139.85_3466": 16
+    "fire_35.37_139.85_3651": 16
   },
   "isa_air_base|manama|truck": {
-    "fire_26.17_50.66_2888": 17
+    "fire_26.17_50.66_3005": 17
   },
   "isfahan|omidiyeh_air_base|truck": {
-    "fire_30.80_49.58_974": 19,
-    "fire_32.29_51.41_982": 57
+    "fire_30.80_49.58_986": 19,
+    "fire_32.29_51.41_994": 57
   },
   "isfahan|parchin|truck": {
-    "fire_35.53_51.44_2884": 19
+    "fire_35.53_51.44_3001": 19
   },
   "isfahan|tehran|truck": {
-    "fire_35.53_51.44_2884": 60
+    "fire_35.53_51.44_3001": 60
   },
   "istres_le_tube_air_base|marseille|truck": {
     "fire_43.45_4.89_16": 14
@@ -3093,255 +3059,267 @@
     "fire_43.45_4.89_16": 18
   },
   "iswahjudi_air_force_base|surabaya|truck": {
-    "fire_-7.53_112.35_3692": 38
+    "fire_-7.53_112.35_3886": 38
   },
   "ixtepec_airport|salina_cruz_naval_air_base|truck": {
-    "fire_16.20_-95.17_932": 28
+    "fire_16.20_-95.17_944": 28
+  },
+  "jabal_hamzah_ballistic_missile_test_and_launch_f|july_3_naval_base|truck": {
+    "fire_30.20_30.03_4180": 20
   },
   "jalibah_southeast_air_base|omidiyeh_air_base|truck": {
-    "fire_30.43_47.65_969": 38,
-    "fire_30.65_47.30_973": 75,
-    "fire_30.76_48.29_975": 56,
-    "fire_30.80_49.58_974": 19,
-    "fire_30.96_48.67_1569": 38
+    "fire_30.43_47.65_981": 38,
+    "fire_30.65_47.30_985": 75,
+    "fire_30.76_48.29_987": 56,
+    "fire_30.80_49.58_986": 19,
+    "fire_30.96_48.67_1605": 38
   },
   "james_connally_air_force_base|naval_air_station_hitchcock|truck": {
-    "fire_29.70_-95.09_2762": 76
+    "fire_29.70_-95.09_2876": 76
   },
   "jervis_bay_airfield|naval_base_sydney|truck": {
-    "fire_-34.46_150.88_187": 37
+    "fire_-34.46_150.88_191": 37
   },
   "jervis_bay_airfield|sydney|truck": {
-    "fire_-34.46_150.88_187": 35
+    "fire_-34.46_150.88_191": 35
   },
   "jervis_bay_airfield|wallgrove_army_base|truck": {
-    "fire_-34.46_150.88_187": 19
+    "fire_-34.46_150.88_191": 19
   },
   "jgsdf_camp_itazuma|yokohama|truck": {
-    "fire_35.37_139.85_3466": 17
+    "fire_35.37_139.85_3651": 17
   },
   "jgsdf_camp_itazuma|yokosuka|truck": {
-    "fire_35.37_139.85_3466": 17
+    "fire_35.37_139.85_3651": 17
   },
   "jgsdf_camp_jinmachi|narita|truck": {
     "quake_us7000ttpe": 39
   },
   "jgsdf_camp_komakado|yokohama|truck": {
-    "fire_35.37_139.85_3466": 17
+    "fire_35.37_139.85_3651": 17
   },
   "jgsdf_camp_komakado|yokosuka|truck": {
-    "fire_35.37_139.85_3466": 19
+    "fire_35.37_139.85_3651": 19
   },
   "jgsdf_camp_toyokawa|jmsdf_maizuru_naval_base|truck": {
-    "fire_35.03_136.87_2996": 19
+    "fire_35.03_136.87_3119": 19
   },
   "jgsdf_camp_toyokawa|maizuru_naval_arsenal|truck": {
-    "fire_35.03_136.87_2996": 19
+    "fire_35.03_136.87_3119": 19
   },
   "jgsdf_camp_toyokawa|osaka|truck": {
-    "fire_35.03_136.87_2996": 19
+    "fire_35.03_136.87_3119": 19
   },
   "jgsdf_camp_toyokawa|sub_area_activity_hanshin|truck": {
-    "fire_35.03_136.87_2996": 19
+    "fire_35.03_136.87_3119": 19
   },
   "jianggezhuang_naval_base|nanjing|truck": {
-    "fire_32.73_119.02_3085": 58,
-    "fire_33.63_118.87_711": 39,
-    "fire_35.16_119.09_3089": 73
+    "fire_32.73_119.02_3208": 58,
+    "fire_33.63_118.87_723": 39,
+    "fire_35.16_119.09_3212": 73
   },
   "jianggezhuang_naval_base|tianjin|truck": {
-    "fire_36.91_118.79_3664": 10,
-    "fire_38.06_118.12_3091": 82,
-    "fire_38.37_117.68_2650": 52,
-    "fire_38.98_117.44_2655": 60
+    "fire_36.91_118.79_3858": 10,
+    "fire_38.06_118.12_3214": 82,
+    "fire_38.37_117.68_2764": 52,
+    "fire_38.98_117.44_2769": 60
   },
   "jianggezhuang_naval_base|wuhu_wanli_airport|truck": {
-    "fire_31.59_118.14_710": 39,
-    "fire_35.16_119.09_3089": 75
+    "fire_31.59_118.14_722": 39,
+    "fire_35.16_119.09_3212": 75
   },
   "jiaxing_nanhu_airport|nanjing|truck": {
-    "fire_31.30_119.27_708": 20,
-    "fire_31.53_119.63_3549": 39
+    "fire_31.30_119.27_720": 20,
+    "fire_31.53_119.63_3734": 39
   },
   "jiaxing_nanhu_airport|wuhu_wanli_airport|truck": {
-    "fire_31.05_119.19_3659": 57,
-    "fire_31.07_119.64_3548": 57,
-    "fire_31.30_119.27_708": 76
+    "fire_31.05_119.19_3853": 57,
+    "fire_31.07_119.64_3733": 57,
+    "fire_31.30_119.27_720": 76
   },
   "jilin_ertaizi_airport|punggye_ri|truck": {
-    "fire_44.08_126.42_739": 20
+    "fire_44.08_126.42_751": 20
   },
   "jilin_ertaizi_airport|shenyang|truck": {
-    "fire_41.81_123.73_2672": 38,
-    "fire_42.19_124.14_3671": 57,
-    "fire_42.34_124.42_3108": 57,
-    "fire_42.45_123.88_730": 76,
-    "fire_42.69_124.37_731": 57,
-    "fire_42.81_124.83_3544": 57,
-    "fire_43.07_124.81_733": 57,
-    "fire_43.10_125.44_2630": 38,
-    "fire_43.16_125.08_735": 57,
-    "fire_43.22_125.80_2632": 38,
-    "fire_43.44_125.69_737": 57,
-    "fire_43.45_125.18_2633": 38,
-    "fire_43.68_125.58_337": 57,
-    "fire_44.08_126.42_739": 19
+    "fire_41.81_123.73_2786": 38,
+    "fire_42.19_124.14_3865": 57,
+    "fire_42.34_124.42_3231": 57,
+    "fire_42.45_123.88_742": 76,
+    "fire_42.69_124.37_743": 57,
+    "fire_42.81_124.83_3729": 57,
+    "fire_43.07_124.81_745": 57,
+    "fire_43.10_125.44_2744": 38,
+    "fire_43.16_125.08_747": 57,
+    "fire_43.22_125.80_2746": 38,
+    "fire_43.44_125.69_749": 57,
+    "fire_43.45_125.18_2747": 38,
+    "fire_43.68_125.58_349": 57,
+    "fire_44.08_126.42_751": 19
   },
   "jilin_ertaizi_airport|uiju_airfield|truck": {
-    "fire_40.91_124.53_2998": 40,
-    "fire_40.96_124.95_2997": 79,
-    "fire_41.35_124.98_3104": 79,
-    "fire_41.63_124.90_3668": 59,
-    "fire_41.79_125.24_3670": 59,
-    "fire_42.23_125.73_3107": 59,
-    "fire_42.24_125.29_2629": 40,
-    "fire_42.56_125.72_3003": 59,
-    "fire_42.63_125.33_3674": 40,
-    "fire_42.84_125.67_3109": 59,
-    "fire_42.98_126.29_3635": 20,
-    "fire_43.22_125.80_2632": 79,
-    "fire_43.30_126.15_3878": 40,
-    "fire_44.08_126.42_739": 20
+    "fire_40.91_124.53_3121": 40,
+    "fire_40.96_124.95_3120": 79,
+    "fire_41.35_124.98_3227": 79,
+    "fire_41.63_124.90_3862": 59,
+    "fire_41.79_125.24_3864": 59,
+    "fire_42.23_125.73_3230": 59,
+    "fire_42.24_125.29_2743": 40,
+    "fire_42.56_125.72_3126": 59,
+    "fire_42.63_125.33_3868": 40,
+    "fire_42.84_125.67_3232": 59,
+    "fire_42.98_126.29_3829": 20,
+    "fire_43.22_125.80_2746": 79,
+    "fire_43.30_126.15_4136": 40,
+    "fire_44.08_126.42_751": 20
   },
   "jilin_ertaizi_airport|vladivostok_base|truck": {
-    "fire_44.08_126.42_739": 20
+    "fire_44.08_126.42_751": 20
   },
   "jmsdf_kure_naval_base|jmsdf_maizuru_naval_base|truck": {
-    "fire_34.46_133.74_3468": 19
+    "fire_34.46_133.74_3653": 19
   },
   "jmsdf_kure_naval_base|maizuru_naval_arsenal|truck": {
-    "fire_34.46_133.74_3468": 20
+    "fire_34.46_133.74_3653": 20
   },
   "jmsdf_kure_naval_base|osaka|truck": {
-    "fire_34.72_134.82_2429": 18
+    "fire_34.72_134.82_2543": 18
   },
   "jmsdf_kure_naval_base|sub_area_activity_hanshin|truck": {
-    "fire_34.72_134.82_2429": 18
+    "fire_34.72_134.82_2543": 18
   },
   "jmsdf_maizuru_naval_base|kure_naval_arsenal|truck": {
-    "fire_34.46_133.74_3468": 19
+    "fire_34.46_133.74_3653": 19
   },
   "jmsdf_maizuru_naval_base|shizuhama_air_base|truck": {
-    "fire_35.03_136.87_2996": 20
+    "fire_35.03_136.87_3119": 20
   },
   "jmsdf_tateyama_air_base|kisarazu_air_field|truck": {
-    "fire_35.37_139.85_3466": 31
+    "fire_35.37_139.85_3651": 31
   },
   "jmsdf_tateyama_air_base|narita|truck": {
-    "fire_35.37_139.85_3466": 40,
+    "fire_35.37_139.85_3651": 40,
     "quake_us7000ttpe": 40
   },
   "jmsdf_tateyama_air_base|shimofusa_air_base|truck": {
-    "fire_35.37_139.85_3466": 55
+    "fire_35.37_139.85_3651": 55
   },
   "jmsdf_tateyama_air_base|tokyo|truck": {
-    "fire_35.37_139.85_3466": 66,
+    "fire_35.37_139.85_3651": 66,
     "quake_us7000ttpe": 32
   },
   "jmsdf_tateyama_air_base|yokota_air_base|truck": {
-    "fire_35.37_139.85_3466": 38
+    "fire_35.37_139.85_3651": 38
   },
   "johannesburg|maseru|truck": {
-    "fire_-26.25_28.12_1610": 19,
-    "fire_-26.42_27.76_1609": 19,
-    "fire_-26.69_27.89_2925": 39
+    "fire_-26.25_28.12_1652": 19,
+    "fire_-26.42_27.76_1651": 19,
+    "fire_-26.70_27.90_3044": 78
   },
   "johannesburg|mbabane|truck": {
-    "fire_-26.25_28.12_1610": 19
+    "fire_-26.25_28.12_1652": 19,
+    "fire_-26.37_30.97_3820": 39,
+    "fire_-26.49_29.63_4184": 39
   },
   "johannesburg|pretoria|truck": {
-    "fire_-26.25_28.12_1610": 17
+    "fire_-26.25_28.12_1652": 17
   },
   "johannesburg|thaba_tshwane|truck": {
-    "fire_-26.25_28.12_1610": 15
+    "fire_-26.25_28.12_1652": 15
   },
   "josiah_tungamirai_air_force_base|lusaka|truck": {
-    "fire_-15.94_28.45_1814": 80,
-    "fire_-16.36_28.48_1803": 40,
-    "fire_-16.97_29.07_1775": 60,
-    "fire_-17.18_29.14_1760": 60,
-    "fire_-17.45_29.15_3271": 60
+    "fire_-15.53_28.59_1898": 40,
+    "fire_-15.94_28.45_1873": 80,
+    "fire_-16.36_28.48_1861": 40,
+    "fire_-16.94_29.09_1832": 60,
+    "fire_-17.17_29.15_1817": 60,
+    "fire_-17.45_29.14_3420": 60,
+    "fire_-17.83_29.28_1799": 60,
+    "fire_-18.83_29.65_1774": 60
   },
   "juba|kampala|truck": {
-    "fire_3.64_31.99_1491": 59
+    "fire_3.64_31.99_1524": 59
   },
   "kalahari_site|windhoek|truck": {
-    "fire_-23.11_21.42_3246": 39
+    "fire_-23.11_21.42_3391": 39
   },
   "kalaikunda_air_force_station|kolkata|truck": {
-    "fire_22.37_87.29_802": 17
+    "fire_22.37_87.29_814": 17
   },
   "kalaikunda_air_force_station|saidpur_cantonment|truck": {
-    "fire_22.37_87.29_802": 20
+    "fire_22.37_87.29_814": 20
   },
   "kalba_fort|muscat|truck": {
-    "fire_24.48_56.61_2854": 40
+    "fire_24.48_56.61_2969": 40
   },
   "kambala_air_base|kant_air_base|truck": {
-    "fire_43.02_74.96_2830": 39,
-    "fire_43.21_74.49_852": 58
+    "fire_43.02_74.96_2944": 39,
+    "fire_43.21_74.49_864": 58
   },
   "kamensk_uralsky_air_base|orsk_air_base|truck": {
-    "fire_51.17_58.56_860": 20,
-    "fire_52.15_59.00_3159": 40,
-    "fire_52.16_59.47_862": 20,
-    "fire_52.52_59.20_863": 79,
-    "fire_52.99_59.70_1075": 40,
-    "fire_53.87_60.00_1077": 79,
-    "fire_55.26_61.49_1083": 40
+    "fire_51.17_58.56_872": 20,
+    "fire_52.12_59.02_3284": 59,
+    "fire_52.16_59.46_874": 20,
+    "fire_52.52_59.20_875": 79,
+    "fire_52.99_59.70_1094": 40,
+    "fire_53.88_60.00_1096": 79,
+    "fire_55.26_61.49_1103": 40
   },
   "kamensk_uralsky_air_base|perm_international_airport|truck": {
-    "fire_56.87_59.89_877": 39
+    "fire_56.87_59.89_889": 39
   },
   "kamensk_uralsky_air_base|uprun_air_base|truck": {
-    "fire_55.26_61.49_1083": 39
+    "fire_55.26_61.49_1103": 39
   },
   "kamensk_uralsky_air_base|yugorsk_sovetsky_air_base|truck": {
-    "fire_56.87_62.05_1090": 19
+    "fire_56.87_62.05_1111": 19
   },
   "kamina_air_base|peter_zuze_air_force_base|truck": {
-    "fire_-10.82_27.17_1952": 59,
-    "fire_-10.87_26.61_1947": 20,
-    "fire_-11.77_28.02_1921": 20,
-    "fire_-12.33_28.16_1909": 79,
-    "fire_-12.48_28.04_1903": 40,
-    "fire_-12.56_28.44_1898": 79
+    "fire_-10.84_27.17_2027": 59,
+    "fire_-10.87_26.61_2020": 20,
+    "fire_-11.81_28.00_1992": 59,
+    "fire_-12.33_28.17_1980": 79,
+    "fire_-12.49_28.05_1974": 40,
+    "fire_-12.56_28.44_1968": 79,
+    "fire_-9.28_25.93_2114": 40
   },
   "kampala|kigali|truck": {
-    "fire_0.13_32.47_3754": 20
+    "fire_0.13_32.47_3969": 20
   },
   "kampala|rumangabo|truck": {
-    "fire_-1.40_29.20_2894": 19
+    "fire_-1.40_29.20_3011": 19
   },
   "kant_air_base|khorgos|truck": {
-    "fire_42.79_75.29_1027": 20,
-    "fire_43.02_74.96_2830": 39,
-    "fire_43.63_77.30_853": 39
+    "fire_42.79_75.29_1039": 20,
+    "fire_43.02_74.96_2944": 39,
+    "fire_43.63_77.30_865": 39
   },
   "kant_air_base|usharal_airport|truck": {
-    "fire_43.02_74.96_2830": 39
+    "fire_43.02_74.96_2944": 39
   },
   "kapustin_yar_air_base|kotelnikovo_air_base|truck": {
-    "fire_47.69_42.97_3154": 38,
-    "fire_47.91_43.36_1045": 38,
-    "fire_48.42_44.66_3155": 57
+    "fire_47.70_42.95_3279": 38,
+    "fire_47.91_43.38_1057": 38,
+    "fire_48.42_44.66_3280": 57
   },
   "kapustin_yar_air_base|lebyazhye_air_base|truck": {
-    "fire_50.08_45.70_1597": 39
+    "fire_50.08_45.70_1635": 39
   },
   "kapustin_yar_air_base|marinovka_air_base|truck": {
-    "fire_48.42_44.66_3155": 54,
-    "fire_48.64_43.94_3156": 36
+    "fire_48.42_44.66_3280": 54,
+    "fire_48.64_43.94_3281": 36,
+    "fire_48.74_44.75_1059": 71
   },
   "kapustin_yar_air_base|morozovsk_air_base|truck": {
-    "fire_48.20_42.26_1046": 59,
-    "fire_48.42_44.66_3155": 59,
-    "fire_48.52_43.33_3724": 39,
-    "fire_48.64_43.94_3156": 39
+    "fire_48.21_42.29_1058": 59,
+    "fire_48.34_42.64_1630": 39,
+    "fire_48.42_44.66_3280": 59,
+    "fire_48.52_43.33_3921": 39,
+    "fire_48.64_43.94_3281": 39,
+    "fire_48.74_44.75_1059": 59
   },
   "karachi|pns_qasim|truck": {
-    "fire_25.06_67.55_2856": 40,
-    "fire_25.10_68.47_954": 20
+    "fire_25.06_67.55_2971": 40,
+    "fire_25.10_68.47_966": 20
   },
   "karlskrona_naval_base|musko_naval_base|truck": {
     "fire_58.68_17.13_14": 18
@@ -3349,103 +3327,121 @@
   "kasuminome_air_field|narita|truck": {
     "quake_us7000ttpe": 60
   },
+  "kauri_point_armament_depot|linton_military_camp|truck": {
+    "fire_-37.20_174.72_2364": 39
+  },
+  "kauri_point_armament_depot|waiouru_military_camp|truck": {
+    "fire_-37.20_174.72_2364": 19
+  },
+  "kauri_point_armament_depot|wellington|truck": {
+    "fire_-37.20_174.72_2364": 39
+  },
   "khanskaya_air_base|krymsk_air_base|truck": {
-    "fire_45.10_38.62_1587": 18,
-    "fire_45.14_38.31_1586": 36
+    "fire_45.10_38.61_1623": 18,
+    "fire_45.15_38.32_1622": 36
   },
   "kharab_al_jir_base|mission_support_site_conoco|truck": {
-    "fire_36.93_42.19_2885": 19
+    "fire_36.93_42.19_3002": 19
   },
   "kharab_al_jir_base|tikrit_east_air_base|truck": {
-    "fire_36.66_42.39_1576": 75,
-    "fire_36.93_42.19_2885": 38
+    "fire_36.66_42.39_1612": 75,
+    "fire_36.93_42.19_3002": 38
   },
   "kigali|rumangabo|truck": {
-    "fire_-1.40_29.20_2894": 20
+    "fire_-1.40_29.20_3011": 20
   },
   "kigali|simisini_air_base|truck": {
-    "fire_-1.40_29.20_2894": 79
+    "fire_-1.40_29.20_3011": 79
   },
   "kigamboni_naval_base|mombasa|truck": {
-    "fire_-6.20_38.74_1474": 72
+    "fire_-5.52_38.85_3359": 70,
+    "fire_-5.62_38.56_3805": 35,
+    "fire_-6.21_38.73_1507": 72,
+    "fire_-6.61_38.96_3963": 49
+  },
+  "kigamboni_naval_base|ngerengere_air_force_base|truck": {
+    "fire_-6.61_38.96_3963": 18,
+    "fire_-6.92_38.93_3962": 55
   },
   "king_abdulaziz_air_base|king_abdulaziz_naval_base|truck": {
-    "fire_26.72_50.07_2889": 18,
-    "fire_27.02_49.57_3227": 18
+    "fire_26.72_50.07_3006": 18,
+    "fire_27.02_49.57_3367": 18
   },
   "king_abdulaziz_air_base|king_salman_air_base|truck": {
-    "fire_24.54_46.97_2886": 19
+    "fire_24.54_46.97_3003": 19
   },
   "king_abdulaziz_air_base|prince_sultan_air_base|truck": {
-    "fire_25.65_49.42_985": 40
+    "fire_25.65_49.42_997": 40
   },
   "king_abdulaziz_naval_base|king_salman_air_base|truck": {
-    "fire_27.02_49.57_3227": 39
+    "fire_27.02_49.57_3367": 39
   },
   "king_abdulaziz_naval_base|kuwait_city|truck": {
-    "fire_27.02_49.57_3227": 37,
-    "fire_27.15_49.21_986": 19,
-    "fire_27.83_48.73_990": 57,
-    "fire_29.00_48.07_3228": 38
+    "fire_27.02_49.57_3367": 37,
+    "fire_27.15_49.21_998": 19,
+    "fire_27.83_48.73_1002": 57,
+    "fire_29.00_48.07_3368": 38
   },
   "king_abdulaziz_naval_base|prince_sultan_air_base|truck": {
-    "fire_27.02_49.57_3227": 39
+    "fire_27.02_49.57_3367": 39
   },
   "king_abdulaziz_naval_base|riyadh|truck": {
-    "fire_27.02_49.57_3227": 39
+    "fire_27.02_49.57_3367": 39
   },
   "king_khalid_military_city|kuwait_city|truck": {
-    "fire_29.02_47.70_3229": 38
+    "fire_29.02_47.70_3369": 38
   },
   "king_salman_air_base|prince_sultan_air_base|truck": {
-    "fire_24.54_46.97_2886": 57
+    "fire_24.54_46.97_3003": 57
   },
   "kinshasa|kitona_air_base|truck": {
-    "fire_-4.34_14.99_2050": 57,
-    "fire_-5.13_13.62_2019": 76,
-    "fire_-5.27_14.07_2020": 76,
-    "fire_-5.49_13.34_2014": 57,
-    "fire_-5.74_12.62_2013": 57
+    "fire_-4.34_14.99_2132": 57,
+    "fire_-5.13_13.62_2100": 76,
+    "fire_-5.27_14.07_2101": 76,
+    "fire_-5.49_13.34_2095": 57,
+    "fire_-5.74_12.62_2094": 57
   },
   "kinshasa|luanda|truck": {
-    "fire_-4.81_15.40_2023": 75,
-    "fire_-7.39_14.48_2005": 38,
-    "fire_-8.35_13.87_2002": 57,
-    "fire_-8.55_13.44_2000": 38
+    "fire_-4.81_15.40_2104": 75,
+    "fire_-7.39_14.48_2085": 38,
+    "fire_-8.34_13.87_2082": 57,
+    "fire_-8.53_13.43_2080": 38
   },
   "kisarazu_air_field|narita|truck": {
-    "fire_35.37_139.85_3466": 20,
+    "fire_35.37_139.85_3651": 20,
     "quake_us7000ttpe": 39
   },
   "kisarazu_air_field|shimofusa_air_base|truck": {
-    "fire_35.37_139.85_3466": 28,
+    "fire_35.37_139.85_3651": 28,
     "quake_us7000ttpe": 44
   },
   "kisarazu_air_field|tokyo|truck": {
-    "fire_35.37_139.85_3466": 37
+    "fire_35.37_139.85_3651": 37
   },
   "kisumu|moi_air_base|truck": {
-    "fire_-0.83_36.37_2895": 38
+    "fire_-0.83_36.37_3012": 38
   },
   "kisumu|nairobi|truck": {
-    "fire_-0.83_36.37_2895": 38
+    "fire_-0.83_36.37_3012": 38
   },
   "kisumu|rumangabo|truck": {
-    "fire_-1.40_29.20_2894": 20
+    "fire_-1.40_29.20_3011": 20
   },
   "kitona_air_base|luanda|truck": {
-    "fire_-6.46_12.51_2008": 49,
-    "fire_-8.55_13.44_2000": 58
+    "fire_-6.42_12.49_2089": 49,
+    "fire_-6.89_12.94_2088": 35,
+    "fire_-8.53_13.43_2080": 44
   },
   "klokovo_air_base|kubinka_air_base|truck": {
     "fire_54.16_37.68_12": 18
   },
   "klokovo_air_base|kursk_vostochny_airport|truck": {
+    "fire_52.61_36.93_3292": 19,
     "fire_54.16_37.68_12": 39
   },
   "klokovo_air_base|lipetsk_air_base|truck": {
     "fire_52.55_39.62_10": 20,
-    "fire_53.79_37.85_1605": 20,
+    "fire_53.79_37.85_1645": 20,
     "fire_54.05_38.19_11": 39,
     "fire_54.16_37.68_12": 39
   },
@@ -3457,196 +3453,208 @@
     "fire_54.27_38.96_13": 57
   },
   "klokovo_air_base|seshcha_air_base|truck": {
+    "fire_53.89_35.08_4149": 38,
     "fire_54.16_37.68_12": 19
   },
   "klokovo_air_base|shaykovka_air_base|truck": {
-    "fire_54.16_37.68_12": 19
+    "fire_54.16_37.68_12": 19,
+    "fire_54.39_35.44_3379": 38
   },
   "korenovsk_air_base|krymsk_air_base|truck": {
-    "fire_45.10_38.62_1587": 53,
-    "fire_45.14_38.31_1586": 53
+    "fire_45.10_38.61_1623": 53,
+    "fire_45.15_38.32_1622": 71
   },
   "korenovsk_air_base|primorsko_akhtarsk_air_base|truck": {
-    "fire_45.57_38.46_1037": 19
+    "fire_45.57_38.46_1049": 19
   },
   "kotelnikovo_air_base|marinovka_air_base|truck": {
-    "fire_47.69_42.97_3154": 35,
-    "fire_47.91_43.36_1045": 35,
-    "fire_48.11_43.15_3230": 35,
-    "fire_48.64_43.94_3156": 18
+    "fire_47.70_42.95_3279": 35,
+    "fire_47.91_43.38_1057": 35,
+    "fire_48.12_43.15_3370": 35,
+    "fire_48.64_43.94_3281": 18
   },
   "kotelnikovo_air_base|millerovo_air_base|truck": {
-    "fire_47.69_42.97_3154": 58,
-    "fire_48.20_42.26_1046": 58
+    "fire_47.70_42.95_3279": 58,
+    "fire_48.21_42.29_1058": 58
   },
   "kotelnikovo_air_base|morozovsk_air_base|truck": {
-    "fire_47.69_42.97_3154": 53,
-    "fire_48.20_42.26_1046": 71
+    "fire_47.70_42.95_3279": 53,
+    "fire_48.21_42.29_1058": 71
   },
   "kotelnikovo_air_base|zernograd_air_base|truck": {
-    "fire_47.11_41.16_1043": 56,
-    "fire_47.49_41.63_1591": 56,
-    "fire_47.69_42.97_3154": 37
+    "fire_47.11_41.17_1055": 56,
+    "fire_47.49_41.62_1627": 56,
+    "fire_47.70_42.95_3279": 37
   },
   "kourou_site|paramaribo|truck": {
-    "fire_5.03_-52.51_2578": 19,
-    "fire_5.65_-54.18_2585": 97,
-    "fire_5.73_-55.20_2588": 39
+    "fire_5.03_-52.51_2692": 19,
+    "fire_5.65_-54.18_2699": 97,
+    "fire_5.73_-55.20_2702": 39
   },
   "krasnodar_air_base|krymsk_air_base|truck": {
-    "fire_45.10_38.62_1587": 57,
-    "fire_45.14_38.31_1586": 57
+    "fire_45.10_38.61_1623": 57,
+    "fire_45.15_38.32_1622": 57
   },
   "krasnodar_air_base|primorsko_akhtarsk_air_base|truck": {
-    "fire_45.10_38.62_1587": 17,
-    "fire_45.57_38.46_1037": 70
+    "fire_45.10_38.61_1623": 35,
+    "fire_45.42_38.32_1624": 35,
+    "fire_45.57_38.46_1049": 70
   },
   "krymsk_air_base|kushchyovskaya_air_base|truck": {
-    "fire_45.14_38.31_1586": 58,
-    "fire_45.37_37.88_1036": 19,
-    "fire_45.40_38.31_1588": 58,
-    "fire_45.57_38.46_1037": 77
+    "fire_45.15_38.32_1622": 58,
+    "fire_45.37_37.89_1048": 19,
+    "fire_45.42_38.32_1624": 58,
+    "fire_45.57_38.46_1049": 77
   },
   "krymsk_air_base|primorsko_akhtarsk_air_base|truck": {
-    "fire_45.14_38.31_1586": 53,
-    "fire_45.37_37.88_1036": 53,
-    "fire_45.40_38.31_1588": 35,
-    "fire_45.57_38.46_1037": 35,
-    "fire_45.67_37.99_1589": 18
+    "fire_45.15_38.32_1622": 53,
+    "fire_45.37_37.89_1048": 53,
+    "fire_45.42_38.32_1624": 35,
+    "fire_45.57_38.46_1049": 35,
+    "fire_45.70_38.02_1625": 53
   },
   "krymsk_air_base|yeysk_air_base|truck": {
-    "fire_45.14_38.31_1586": 56,
-    "fire_45.37_37.88_1036": 38,
-    "fire_45.40_38.31_1588": 56,
-    "fire_45.57_38.46_1037": 75
+    "fire_45.15_38.32_1622": 56,
+    "fire_45.37_37.89_1048": 38,
+    "fire_45.42_38.32_1624": 75,
+    "fire_45.57_38.46_1049": 75
   },
   "kunming|nampong_air_force_base|truck": {
-    "fire_24.97_102.34_2677": 20,
-    "fire_25.12_97.51_811": 59
+    "fire_24.97_102.34_2791": 20,
+    "fire_25.12_97.51_823": 59
   },
   "kure_naval_arsenal|maizuru_naval_arsenal|truck": {
-    "fire_34.46_133.74_3468": 20
+    "fire_34.46_133.74_3653": 20
   },
   "kure_naval_arsenal|osaka|truck": {
-    "fire_34.72_134.82_2429": 18
+    "fire_34.72_134.82_2543": 18
   },
   "kure_naval_arsenal|sub_area_activity_hanshin|truck": {
-    "fire_34.72_134.82_2429": 18
+    "fire_34.72_134.82_2543": 18
   },
   "kursk_vostochny_airport|lipetsk_air_base|truck": {
     "fire_52.55_39.62_10": 39
   },
   "kursk_vostochny_airport|myrhorod_air_base|truck": {
-    "fire_51.16_35.18_3232": 39
+    "fire_51.19_35.08_3374": 39
   },
   "kursk_vostochny_airport|voronezh_malshevo_air_base|truck": {
-    "fire_51.65_38.24_1065": 78
+    "fire_51.65_38.24_1080": 78
+  },
+  "kushchyovskaya_air_base|morozovsk_air_base|truck": {
+    "fire_47.28_40.13_3278": 60
   },
   "kushchyovskaya_air_base|primorsko_akhtarsk_air_base|truck": {
-    "fire_46.35_38.86_3865": 38
+    "fire_46.35_38.86_4120": 38
   },
   "kushchyovskaya_air_base|rostov_on_don_north_air_base|truck": {
-    "fire_46.97_39.57_3866": 33,
-    "fire_47.11_39.37_1042": 49
+    "fire_46.96_39.59_4121": 33,
+    "fire_47.11_39.37_1054": 49
   },
   "kushchyovskaya_air_base|taganrog_central_air_base|truck": {
-    "fire_47.11_39.37_1042": 57
+    "fire_47.11_39.37_1054": 57
   },
   "kuwait_city|omidiyeh_air_base|truck": {
-    "fire_30.80_49.58_974": 15,
-    "fire_31.15_49.28_979": 15
+    "fire_30.80_49.58_986": 15,
+    "fire_31.15_49.28_991": 15
   },
   "la_macarena_airport|lieutenant_bergerie_airport|truck": {
-    "fire_-3.74_-73.36_3567": 39
+    "fire_-3.74_-73.36_3752": 39
   },
   "la_pesca_naval_air_base|tuxpan_naval_air_base|truck": {
-    "fire_22.26_-97.84_3133": 55,
-    "fire_23.43_-97.85_3593": 40
+    "fire_22.26_-97.84_3256": 55,
+    "fire_23.43_-97.85_3778": 40
   },
   "lagos|port_harcourt|truck": {
-    "fire_4.94_7.12_131": 38,
-    "fire_5.21_6.71_132": 38,
-    "fire_5.59_6.67_133": 19
+    "fire_4.94_7.12_133": 38,
+    "fire_5.24_6.73_134": 38,
+    "fire_5.71_6.40_138": 38
   },
   "lahore|new_delhi|truck": {
-    "fire_30.30_75.25_3708": 58,
-    "fire_30.53_75.81_3143": 39,
-    "fire_31.12_74.26_1004": 19,
-    "fire_31.19_74.95_837": 58,
-    "fire_31.20_74.62_839": 58,
-    "fire_31.41_74.82_3146": 39,
-    "fire_31.76_74.24_843": 19
+    "fire_30.30_75.25_3902": 58,
+    "fire_30.53_75.81_3266": 39,
+    "fire_31.12_74.26_1016": 19,
+    "fire_31.19_74.95_849": 58,
+    "fire_31.20_74.62_851": 58,
+    "fire_31.41_74.82_3269": 39,
+    "fire_31.76_74.24_855": 19
   },
   "lahore|pathankot_air_force_station|truck": {
-    "fire_31.76_74.24_843": 36,
-    "fire_31.84_75.18_3711": 54,
-    "fire_31.87_75.42_1011": 36,
-    "fire_31.91_74.79_844": 72,
-    "fire_32.16_75.19_847": 72
+    "fire_31.76_74.24_855": 36,
+    "fire_31.84_75.18_3905": 54,
+    "fire_31.87_75.42_1023": 36,
+    "fire_31.91_74.79_856": 72,
+    "fire_32.16_75.19_859": 72
   },
   "lahore|phalodi_air_force_station|truck": {
-    "fire_30.17_73.45_830": 79,
-    "fire_30.28_73.84_3142": 59,
-    "fire_30.47_73.64_997": 79,
-    "fire_30.69_74.27_834": 20,
-    "fire_30.71_73.89_832": 79,
-    "fire_31.12_74.26_1004": 79,
-    "fire_31.76_74.24_843": 20
+    "fire_30.17_73.45_842": 79,
+    "fire_30.28_73.84_3265": 59,
+    "fire_30.47_73.64_1009": 79,
+    "fire_30.69_74.27_846": 20,
+    "fire_30.71_73.89_844": 79,
+    "fire_31.12_74.26_1016": 79,
+    "fire_31.76_74.24_855": 20
   },
   "lahore|sheikhupura_fort|truck": {
-    "fire_31.46_73.88_838": 19,
-    "fire_31.76_74.24_843": 38,
-    "fire_31.87_73.81_842": 19
+    "fire_31.46_73.88_850": 19,
+    "fire_31.76_74.24_855": 38,
+    "fire_31.87_73.81_854": 19
   },
   "lahore|sri_guru_ravidas_airport|truck": {
-    "fire_31.37_75.14_840": 39,
-    "fire_31.41_74.82_3146": 58,
-    "fire_31.62_75.52_841": 58,
-    "fire_31.76_74.24_843": 19
+    "fire_31.37_75.14_852": 39,
+    "fire_31.41_74.82_3269": 58,
+    "fire_31.62_75.52_853": 58,
+    "fire_31.76_74.24_855": 19
   },
   "lahore|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 38,
-    "fire_30.28_73.84_3142": 56,
-    "fire_30.69_74.27_834": 56,
-    "fire_30.71_73.89_832": 56,
-    "fire_31.12_74.26_1004": 94,
-    "fire_31.76_74.24_843": 19
+    "fire_29.49_74.06_978": 38,
+    "fire_30.28_73.84_3265": 56,
+    "fire_30.69_74.27_846": 56,
+    "fire_30.71_73.89_844": 56,
+    "fire_31.12_74.26_1016": 94,
+    "fire_31.76_74.24_855": 19
   },
   "lahore|udhampur_air_force_station|truck": {
-    "fire_31.76_74.24_843": 56,
-    "fire_31.91_74.79_844": 56,
-    "fire_32.24_74.71_846": 56,
-    "fire_32.43_74.80_849": 56
+    "fire_31.76_74.24_855": 56,
+    "fire_31.91_74.79_856": 56,
+    "fire_32.24_74.71_858": 56,
+    "fire_32.43_74.80_861": 56
   },
   "lebyazhye_air_base|marinovka_air_base|truck": {
-    "fire_48.64_43.94_3156": 37
+    "fire_48.64_43.94_3281": 37
   },
   "letterkenny_army_depot|oakdale_air_force_station|truck": {
-    "fire_40.36_-79.86_890": 58
+    "fire_40.36_-79.86_902": 58
   },
   "letterkenny_army_depot|pittsburgh_iap_air_reserve_station|truck": {
-    "fire_40.36_-79.86_890": 55
+    "fire_40.36_-79.86_902": 55
   },
   "lilongwe|lusaka|truck": {
-    "fire_-14.93_29.92_1847": 79,
-    "fire_-15.01_29.35_1849": 79,
-    "fire_-15.05_28.79_1848": 79,
-    "fire_-15.13_29.14_1844": 79,
-    "fire_-15.18_30.10_3291": 59,
-    "fire_-15.25_29.67_1840": 59
+    "fire_-14.93_29.92_1912": 79,
+    "fire_-15.01_29.35_1915": 79,
+    "fire_-15.06_28.76_1914": 79,
+    "fire_-15.10_29.13_1909": 79,
+    "fire_-15.18_30.10_3441": 59,
+    "fire_-15.25_29.67_1902": 59,
+    "fire_-15.53_28.59_1898": 39
   },
   "lilongwe|peter_zuze_air_force_base|truck": {
-    "fire_-12.95_30.27_1896": 39,
-    "fire_-13.06_29.57_1884": 39,
-    "fire_-13.09_29.07_1877": 78,
-    "fire_-13.16_30.78_1880": 78,
-    "fire_-13.29_29.83_1876": 78,
-    "fire_-13.36_30.46_3307": 58,
-    "fire_-13.56_31.10_1867": 117,
-    "fire_-13.64_30.30_1872": 39
+    "fire_-12.95_30.27_1966": 39,
+    "fire_-13.06_29.56_1954": 58,
+    "fire_-13.09_29.07_1947": 78,
+    "fire_-13.18_30.79_1950": 78,
+    "fire_-13.29_29.83_1946": 78,
+    "fire_-13.34_30.45_3464": 58,
+    "fire_-13.52_30.74_3451": 39,
+    "fire_-13.56_31.10_1937": 117,
+    "fire_-13.60_31.38_4157": 19,
+    "fire_-13.64_30.29_1942": 39
+  },
+  "linton_military_camp|rnzaf_base_auckland|truck": {
+    "fire_-37.20_174.72_2364": 19
   },
   "linton_military_camp|waiouru_military_camp|truck": {
-    "fire_-39.47_175.81_146": 17
+    "fire_-39.47_175.81_149": 17
   },
   "lipetsk_air_base|michurinsk_air_base|truck": {
     "fire_52.55_39.62_10": 35
@@ -3656,246 +3664,254 @@
   },
   "lipetsk_air_base|tambov_air_base|truck": {
     "fire_52.55_39.62_10": 56,
-    "fire_52.63_41.01_1074": 56
+    "fire_52.57_41.01_1092": 56
   },
   "lipetsk_air_base|voronezh_malshevo_air_base|truck": {
     "fire_52.55_39.62_10": 38
   },
   "lisbon|porto|truck": {
-    "fire_39.17_-8.82_155": 78
+    "fire_39.17_-8.82_158": 78
   },
   "little_rock_air_force_base|memphis|truck": {
-    "fire_34.81_-91.03_2784": 40,
-    "fire_35.00_-90.07_906": 40,
-    "fire_35.18_-91.29_3584": 40
+    "fire_34.81_-91.03_2898": 40,
+    "fire_35.00_-90.07_918": 40,
+    "fire_35.18_-91.29_3769": 40
   },
   "little_rock_air_force_base|naval_support_activity_mid_south|truck": {
-    "fire_35.18_-91.29_3584": 58,
-    "fire_35.46_-90.94_2786": 77
+    "fire_35.18_-91.29_3769": 58,
+    "fire_35.46_-90.94_2900": 77
   },
   "little_rock_air_force_base|walnut_ridge_air_force_station|truck": {
-    "fire_35.46_-90.94_2786": 39,
-    "fire_35.60_-91.31_2787": 58,
-    "fire_35.92_-90.94_2788": 58,
-    "fire_36.21_-90.85_2789": 19
+    "fire_35.46_-90.94_2900": 39,
+    "fire_35.60_-91.31_2901": 58,
+    "fire_35.92_-90.94_2902": 58,
+    "fire_36.21_-90.85_2903": 19
   },
   "lokpriya_gopinath_bordoloi_international_airport|mechuka_advanced_landing_ground|truck": {
-    "fire_27.34_92.49_825": 20
+    "fire_27.34_92.49_837": 20
   },
   "lokpriya_gopinath_bordoloi_international_airport|nampong_air_force_base|truck": {
-    "fire_25.73_96.66_812": 40
+    "fire_25.73_96.66_824": 40
   },
   "loma_bonita_air_force_station|salina_cruz_naval_air_base|truck": {
-    "fire_16.20_-95.17_932": 19
+    "fire_16.20_-95.17_944": 19
   },
   "loma_bonita_air_force_station|tuxpan_naval_air_base|truck": {
-    "fire_18.51_-96.14_940": 38
+    "fire_18.51_-96.14_952": 38
   },
   "los_angeles_air_force_base|march_air_reserve_base|truck": {
-    "fire_34.08_-118.01_1092": 34
+    "fire_34.08_-118.01_1113": 34
   },
   "madeira_island_submarine_base|rio_de_janeiro|truck": {
-    "fire_-22.91_-43.75_3053": 17
+    "fire_-22.91_-43.75_3176": 17
   },
   "madeira_island_submarine_base|santa_cruz_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 13
+    "fire_-22.91_-43.75_3176": 13
   },
   "maizuru_naval_arsenal|shizuhama_air_base|truck": {
-    "fire_35.03_136.87_2996": 20
+    "fire_35.03_136.87_3119": 20
   },
   "malek_ashtar_garrison|parchin|truck": {
-    "fire_35.53_51.44_2884": 56
+    "fire_35.53_51.44_3001": 56
   },
   "malek_ashtar_garrison|tehran|truck": {
-    "fire_35.53_51.44_2884": 39
+    "fire_35.53_51.44_3001": 39
   },
   "maputo|mbabane|truck": {
-    "fire_-25.81_32.23_1612": 18
+    "fire_-25.81_32.23_1654": 18,
+    "fire_-26.37_30.97_3820": 18
   },
   "maputo|pretoria|truck": {
-    "fire_-25.66_28.67_1615": 60,
-    "fire_-25.79_30.10_1611": 60,
-    "fire_-25.81_32.23_1612": 60,
-    "fire_-25.83_29.15_1613": 80,
-    "fire_-25.84_29.55_3629": 60
+    "fire_-25.66_28.67_1657": 60,
+    "fire_-25.75_30.11_1653": 60,
+    "fire_-25.81_32.23_1654": 60,
+    "fire_-25.84_29.14_1655": 80,
+    "fire_-25.85_29.57_3821": 60
   },
   "marine_corps_air_station_iwakuni|osaka|truck": {
-    "fire_34.72_134.82_2429": 20
+    "fire_34.72_134.82_2543": 20
   },
   "marine_corps_air_station_iwakuni|sub_area_activity_hanshin|truck": {
-    "fire_34.72_134.82_2429": 20
+    "fire_34.72_134.82_2543": 20
   },
   "marine_corps_logistics_base_albany|robins_air_force_base|truck": {
-    "fire_32.65_-83.54_2775": 55
+    "fire_32.65_-83.54_2889": 55
   },
   "marinovka_air_base|millerovo_air_base|truck": {
-    "fire_48.64_43.94_3156": 20
+    "fire_48.64_43.94_3281": 20
   },
   "marinovka_air_base|morozovsk_air_base|truck": {
-    "fire_48.20_42.26_1046": 57,
-    "fire_48.52_43.33_3724": 38,
-    "fire_48.64_43.94_3156": 19
-  },
-  "marrakesh|rabat|truck": {
-    "fire_33.51_-7.45_158": 38
+    "fire_48.21_42.29_1058": 57,
+    "fire_48.34_42.64_1630": 19,
+    "fire_48.52_43.33_3921": 38,
+    "fire_48.64_43.94_3281": 19
   },
   "matsushima_air_field|narita|truck": {
     "quake_us7000ttpe": 38
   },
   "maxwell_air_force_base|naval_air_station_meridian|truck": {
-    "fire_32.27_-88.19_2778": 38
+    "fire_32.27_-88.19_2892": 38
   },
   "maxwell_air_force_base|sumpter_smith_air_national_guard_base|truck": {
-    "fire_32.95_-86.52_3581": 59,
-    "fire_33.16_-86.81_901": 39,
-    "fire_33.53_-86.82_904": 20
+    "fire_32.95_-86.52_3766": 59,
+    "fire_33.16_-86.81_913": 39,
+    "fire_33.53_-86.82_916": 20
   },
   "mbabane|pretoria|truck": {
-    "fire_-25.66_28.67_1615": 38,
-    "fire_-25.83_29.15_1613": 75,
-    "fire_-25.84_29.55_3629": 38
+    "fire_-25.66_28.67_1657": 38,
+    "fire_-25.84_29.14_1655": 75,
+    "fire_-25.85_29.57_3821": 38,
+    "fire_-26.37_30.97_3820": 38
   },
   "mbabane|thaba_tshwane|truck": {
-    "fire_-25.66_28.67_1615": 19,
-    "fire_-25.83_29.15_1613": 57,
-    "fire_-25.84_29.55_3629": 38
+    "fire_-25.66_28.67_1657": 19,
+    "fire_-25.84_29.14_1655": 76,
+    "fire_-25.85_29.57_3821": 38,
+    "fire_-26.37_30.97_3820": 38
   },
   "mechuka_advanced_landing_ground|nampong_air_force_base|truck": {
-    "fire_25.73_96.66_812": 60,
-    "fire_27.40_95.34_815": 80
+    "fire_25.73_96.66_824": 60,
+    "fire_27.40_95.34_827": 80
   },
   "melbourne|raaf_williams|truck": {
-    "fire_-37.83_144.78_2414": 23
+    "fire_-37.83_144.78_2528": 23
   },
   "memphis|naval_support_activity_mid_south|truck": {
-    "fire_35.00_-90.07_906": 17
+    "fire_35.00_-90.07_918": 17
   },
   "memphis|robinson_army_airfield|truck": {
-    "fire_34.81_-91.03_2784": 39,
-    "fire_35.00_-90.07_906": 39
+    "fire_34.81_-91.03_2898": 39,
+    "fire_35.00_-90.07_918": 39
   },
   "memphis|walnut_ridge_air_force_station|truck": {
-    "fire_35.00_-90.07_906": 18,
-    "fire_35.46_-90.94_2786": 55,
-    "fire_35.92_-90.94_2788": 55,
-    "fire_36.21_-90.85_2789": 18
+    "fire_35.00_-90.07_918": 18,
+    "fire_35.46_-90.94_2900": 55,
+    "fire_35.92_-90.94_2902": 55,
+    "fire_36.21_-90.85_2903": 18
   },
   "michurinsk_air_base|tambov_air_base|truck": {
-    "fire_52.63_41.01_1074": 36,
-    "fire_53.04_41.02_1084": 36
+    "fire_52.57_41.01_1092": 36,
+    "fire_53.04_41.02_1104": 36
   },
   "michurinsk_air_base|voronezh_malshevo_air_base|truck": {
     "fire_52.55_39.62_10": 56
   },
   "milan|riviera_airport_switzerland|truck": {
-    "fire_45.67_9.56_153": 38
+    "fire_45.67_9.56_156": 38
   },
   "milan|verona_villafranca_airport|truck": {
     "fire_45.48_10.32_17": 38,
-    "fire_45.67_9.56_153": 57
+    "fire_45.67_9.56_156": 57
   },
   "military_ocean_terminal_at_bayonne|new_york|truck": {
-    "fire_40.61_-74.22_746": 8
+    "fire_40.61_-74.22_758": 8
   },
   "millerovo_air_base|rostov_on_don_north_air_base|truck": {
-    "fire_47.11_39.37_1042": 19,
+    "fire_47.11_39.37_1054": 19,
     "fire_47.66_39.83_1": 58,
-    "fire_47.96_39.91_1592": 77
+    "fire_47.95_39.90_1628": 77
   },
   "millerovo_air_base|taganrog_central_air_base|truck": {
-    "fire_47.65_39.37_2926": 40,
-    "fire_47.93_39.11_2870": 60,
-    "fire_47.96_39.91_1592": 40
+    "fire_47.65_39.37_3045": 40,
+    "fire_47.91_39.09_2985": 60,
+    "fire_47.95_39.90_1628": 40
   },
   "millerovo_air_base|zernograd_air_base|truck": {
-    "fire_47.96_39.91_1592": 39
+    "fire_47.28_40.13_3278": 59,
+    "fire_47.95_39.90_1628": 39
   },
   "moi_air_base|ngerengere_air_force_base|truck": {
-    "fire_-6.02_37.96_3753": 78,
-    "fire_-6.43_38.04_3372": 58
+    "fire_-5.74_37.80_3966": 78,
+    "fire_-5.99_37.98_3965": 58,
+    "fire_-6.40_38.05_3540": 78
   },
   "mombasa|ngerengere_air_force_base|truck": {
-    "fire_-6.20_38.74_1474": 19,
-    "fire_-6.43_38.04_3372": 38
+    "fire_-5.52_38.85_3359": 57,
+    "fire_-5.62_38.56_3805": 57,
+    "fire_-6.10_38.28_4162": 57,
+    "fire_-6.21_38.73_1507": 19,
+    "fire_-6.40_38.05_3540": 38
   },
   "montevideo|rosario|truck": {
-    "fire_-33.33_-60.21_2461": 19
+    "fire_-33.33_-60.21_2575": 19
   },
   "montgomery_air_national_guard_base|naval_air_station_meridian|truck": {
-    "fire_32.27_-88.19_2778": 37
+    "fire_32.27_-88.19_2892": 37
   },
   "montgomery_air_national_guard_base|sumpter_smith_air_national_guard_base|truck": {
-    "fire_32.95_-86.52_3581": 72,
-    "fire_33.16_-86.81_901": 54,
-    "fire_33.53_-86.82_904": 18
+    "fire_32.95_-86.52_3766": 72,
+    "fire_33.16_-86.81_913": 54,
+    "fire_33.53_-86.82_916": 18
   },
   "montijo_air_base|porto|truck": {
-    "fire_39.17_-8.82_155": 78
+    "fire_39.17_-8.82_158": 78
   },
   "morozovsk_air_base|rostov_on_don_north_air_base|truck": {
-    "fire_47.11_39.37_1042": 20,
+    "fire_47.11_39.37_1054": 20,
+    "fire_47.28_40.13_3278": 59,
     "fire_47.66_39.83_1": 40
   },
   "mountain_home_air_force_base|umatilla_chemical_depot|truck": {
-    "fire_45.00_-118.25_3598": 38
+    "fire_45.00_-118.25_3783": 38
   },
   "mungalalu_truscott_airbase|nackeroo_airfield|truck": {
-    "fire_-14.71_126.99_3843": 38,
-    "fire_-15.28_127.66_3827": 38,
-    "fire_-15.70_129.38_583": 37,
-    "fire_-15.78_129.14_579": 94
+    "fire_-14.71_126.99_4096": 38,
+    "fire_-15.28_127.66_4078": 38,
+    "fire_-15.70_129.38_595": 37,
+    "fire_-15.78_129.14_591": 94
   },
   "mungalalu_truscott_airbase|raaf_base_curtin|truck": {
-    "fire_-15.65_125.38_584": 20
+    "fire_-15.65_125.38_596": 20
   },
   "myrhorod_air_base|seshcha_air_base|truck": {
-    "fire_52.53_33.74_3236": 77
+    "fire_52.53_33.73_3378": 77
   },
   "n_djamena_international_airport|sarh_airport|truck": {
-    "fire_10.31_17.40_2173": 59,
-    "fire_10.60_17.17_2188": 20,
-    "fire_11.43_15.63_2232": 20,
-    "fire_9.56_18.12_2124": 59,
-    "fire_9.83_17.78_2153": 39
+    "fire_10.31_17.40_2263": 59,
+    "fire_10.59_17.17_2278": 20,
+    "fire_11.43_15.63_2329": 20,
+    "fire_9.56_18.12_2213": 59,
+    "fire_9.83_17.78_2243": 39
   },
   "nackeroo_airfield|raaf_base_tindal|truck": {
-    "fire_-15.12_131.84_586": 39
+    "fire_-15.12_131.84_598": 39
   },
   "nairobi|ngerengere_air_force_base|truck": {
-    "fire_-6.02_37.96_3753": 78,
-    "fire_-6.43_38.04_3372": 58
+    "fire_-5.74_37.80_3966": 78,
+    "fire_-5.99_37.98_3965": 58,
+    "fire_-6.40_38.05_3540": 78
   },
   "najibabad_fort|sri_guru_ravidas_airport|truck": {
-    "fire_30.60_76.56_829": 57
+    "fire_30.60_76.56_841": 57
   },
   "najibabad_fort|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 39,
-    "fire_29.62_74.38_3706": 39
+    "fire_29.49_74.06_978": 39,
+    "fire_29.62_74.38_3900": 39
   },
   "nampong_air_force_base|naypyidaw|truck": {
-    "fire_25.12_97.51_811": 40
+    "fire_25.12_97.51_823": 40
   },
   "nanjing|ningbo|truck": {
-    "fire_31.07_119.64_3548": 20,
-    "fire_31.30_119.27_708": 60,
-    "fire_31.53_119.63_3549": 40
+    "fire_31.07_119.64_3733": 20,
+    "fire_31.30_119.27_720": 60,
+    "fire_31.53_119.63_3734": 40
   },
   "nanjing|qingdao|truck": {
-    "fire_32.73_119.02_3085": 58,
-    "fire_33.63_118.87_711": 39,
-    "fire_35.16_119.09_3089": 73
+    "fire_32.73_119.02_3208": 58,
+    "fire_33.63_118.87_723": 39,
+    "fire_35.16_119.09_3212": 73
   },
   "nanjing|shanghai|truck": {
-    "fire_31.82_120.07_3550": 58
+    "fire_31.82_120.07_3735": 58
   },
   "nanjing|suzhou_guangfu_airport|truck": {
-    "fire_31.53_119.63_3549": 39
+    "fire_31.53_119.63_3734": 39
   },
   "nanjing|wuhan|truck": {
-    "fire_31.59_118.14_710": 40
+    "fire_31.59_118.14_722": 40
   },
   "nanjing|wuhu_wanli_airport|truck": {
-    "fire_31.59_118.14_710": 33
+    "fire_31.59_118.14_722": 33
   },
   "narita|shimofusa_air_base|truck": {
     "quake_us7000ttpe": 34
@@ -3904,542 +3920,566 @@
     "quake_us7000ttpe": 32
   },
   "narita|yokohama|truck": {
-    "fire_35.37_139.85_3466": 30,
+    "fire_35.37_139.85_3651": 30,
     "quake_us7000ttpe": 40
   },
   "naryan_mar_airport|pechora_kamenka_air_base|truck": {
-    "fire_65.05_56.67_2822": 19
+    "fire_65.05_56.67_2936": 19
   },
   "naval_air_facility_atsugi|yokohama|truck": {
-    "fire_35.37_139.85_3466": 17
+    "fire_35.37_139.85_3651": 17
   },
   "naval_air_facility_atsugi|yokosuka|truck": {
-    "fire_35.37_139.85_3466": 14
+    "fire_35.37_139.85_3651": 14
   },
   "naval_air_station_fallon|travis_air_force_base|truck": {
-    "fire_38.25_-121.52_2809": 38
+    "fire_38.25_-121.52_2923": 38
   },
   "naval_air_station_hitchcock|naval_station_ingleside|truck": {
-    "fire_29.70_-95.09_2762": 39
+    "fire_29.70_-95.09_2876": 39
   },
   "naval_air_station_hitchcock|united_states_naval_station_orange|truck": {
-    "fire_29.70_-95.09_2762": 58,
-    "fire_29.80_-93.91_3132": 19
+    "fire_29.70_-95.09_2876": 58,
+    "fire_29.80_-93.91_3255": 19
   },
   "naval_air_station_tillamook|north_bend_air_force_station|truck": {
-    "fire_45.43_-123.81_2816": 19
+    "fire_45.43_-123.81_2930": 19
   },
   "naval_air_station_tillamook|portland_or|truck": {
-    "fire_45.43_-123.81_2816": 35
+    "fire_45.43_-123.81_2930": 35
   },
   "naval_outlying_landing_field_choctaw|naval_support_activity_panama_city|truck": {
-    "fire_30.62_-86.58_3575": 78
+    "fire_30.62_-86.58_3760": 78
   },
   "naval_station_new_york|new_york|truck": {
-    "fire_40.61_-74.22_746": 11
+    "fire_40.61_-74.22_758": 11
   },
   "naval_station_treasure_island|sacramento_army_depot|truck": {
-    "fire_38.25_-121.52_2809": 57
+    "fire_38.25_-121.52_2923": 57
   },
   "naval_support_activity_mid_south|robinson_army_airfield|truck": {
-    "fire_35.18_-91.29_3584": 38,
-    "fire_35.46_-90.94_2786": 76
+    "fire_35.18_-91.29_3769": 38,
+    "fire_35.46_-90.94_2900": 76
   },
   "naval_support_activity_mid_south|walnut_ridge_air_force_station|truck": {
-    "fire_35.65_-89.96_908": 56,
-    "fire_35.92_-90.94_2788": 56,
-    "fire_36.21_-90.85_2789": 19
+    "fire_35.65_-89.96_920": 56,
+    "fire_35.92_-90.94_2902": 56,
+    "fire_36.21_-90.85_2903": 19
   },
   "ndjamena|sarh_airport|truck": {
-    "fire_10.31_17.40_2173": 59,
-    "fire_10.60_17.17_2188": 20,
-    "fire_9.56_18.12_2124": 59,
-    "fire_9.83_17.78_2153": 39
+    "fire_10.31_17.40_2263": 59,
+    "fire_10.59_17.17_2278": 20,
+    "fire_9.56_18.12_2213": 59,
+    "fire_9.83_17.78_2243": 39
   },
   "new_delhi|sri_guru_ravidas_airport|truck": {
-    "fire_30.60_76.56_829": 38
+    "fire_30.60_76.56_841": 38
   },
   "new_delhi|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 39
+    "fire_29.49_74.06_978": 39
   },
   "new_semnan_airport|tehran|truck": {
-    "fire_35.53_51.44_2884": 38
+    "fire_35.53_51.44_3001": 38
   },
   "nha_trang_air_base|qui_nhon_airfield|truck": {
-    "fire_13.04_109.09_689": 58,
-    "fire_13.43_109.09_691": 38
+    "fire_13.04_109.09_701": 58,
+    "fire_13.43_109.09_703": 38
   },
   "nha_trang_air_base|tuy_hoa_air_base|truck": {
-    "fire_13.04_109.09_689": 19
+    "fire_13.04_109.09_701": 19
   },
   "nha_trang_air_base|tuy_hoa_base_camp|truck": {
-    "fire_13.04_109.09_689": 18
+    "fire_13.04_109.09_701": 18
   },
   "niamey|ouagadougou|truck": {
-    "fire_12.84_-0.53_106": 79
+    "fire_12.84_-0.49_106": 79
   },
   "nieuwe_haven_naval_base|rotterdam|truck": {
-    "fire_52.49_4.60_2941": 39
+    "fire_52.49_4.60_3060": 39
   },
   "ningbo|wuhu_wanli_airport|truck": {
-    "fire_31.07_119.64_3548": 39,
-    "fire_31.30_119.27_708": 92
+    "fire_31.07_119.64_3733": 39,
+    "fire_31.30_119.27_720": 92
   },
   "north_bend_air_force_station|portland_or|truck": {
-    "fire_44.51_-123.44_3597": 58
+    "fire_44.51_-123.44_3782": 58
   },
   "oakdale_air_force_station|pittsburgh_iap_air_reserve_station|truck": {
-    "fire_40.36_-79.86_890": 12
+    "fire_40.36_-79.86_902": 12
   },
   "oakdale_air_force_station|shepherd_field_air_national_guard_base|truck": {
-    "fire_40.36_-79.86_890": 59
+    "fire_40.36_-79.86_902": 59
   },
   "oakdale_air_force_station|youngstown_air_reserve_station|truck": {
-    "fire_40.36_-79.86_890": 18
+    "fire_40.36_-79.86_902": 18
   },
   "orenburg_air_base|orsk_air_base|truck": {
-    "fire_51.17_58.56_860": 19,
-    "fire_51.61_55.17_1062": 39
+    "fire_51.17_58.56_872": 19,
+    "fire_51.61_55.17_1077": 39
   },
   "orenburg_air_base|pugachyov_air_base|truck": {
-    "fire_51.61_55.17_1062": 20,
-    "fire_51.81_52.55_1066": 20,
-    "fire_51.87_54.72_1067": 39,
-    "fire_51.95_51.28_1068": 39
+    "fire_51.61_55.17_1077": 20,
+    "fire_51.81_52.55_1082": 20,
+    "fire_51.87_54.72_1083": 39,
+    "fire_51.95_51.28_1084": 39
   },
   "orenburg_air_base|syzran_air_base|truck": {
-    "fire_51.61_55.17_1062": 20,
-    "fire_51.87_54.72_1067": 39,
-    "fire_52.56_51.78_3614": 39
+    "fire_51.61_55.17_1077": 20,
+    "fire_51.87_54.72_1083": 39,
+    "fire_52.56_51.78_3800": 39
   },
   "orenburg_air_base|urals_site|truck": {
-    "fire_51.61_55.17_1062": 19
+    "fire_51.61_55.17_1077": 19
   },
   "orsk_air_base|uprun_air_base|truck": {
-    "fire_51.17_58.56_860": 20,
-    "fire_52.15_59.00_3159": 39,
-    "fire_52.16_59.47_862": 39,
-    "fire_52.52_59.20_863": 39,
-    "fire_53.76_60.80_1078": 59
+    "fire_51.17_58.56_872": 20,
+    "fire_52.12_59.02_3284": 59,
+    "fire_52.16_59.46_874": 39,
+    "fire_52.52_59.20_875": 39,
+    "fire_53.76_60.81_1097": 78
   },
   "orsk_air_base|urals_site|truck": {
-    "fire_51.17_58.56_860": 20,
-    "fire_52.57_57.99_3161": 20
+    "fire_51.17_58.56_872": 20,
+    "fire_52.55_57.99_3286": 20
   },
   "osan_air_base|seosan_air_base|truck": {
-    "fire_36.98_126.69_2644": 32
+    "fire_36.98_126.69_2758": 32
   },
   "paf_base_m_m_alam|paf_base_minhas|truck": {
-    "fire_32.87_71.61_2839": 18
+    "fire_32.87_71.61_2954": 18
   },
   "paf_base_m_m_alam|peshawar|truck": {
-    "fire_32.87_71.61_2839": 36
+    "fire_32.87_71.61_2954": 36
   },
   "paf_base_masroor|pns_qasim|truck": {
-    "fire_25.06_67.55_2856": 37,
-    "fire_25.10_68.47_954": 37
+    "fire_25.06_67.55_2971": 37,
+    "fire_25.10_68.47_966": 37
   },
   "parchin|tehran|truck": {
-    "fire_35.53_51.44_2884": 39
+    "fire_35.53_51.44_3001": 39
   },
   "pathankot_air_force_station|sheikhupura_fort|truck": {
-    "fire_31.46_73.88_838": 18,
-    "fire_31.76_74.24_843": 74,
-    "fire_31.84_75.18_3711": 37,
-    "fire_31.87_73.81_842": 18,
-    "fire_31.91_74.79_844": 55,
-    "fire_32.06_74.09_2837": 37,
-    "fire_32.16_75.19_847": 74,
-    "fire_32.24_74.71_846": 37
+    "fire_31.46_73.88_850": 18,
+    "fire_31.76_74.24_855": 74,
+    "fire_31.84_75.18_3905": 37,
+    "fire_31.87_73.81_854": 18,
+    "fire_31.91_74.79_856": 55,
+    "fire_32.06_74.09_2952": 37,
+    "fire_32.16_75.19_859": 74,
+    "fire_32.24_74.71_858": 37
   },
   "pathankot_air_force_station|sri_guru_ravidas_airport|truck": {
-    "fire_31.62_75.52_841": 54,
-    "fire_31.87_75.42_1011": 18
+    "fire_31.62_75.52_853": 54,
+    "fire_31.87_75.42_1023": 18
   },
   "pechora_kamenka_air_base|vorkuta_sovetsky_air_base|truck": {
-    "fire_65.05_56.67_2822": 20
+    "fire_65.05_56.67_2936": 20
   },
   "pechora_kamenka_air_base|yugorsk_sovetsky_air_base|truck": {
-    "fire_65.05_56.67_2822": 20
+    "fire_65.05_56.67_2936": 20
   },
   "perm_international_airport|salka_aerodrome|truck": {
-    "fire_57.94_60.04_879": 19
+    "fire_57.94_60.04_891": 19
   },
   "perm_international_airport|yekaterinburg|truck": {
-    "fire_56.87_59.89_877": 40
+    "fire_56.87_59.89_889": 40
   },
   "petrovsk_air_base|pugachyov_air_base|truck": {
-    "fire_52.15_45.83_1071": 57
+    "fire_52.15_45.83_1087": 57
   },
   "petrovsk_air_base|syzran_air_base|truck": {
-    "fire_52.15_45.83_1071": 40
+    "fire_52.15_45.83_1087": 40
+  },
+  "petrovsk_air_base|ulyanovsk_vostochny_airport|truck": {
+    "fire_54.21_48.29_1100": 77
   },
   "phalodi_air_force_station|pns_qasim|truck": {
-    "fire_26.21_71.06_3702": 79,
-    "fire_26.47_71.08_3704": 20
+    "fire_26.21_71.06_3896": 79,
+    "fire_26.47_71.08_3898": 20
   },
   "phalodi_air_force_station|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 19
+    "fire_29.49_74.06_978": 19
   },
   "phan_rang_air_base|tuy_hoa_air_base|truck": {
-    "fire_13.04_109.09_689": 18
+    "fire_13.04_109.09_701": 18
   },
   "pie_de_la_cuesta_air_force_base|salina_cruz_naval_air_base|truck": {
-    "fire_16.20_-95.17_932": 20
+    "fire_16.20_-95.17_944": 20
   },
   "pns_himalaya|pns_qasim|truck": {
-    "fire_25.10_68.47_954": 18
+    "fire_25.10_68.47_966": 18
   },
   "pns_mehran|pns_qasim|truck": {
-    "fire_25.06_67.55_2856": 38,
-    "fire_25.10_68.47_954": 38
+    "fire_25.06_67.55_2971": 38,
+    "fire_25.10_68.47_966": 38
   },
   "pns_mehran|uttarlai_air_force_station|truck": {
-    "fire_25.06_67.55_2856": 59,
-    "fire_25.10_68.47_954": 79
+    "fire_25.06_67.55_2971": 59,
+    "fire_25.10_68.47_966": 79
   },
   "point_molate_naval_fuel_depot|sacramento_army_depot|truck": {
-    "fire_38.25_-121.52_2809": 36
+    "fire_38.25_-121.52_2923": 36
   },
   "port_harcourt|porto_novo|truck": {
-    "fire_4.94_7.12_131": 38,
-    "fire_5.21_6.71_132": 38,
-    "fire_5.59_6.67_133": 19
+    "fire_4.94_7.12_133": 38,
+    "fire_5.24_6.73_134": 38,
+    "fire_5.71_6.40_138": 38
   },
   "port_harcourt|yaounde|truck": {
-    "fire_4.58_7.04_128": 19,
-    "fire_4.94_7.12_131": 39
+    "fire_4.58_7.04_130": 19,
+    "fire_4.94_7.12_133": 39
   },
   "porto|sintra_air_base|truck": {
-    "fire_39.17_-8.82_155": 17
+    "fire_39.17_-8.82_158": 17
   },
   "presov_air_base|szolnok_air_base|truck": {
-    "fire_48.61_21.19_2929": 19
+    "fire_48.61_21.19_3048": 19
   },
   "primorsko_akhtarsk_air_base|rostov_on_don_north_air_base|truck": {
-    "fire_46.97_39.57_3866": 19,
-    "fire_47.11_39.37_1042": 58
+    "fire_47.11_39.37_1054": 58
   },
   "prince_sultan_air_base|riyadh|truck": {
-    "fire_24.54_46.97_2886": 58
+    "fire_24.54_46.97_3003": 58
   },
   "pyongyang|shenyang|truck": {
-    "fire_40.91_124.53_2998": 39,
-    "fire_41.30_123.54_3000": 58,
-    "fire_41.34_124.09_3106": 39,
-    "fire_41.64_123.19_3542": 19,
-    "fire_41.68_124.09_3669": 39,
-    "fire_41.81_123.73_2672": 39
+    "fire_40.91_124.53_3121": 39,
+    "fire_41.30_123.54_3123": 58,
+    "fire_41.34_124.09_3229": 39,
+    "fire_41.64_123.19_3727": 19,
+    "fire_41.68_124.09_3863": 39,
+    "fire_41.81_123.73_2786": 39
   },
   "qingdao|tianjin|truck": {
-    "fire_38.06_118.12_3091": 79,
-    "fire_38.37_117.68_2650": 56,
-    "fire_38.98_117.44_2655": 54
+    "fire_38.06_118.12_3214": 79,
+    "fire_38.37_117.68_2764": 56,
+    "fire_38.98_117.44_2769": 54
   },
   "qingdao|wuhu_wanli_airport|truck": {
-    "fire_31.59_118.14_710": 39,
-    "fire_35.16_119.09_3089": 75
+    "fire_31.59_118.14_722": 39,
+    "fire_35.16_119.09_3212": 75
   },
   "qui_nhon_airfield|tuy_hoa_air_base|truck": {
-    "fire_13.04_109.09_689": 16,
-    "fire_13.43_109.09_691": 49
+    "fire_13.04_109.09_701": 16,
+    "fire_13.43_109.09_703": 49
   },
   "qui_nhon_airfield|tuy_hoa_base_camp|truck": {
-    "fire_13.04_109.09_689": 14,
-    "fire_13.43_109.09_691": 49
+    "fire_13.04_109.09_701": 14,
+    "fire_13.43_109.09_703": 49
   },
   "raaf_base_east_sale|raaf_williams|truck": {
-    "fire_-37.83_144.78_2414": 19
+    "fire_-37.83_144.78_2528": 19
+  },
+  "raaf_base_glenbrook|scone_airport|truck": {
+    "fire_-32.29_150.88_4076": 19
+  },
+  "raaf_base_glenbrook|tamworth_regional_airport|truck": {
+    "fire_-32.29_150.88_4076": 20
+  },
+  "raaf_base_richmond|scone_airport|truck": {
+    "fire_-32.29_150.88_4076": 19
+  },
+  "raaf_base_richmond|tamworth_regional_airport|truck": {
+    "fire_-32.29_150.88_4076": 37
   },
   "rcaf_station_souris|rcaf_station_yorkton|truck": {
-    "fire_50.53_-101.91_885": 37
+    "fire_50.53_-101.91_897": 37
   },
   "redstone_arsenal|sumpter_smith_air_national_guard_base|truck": {
-    "fire_33.53_-86.82_904": 18
+    "fire_33.53_-86.82_916": 18
   },
   "remada_air_base|takhamalt_airport|truck": {
     "fire_28.49_9.13_50": 39
   },
   "remada_air_base|tripoli|truck": {
-    "fire_32.76_12.68_2933": 70
+    "fire_32.76_12.68_3052": 70
   },
   "rio_de_janeiro|santa_cruz_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 19
+    "fire_-22.91_-43.75_3176": 19
   },
   "riverbank_army_ammunition_plant|sacramento_army_depot|truck": {
-    "fire_38.24_-120.85_3237": 20,
-    "fire_38.25_-121.52_2809": 39
+    "fire_38.24_-120.85_3380": 20,
+    "fire_38.25_-121.52_2923": 39
   },
   "riverbank_army_ammunition_plant|travis_air_force_base|truck": {
-    "fire_38.25_-121.52_2809": 36
+    "fire_38.25_-121.52_2923": 36
+  },
+  "rnzaf_base_auckland|waiouru_military_camp|truck": {
+    "fire_-37.20_174.72_2364": 20
   },
   "robinson_army_airfield|walnut_ridge_air_force_station|truck": {
-    "fire_35.46_-90.94_2786": 38,
-    "fire_35.60_-91.31_2787": 57,
-    "fire_35.92_-90.94_2788": 57,
-    "fire_36.21_-90.85_2789": 19
+    "fire_35.46_-90.94_2900": 38,
+    "fire_35.60_-91.31_2901": 57,
+    "fire_35.92_-90.94_2902": 57,
+    "fire_36.21_-90.85_2903": 19
   },
   "rostov_on_don_north_air_base|taganrog_central_air_base|truck": {
-    "fire_47.11_39.37_1042": 60
+    "fire_47.11_39.37_1054": 60
   },
   "rostov_on_don_north_air_base|tikhoretsk_air_base|truck": {
-    "fire_46.97_39.57_3866": 20,
-    "fire_47.11_39.37_1042": 40
+    "fire_46.96_39.59_4121": 20,
+    "fire_47.11_39.37_1054": 40
   },
   "rostov_on_don_north_air_base|yeysk_air_base|truck": {
-    "fire_47.11_39.37_1042": 64
+    "fire_47.11_39.37_1054": 64
   },
   "rostov_on_don_north_air_base|zernograd_air_base|truck": {
-    "fire_47.11_39.37_1042": 19
+    "fire_47.11_39.37_1054": 19,
+    "fire_47.28_40.13_3278": 56
   },
   "rumangabo|simisini_air_base|truck": {
-    "fire_-1.40_29.20_2894": 59
+    "fire_-1.40_29.20_3011": 59
   },
   "russian_102nd_military_base|tabriz|truck": {
-    "fire_39.99_44.12_1028": 19
+    "fire_39.99_44.12_1040": 19
   },
   "sa_pran_nak_army_airport|yangon|truck": {
-    "fire_16.79_96.64_795": 20,
-    "fire_17.02_96.52_3125": 60
+    "fire_16.79_96.64_807": 20,
+    "fire_17.02_96.52_3248": 60
   },
   "sacramento_army_depot|san_francisco|truck": {
-    "fire_38.25_-121.52_2809": 52
+    "fire_38.25_-121.52_2923": 52
   },
   "sacramento_army_depot|skaggs_island_naval_communication_station|truck": {
-    "fire_38.25_-121.52_2809": 19
+    "fire_38.25_-121.52_2923": 19
   },
   "sacramento_army_depot|travis_air_force_base|truck": {
-    "fire_38.25_-121.52_2809": 36
+    "fire_38.25_-121.52_2923": 36
   },
   "sagami_general_depot|yokohama|truck": {
-    "fire_35.37_139.85_3466": 14
+    "fire_35.37_139.85_3651": 14
   },
   "sagami_general_depot|yokosuka|truck": {
-    "fire_35.37_139.85_3466": 14
+    "fire_35.37_139.85_3651": 14
   },
   "salina_cruz_naval_air_base|tuxtla_gutierrez_air_force_base|truck": {
-    "fire_16.20_-95.17_932": 19
+    "fire_16.20_-95.17_944": 19
   },
   "salina_cruz_naval_air_base|veracruz|truck": {
-    "fire_16.20_-95.17_932": 19
+    "fire_16.20_-95.17_944": 19
   },
   "salka_aerodrome|uprun_air_base|truck": {
-    "fire_55.26_61.49_1083": 19,
-    "fire_57.94_60.04_879": 19
+    "fire_55.26_61.49_1103": 19,
+    "fire_57.94_60.04_891": 19
   },
   "salka_aerodrome|yekaterinburg|truck": {
-    "fire_57.94_60.04_879": 19
+    "fire_57.94_60.04_891": 19
   },
   "sangamon_ordnance_plant|scott_air_force_base|truck": {
-    "fire_38.72_-90.11_915": 19
+    "fire_38.72_-90.11_927": 19
   },
   "santa_cruz_air_force_base|santos|truck": {
-    "fire_-22.91_-43.75_3053": 28
+    "fire_-22.91_-43.75_3176": 28
   },
   "santa_cruz_air_force_base|santos_air_force_base|truck": {
-    "fire_-22.91_-43.75_3053": 28
+    "fire_-22.91_-43.75_3176": 28
   },
   "santa_cruz_air_force_base|sao_paulo|truck": {
-    "fire_-22.91_-43.75_3053": 28
+    "fire_-22.91_-43.75_3176": 28
+  },
+  "savasleyka_air_base|yaroslavl_levtsovo_air_base|truck": {
+    "fire_56.51_40.95_1110": 19
   },
   "scott_air_force_base|walnut_ridge_air_force_station|truck": {
-    "fire_35.92_-90.94_2788": 19,
-    "fire_36.21_-90.85_2789": 38,
-    "fire_36.36_-90.51_2790": 57,
-    "fire_37.98_-90.08_913": 57
+    "fire_35.92_-90.94_2902": 19,
+    "fire_36.21_-90.85_2903": 38,
+    "fire_36.36_-90.51_2904": 57,
+    "fire_37.98_-90.08_925": 57
   },
   "scott_air_force_base|whiteman_air_force_base|truck": {
-    "fire_38.72_-90.11_915": 57
+    "fire_38.72_-90.11_927": 57
   },
   "seosan_air_base|seoul|truck": {
-    "fire_36.98_126.69_2644": 35
+    "fire_36.98_126.69_2758": 35
   },
   "seosan_air_base|seoul_air_base|truck": {
-    "fire_36.98_126.69_2644": 40
+    "fire_36.98_126.69_2758": 40
   },
   "seosan_air_base|suwon_air_base|truck": {
-    "fire_36.98_126.69_2644": 38
+    "fire_36.98_126.69_2758": 38
   },
   "shahroud_space_center|tehran|truck": {
-    "fire_35.53_51.44_2884": 40
+    "fire_35.53_51.44_3001": 40
   },
   "shanghai|wuhu_wanli_airport|truck": {
-    "fire_31.30_119.27_708": 78,
-    "fire_31.53_119.63_3549": 19
+    "fire_31.30_119.27_720": 78,
+    "fire_31.53_119.63_3734": 19
   },
   "sheikhupura_fort|sri_guru_ravidas_airport|truck": {
-    "fire_31.37_75.14_840": 38,
-    "fire_31.41_74.82_3146": 57,
-    "fire_31.46_73.88_838": 19,
-    "fire_31.62_75.52_841": 57,
-    "fire_31.76_74.24_843": 57,
-    "fire_31.87_73.81_842": 19
+    "fire_31.37_75.14_852": 38,
+    "fire_31.41_74.82_3269": 57,
+    "fire_31.46_73.88_850": 19,
+    "fire_31.62_75.52_853": 57,
+    "fire_31.76_74.24_855": 57,
+    "fire_31.87_73.81_854": 19
   },
   "sheikhupura_fort|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 40,
-    "fire_30.28_73.84_3142": 79,
-    "fire_30.47_73.64_997": 40,
-    "fire_30.69_74.27_834": 20,
-    "fire_30.71_73.89_832": 59,
-    "fire_31.12_74.26_1004": 59,
-    "fire_31.17_73.59_836": 40,
-    "fire_31.27_73.80_3710": 59,
-    "fire_31.46_73.88_838": 59,
-    "fire_31.76_74.24_843": 20,
-    "fire_31.87_73.81_842": 20
+    "fire_29.49_74.06_978": 40,
+    "fire_30.28_73.84_3265": 79,
+    "fire_30.47_73.64_1009": 40,
+    "fire_30.69_74.27_846": 20,
+    "fire_30.71_73.89_844": 59,
+    "fire_31.12_74.26_1016": 59,
+    "fire_31.17_73.59_848": 40,
+    "fire_31.27_73.80_3904": 59,
+    "fire_31.46_73.88_850": 59,
+    "fire_31.76_74.24_855": 20,
+    "fire_31.87_73.81_854": 20
   },
   "sheikhupura_fort|udhampur_air_force_station|truck": {
-    "fire_31.76_74.24_843": 58,
-    "fire_31.87_73.81_842": 38,
-    "fire_32.06_74.09_2837": 77,
-    "fire_32.24_74.71_846": 58,
-    "fire_32.43_74.80_849": 38
+    "fire_31.76_74.24_855": 58,
+    "fire_31.87_73.81_854": 38,
+    "fire_32.06_74.09_2952": 77,
+    "fire_32.24_74.71_858": 58,
+    "fire_32.43_74.80_861": 38
   },
   "shenyang|sunchon_airport|truck": {
-    "fire_40.91_124.53_2998": 59,
-    "fire_41.30_123.54_3000": 59,
-    "fire_41.34_124.09_3106": 40,
-    "fire_41.64_123.19_3542": 20,
-    "fire_41.68_124.09_3669": 59,
-    "fire_41.81_123.73_2672": 40
+    "fire_40.91_124.53_3121": 59,
+    "fire_41.30_123.54_3123": 59,
+    "fire_41.34_124.09_3229": 40,
+    "fire_41.64_123.19_3727": 20,
+    "fire_41.68_124.09_3863": 59,
+    "fire_41.81_123.73_2786": 40
   },
   "shenyang|uiju_airfield|truck": {
-    "fire_41.30_123.54_3000": 74,
-    "fire_41.34_124.09_3106": 19,
-    "fire_41.64_123.19_3542": 19,
-    "fire_41.68_124.09_3669": 37,
-    "fire_41.81_123.73_2672": 37
+    "fire_41.30_123.54_3123": 74,
+    "fire_41.34_124.09_3229": 19,
+    "fire_41.64_123.19_3727": 19,
+    "fire_41.68_124.09_3863": 37,
+    "fire_41.81_123.73_2786": 37
   },
   "shenyang|unchon_up_airport|truck": {
-    "fire_40.91_124.53_2998": 59,
-    "fire_41.30_123.54_3000": 59,
-    "fire_41.34_124.09_3106": 39,
-    "fire_41.64_123.19_3542": 20,
-    "fire_41.68_124.09_3669": 59,
-    "fire_41.81_123.73_2672": 39
+    "fire_40.91_124.53_3121": 59,
+    "fire_41.30_123.54_3123": 59,
+    "fire_41.34_124.09_3229": 39,
+    "fire_41.64_123.19_3727": 20,
+    "fire_41.68_124.09_3863": 59,
+    "fire_41.81_123.73_2786": 39
   },
   "shimofusa_air_base|yokohama|truck": {
-    "fire_35.37_139.85_3466": 35
+    "fire_35.37_139.85_3651": 35
   },
   "sri_guru_ravidas_airport|suratgarh_air_force_station|truck": {
-    "fire_29.49_74.06_966": 58,
-    "fire_29.62_74.38_3706": 58,
-    "fire_30.29_74.39_3709": 19,
-    "fire_31.10_75.40_835": 58
+    "fire_29.49_74.06_978": 58,
+    "fire_29.62_74.38_3900": 58,
+    "fire_30.29_74.39_3903": 19,
+    "fire_31.10_75.40_847": 58
   },
   "sri_guru_ravidas_airport|udhampur_air_force_station|truck": {
-    "fire_31.62_75.52_841": 58,
-    "fire_31.87_75.42_1011": 38,
-    "fire_32.16_75.19_847": 58
+    "fire_31.62_75.52_853": 58,
+    "fire_31.87_75.42_1023": 38,
+    "fire_32.16_75.19_859": 58
   },
   "stavropol_shpakovskoye_airport|zernograd_air_base|truck": {
-    "fire_46.36_40.66_1038": 58
+    "fire_46.37_40.69_1050": 58
   },
   "suratgarh_air_force_station|uttarlai_air_force_station|truck": {
-    "fire_29.49_74.06_966": 19
+    "fire_29.49_74.06_978": 19
   },
   "surmene_naval_base|yerevan|truck": {
-    "fire_39.99_44.12_1028": 39
+    "fire_39.99_44.12_1040": 39
   },
   "suzhou_guangfu_airport|wuhan|truck": {
-    "fire_31.05_119.19_3659": 39,
-    "fire_31.07_119.64_3548": 39,
-    "fire_31.19_118.13_709": 39,
-    "fire_31.30_119.27_708": 59
+    "fire_31.05_119.19_3853": 39,
+    "fire_31.07_119.64_3733": 39,
+    "fire_31.19_118.13_721": 39,
+    "fire_31.30_119.27_720": 59
   },
   "suzhou_guangfu_airport|wuhu_wanli_airport|truck": {
-    "fire_31.07_119.64_3548": 19,
-    "fire_31.30_119.27_708": 76
+    "fire_31.07_119.64_3733": 19,
+    "fire_31.30_119.27_720": 76
+  },
+  "syzran_air_base|ulyanovsk_vostochny_airport|truck": {
+    "fire_54.21_48.29_1100": 19
   },
   "taganrog_central_air_base|tikhoretsk_air_base|truck": {
-    "fire_47.11_39.37_1042": 60
+    "fire_47.11_39.37_1054": 60
   },
   "taganrog_central_air_base|yeysk_air_base|truck": {
-    "fire_47.11_39.37_1042": 105
+    "fire_47.11_39.37_1054": 105
   },
   "taganrog_central_air_base|zernograd_air_base|truck": {
-    "fire_46.97_39.57_3866": 18,
-    "fire_47.11_39.37_1042": 71
+    "fire_46.96_39.59_4121": 18,
+    "fire_47.11_39.37_1054": 71
   },
   "takhli_royal_thai_air_force_base|yangon|truck": {
-    "fire_16.79_96.64_795": 20,
-    "fire_17.02_96.52_3125": 60
+    "fire_16.79_96.64_807": 20,
+    "fire_17.02_96.52_3248": 60
   },
   "tambov_air_base|voronezh_malshevo_air_base|truck": {
-    "fire_52.03_40.41_1601": 39,
-    "fire_52.63_41.01_1074": 39
+    "fire_52.03_40.41_1641": 39,
+    "fire_52.57_41.01_1092": 58
   },
   "tianjin|xinzhou_wutaishan_airport|truck": {
-    "fire_38.41_112.91_2648": 20,
-    "fire_38.60_113.01_3093": 39,
-    "fire_38.80_116.67_713": 39,
-    "fire_38.98_117.44_2655": 20,
-    "fire_39.13_116.73_3094": 78,
-    "fire_39.34_116.91_717": 39
+    "fire_38.41_112.91_2762": 20,
+    "fire_38.60_113.01_3216": 39,
+    "fire_38.80_116.67_725": 39,
+    "fire_38.98_117.44_2769": 20,
+    "fire_39.13_116.73_3217": 78,
+    "fire_39.34_116.91_729": 39
   },
   "tianjin|zhangjiakou_ningyuan_airport|truck": {
-    "fire_39.13_116.73_3094": 19,
-    "fire_39.34_116.91_717": 75,
-    "fire_40.45_115.17_3101": 75
+    "fire_39.13_116.73_3217": 19,
+    "fire_39.34_116.91_729": 75,
+    "fire_40.45_115.17_3224": 75
   },
   "tianjin|zhengzhou|truck": {
-    "fire_38.73_116.95_3092": 78,
-    "fire_38.80_116.67_713": 78,
-    "fire_38.98_117.44_2655": 19
+    "fire_38.73_116.95_3215": 78,
+    "fire_38.80_116.67_725": 78,
+    "fire_38.98_117.44_2769": 19
   },
   "tokyo|yokohama|truck": {
-    "fire_35.37_139.85_3466": 14
+    "fire_35.37_139.85_3651": 14
   },
   "tokyo|yokosuka|truck": {
-    "fire_35.37_139.85_3466": 29
+    "fire_35.37_139.85_3651": 29
   },
   "tripoli|tunis|truck": {
-    "fire_32.76_12.68_2933": 70
+    "fire_32.76_12.68_3052": 70
   },
   "tuxpan_naval_air_base|zapopan_air_force_base|truck": {
-    "fire_20.56_-101.10_927": 20
+    "fire_20.56_-101.10_939": 20
   },
   "tuxtla_gutierrez_air_force_base|veracruz|truck": {
-    "fire_17.99_-94.52_2760": 56
+    "fire_17.99_-94.52_2874": 56
   },
   "uprun_air_base|yekaterinburg|truck": {
-    "fire_55.26_61.49_1083": 20
+    "fire_55.26_61.49_1103": 20
   },
   "waiouru_military_camp|wellington|truck": {
-    "fire_-39.47_175.81_146": 20
+    "fire_-39.47_175.81_149": 20
   },
   "wuhan|wuhu_wanli_airport|truck": {
-    "fire_31.19_118.13_709": 58,
-    "fire_31.59_118.14_710": 39
+    "fire_31.19_118.13_721": 58,
+    "fire_31.59_118.14_722": 39
   },
   "wuhu_wanli_airport|zhengzhou|truck": {
-    "fire_31.59_118.14_710": 78
+    "fire_31.59_118.14_722": 78
   },
   "xian|xinzhou_wutaishan_airport|truck": {
-    "fire_37.15_111.98_2645": 59,
-    "fire_37.53_112.20_712": 79,
-    "fire_37.91_112.54_2647": 59,
-    "fire_38.41_112.91_2648": 59,
-    "fire_38.60_113.01_3093": 40
+    "fire_37.15_111.98_2759": 59,
+    "fire_37.53_112.20_724": 79,
+    "fire_37.91_112.54_2761": 59,
+    "fire_38.41_112.91_2762": 59,
+    "fire_38.60_113.01_3216": 40
   },
   "xinzhou_wutaishan_airport|zhangjiakou_ningyuan_airport|truck": {
-    "fire_38.41_112.91_2648": 19,
-    "fire_38.60_113.01_3093": 39,
-    "fire_39.22_113.45_3095": 78
+    "fire_38.41_112.91_2762": 19,
+    "fire_38.60_113.01_3216": 39,
+    "fire_39.22_113.45_3218": 78
   },
   "xinzhou_wutaishan_airport|zhengzhou|truck": {
-    "fire_36.42_113.10_2641": 59,
-    "fire_38.03_113.05_3665": 59,
-    "fire_38.41_112.91_2648": 59,
-    "fire_38.60_113.01_3093": 39
+    "fire_36.42_113.10_2755": 59,
+    "fire_38.03_113.05_3859": 59,
+    "fire_38.41_112.91_2762": 59,
+    "fire_38.60_113.01_3216": 39
   },
   "yokohama|yokosuka|truck": {
-    "fire_35.37_139.85_3466": 17
+    "fire_35.37_139.85_3651": 17
   },
   "yokohama|yokota_air_base|truck": {
-    "fire_35.37_139.85_3466": 14
+    "fire_35.37_139.85_3651": 14
   },
   "yokosuka|yokota_air_base|truck": {
-    "fire_35.37_139.85_3466": 20
+    "fire_35.37_139.85_3651": 20
   }
 }
