@@ -1,45 +1,45 @@
 {
-  "updatedAt": "2026-11-04T18:11:15.146Z",
+  "updatedAt": "2026-11-05T00:26:32.972Z",
   "sources": [
     {
       "id": "usgs",
       "label": "USGS",
       "status": "ok",
-      "lastSuccessAt": "2026-11-04T18:11:15.146Z",
-      "expiresAt": "2026-11-05T18:11:15.146Z",
+      "lastSuccessAt": "2026-11-05T00:26:32.972Z",
+      "expiresAt": "2026-11-06T00:26:32.972Z",
       "retainedZones": 0
     },
     {
       "id": "firms",
       "label": "NASA FIRMS",
-      "status": "ok",
+      "status": "stale",
       "lastSuccessAt": "2026-11-04T18:11:15.146Z",
       "expiresAt": "2026-11-05T18:11:15.146Z",
-      "retainedZones": 0
+      "retainedZones": 2082
     },
     {
       "id": "gdacs",
       "label": "GDACS",
       "status": "ok",
-      "lastSuccessAt": "2026-11-04T18:11:15.146Z",
-      "expiresAt": "2026-11-05T18:11:15.146Z",
+      "lastSuccessAt": "2026-11-05T00:26:32.972Z",
+      "expiresAt": "2026-11-06T00:26:32.972Z",
       "retainedZones": 0
     },
     {
       "id": "nhc",
       "label": "NOAA NHC",
       "status": "ok",
-      "lastSuccessAt": "2026-11-04T18:11:15.146Z",
-      "expiresAt": "2026-11-05T18:11:15.146Z",
+      "lastSuccessAt": "2026-11-05T00:26:32.972Z",
+      "expiresAt": "2026-11-06T00:26:32.972Z",
       "retainedZones": 0
     },
     {
       "id": "nga",
       "label": "NGA",
-      "status": "stale",
+      "status": "unavailable",
       "lastSuccessAt": "2026-11-03T18:11:50.144Z",
-      "expiresAt": "2026-11-04T18:11:50.144Z",
-      "retainedZones": 28
+      "expiresAt": null,
+      "retainedZones": 0
     }
   ]
 }
