@@ -1,4 +1,7 @@
 {
+  "shanghai|narita|air": {
+    "quake_us7000twt0": 99
+  },
   "tokyo|singapore|air": {
     "quake_us7000tuku": 260
   },
@@ -7,9 +10,6 @@
   },
   "kadena|yokosuka|sea": {
     "quake_us7000tuku": 230
-  },
-  "apia|pearl_harbor|sea": {
-    "storm_cp042026_48h": 343
   },
   "busan|tokyo|sea": {
     "quake_us7000tuku": 230
@@ -74,19 +74,72 @@
   "vladivostok_base|yokohama|sea": {
     "quake_us7000twrq": 120
   },
+  "gifu_air_field|hamamatsu_air_base|truck": {
+    "quake_us7000twt0": 70
+  },
+  "gifu_air_field|jgsdf_camp_toyokawa|truck": {
+    "quake_us7000twt0": 38
+  },
+  "gifu_air_field|shizuhama_air_base|truck": {
+    "quake_us7000twt0": 109
+  },
+  "hamamatsu_air_base|jgsdf_camp_itazuma|truck": {
+    "quake_us7000twt0": 71
+  },
+  "hamamatsu_air_base|jgsdf_camp_komakado|truck": {
+    "quake_us7000twt0": 70
+  },
   "hamamatsu_air_base|jgsdf_camp_toyokawa|truck": {
-    "quake_us7000tuku": 16
+    "quake_us7000tuku": 16,
+    "quake_us7000twt0": 32
   },
   "hamamatsu_air_base|jmsdf_maizuru_naval_base|truck": {
-    "quake_us7000tuku": 19
+    "quake_us7000tuku": 19,
+    "quake_us7000twt0": 57
+  },
+  "hamamatsu_air_base|maizuru_naval_arsenal|truck": {
+    "quake_us7000twt0": 56
   },
   "hamamatsu_air_base|osaka|truck": {
-    "quake_us7000tuku": 73
+    "quake_us7000tuku": 73,
+    "quake_us7000twt0": 54
+  },
+  "hamamatsu_air_base|sagami_general_depot|truck": {
+    "quake_us7000twt0": 59
+  },
+  "hamamatsu_air_base|shizuhama_air_base|truck": {
+    "quake_us7000twt0": 55
+  },
+  "hamamatsu_air_base|sub_area_activity_hanshin|truck": {
+    "quake_us7000twt0": 79
+  },
+  "jgsdf_camp_itazuma|jgsdf_camp_toyokawa|truck": {
+    "quake_us7000twt0": 92
+  },
+  "jgsdf_camp_komakado|jgsdf_camp_toyokawa|truck": {
+    "quake_us7000twt0": 92
+  },
+  "jgsdf_camp_toyokawa|jmsdf_maizuru_naval_base|truck": {
+    "quake_us7000twt0": 39
+  },
+  "jgsdf_camp_toyokawa|maizuru_naval_arsenal|truck": {
+    "quake_us7000twt0": 38
   },
   "jgsdf_camp_toyokawa|osaka|truck": {
-    "quake_us7000tuku": 38
+    "quake_us7000tuku": 38,
+    "quake_us7000twt0": 38
+  },
+  "jgsdf_camp_toyokawa|shizuhama_air_base|truck": {
+    "quake_us7000twt0": 85
   },
   "jgsdf_camp_toyokawa|sub_area_activity_hanshin|truck": {
-    "quake_us7000tuku": 37
+    "quake_us7000tuku": 37,
+    "quake_us7000twt0": 37
+  },
+  "jmsdf_maizuru_naval_base|shizuhama_air_base|truck": {
+    "quake_us7000twt0": 118
+  },
+  "maizuru_naval_arsenal|shizuhama_air_base|truck": {
+    "quake_us7000twt0": 117
   }
 }
